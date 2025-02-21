@@ -4,10 +4,12 @@ using UnityEngine;
 public class GridGenerateView
 {
     private Material _material = default;
+    private Transform _parent = default;
 
-    public GridGenerateView(Material material)
+    public GridGenerateView(Material material, Transform parent)
     {
         _material = material;
+        _parent = parent;
     }
     public void UpdateGrid(Node[,] nodeDate)
     {
@@ -21,8 +23,10 @@ public class GridGenerateView
             for (int z = 0; z < nodeDate.GetLength(1); z++)
             {
                 GameObject cellObj = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                cellObj.transform.parent = _parent;
                 cellObj.transform.position = nodeDate[x, z].Position;
                 cellObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+                DebugUtility.Log("Node Position: " + nodeDate[x, z].Position);
             }
         }
     }
