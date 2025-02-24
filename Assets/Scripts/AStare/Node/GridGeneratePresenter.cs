@@ -15,6 +15,8 @@ public class GridGeneratePresenter : MonoBehaviour
     [SerializeField]
     private float _gridCellSize = default;
 
+    public float GridCellSize { get => _gridCellSize; }
+
     [SerializeField]
     private Material _material = default;
 
@@ -31,6 +33,11 @@ public class GridGeneratePresenter : MonoBehaviour
     private void Start()
     {
         _model.InitializeGrid();
+    }
+
+    public Node GetNodeWorldPosition(Vector3 worldPosition)
+    {
+      return _model.GetNodeFromWorldPosition(worldPosition);
     }
 
     private void Bind()

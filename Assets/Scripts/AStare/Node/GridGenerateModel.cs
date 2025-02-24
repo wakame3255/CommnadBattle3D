@@ -72,4 +72,13 @@ public class GridGenerateModel
         }
         _grid.Value = node;
     }
+
+    public Node GetNodeFromWorldPosition(Vector3 worldPosition)
+    {
+        int xPos = Mathf.RoundToInt(worldPosition.x / _gridCellSize);
+        int zPos = Mathf.RoundToInt(worldPosition.z / _gridCellSize);
+        xPos = Mathf.Clamp(xPos, 0, _gridSizeX - 1);
+        zPos = Mathf.Clamp(zPos, 0, _gridSizeZ - 1);
+        return _grid.Value[xPos, zPos];
+    }
 }
