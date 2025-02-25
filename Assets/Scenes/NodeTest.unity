@@ -164,9 +164,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 542b7c0dd47e5da42b5869ab808268c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridSizeX: 10
-  _gridSizeZ: 10
+  _gridSizeX: 20
+  _gridSizeZ: 20
   _gridCellSize: 1
+  _instanceObj: {fileID: 1952514329207365206, guid: 54a463dd3a31eeb41805b1aea6927b9b, type: 3}
   _material: {fileID: 2100000, guid: c5c865e9f8e032a4eaa0ab480360d3c7, type: 2}
 --- !u!1 &436238243
 GameObject:
@@ -389,7 +390,7 @@ Transform:
   m_GameObject: {fileID: 667482280}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.99, y: 0, z: 1.75}
+  m_LocalPosition: {x: 16.4, y: 0, z: 7.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -4,6 +4,9 @@ using UnityEngine;
 public class PathAgent : MonoBehaviour
 {
     [SerializeField]
+    private float _speed = 1.0f;
+
+    [SerializeField]
     private GridGeneratePresenter _gridGeneratePresenter = default;
 
     [SerializeField]
@@ -54,7 +57,7 @@ public class PathAgent : MonoBehaviour
         }
         Vector3 targetPosition = wayPoints[_currentWayPointIndex];
         Vector3 moveDirection = targetPosition - _transform.position;
-        _transform.position += moveDirection.normalized * Time.deltaTime;
+        _transform.position += moveDirection.normalized * Time.deltaTime * _speed;
         if (Vector3.Distance(_transform.position, targetPosition) < 0.1f)
         {
             _currentWayPointIndex++;

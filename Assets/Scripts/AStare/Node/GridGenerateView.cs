@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class GridGenerateView
 {
+    private GameObject _instanceObj;
+
     private Material _material = default;
     private Transform _parent = default;
 
     private GameObject[,] _nodes = default;
     private Node[,] _cacheNodeData = default;
 
-    public GridGenerateView(Material material, Transform parent)
+    public GridGenerateView(Material material, Transform parent, GameObject instanceObj)
     {
         _material = material;
         _parent = parent;
+        _instanceObj = instanceObj;
     }
     public void UpdateGrid(Node[,] nodeDate)
     {
@@ -33,10 +36,10 @@ public class GridGenerateView
         {
             for (int z = 0; z < zMax; z++)
             {
-                GameObject cellObj = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                GameObject cellObj = MonoBehaviour.Instantiate(_instanceObj);
                 cellObj.transform.parent = _parent;
                 cellObj.transform.position = nodeDate[x, z].Position;
-                cellObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+                //cellObj.transform.rotation = Quaternion.Euler(90, 0, 0);
 
                 nodes[x, z] = cellObj;
             }
