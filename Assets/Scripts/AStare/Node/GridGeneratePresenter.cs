@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using R3;
+using System.Collections.Generic;
 /// <summary>
 /// グリッド情報の受け渡し(外部からデータをもらうことができればmonobeなくなる)
 /// </summary>
@@ -34,6 +35,11 @@ public class GridGeneratePresenter : MonoBehaviour
     private void Start()
     {
         
+    }
+
+    public void ChangeViewColorNode(List<Node> wayPoints)
+    {
+        _view.ChangeColorNode(wayPoints);
     }
 
     public Node GetNodeWorldPosition(Vector3 worldPosition)

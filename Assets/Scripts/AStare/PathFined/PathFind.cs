@@ -118,6 +118,8 @@ public class PathFind
 
         path.Add(startNode);
         path.Reverse();
+
+        _gridGeneratePresenter.ChangeViewColorNode(path);
         return path;
     }
 

@@ -36,7 +36,7 @@ public class PathAgent : MonoBehaviour
     private void SetCustomPath()
     {
         Node startNode = _gridGeneratePresenter.GetNodeWorldPosition(_transform.position);
-        Node endNode = _gridGeneratePresenter.GetNodeWorldPosition(new Vector3(10, 0, 10));
+        Node endNode = _gridGeneratePresenter.GetNodeWorldPosition(_goalPosition.position);
 
         List<Node> path = _pathFind.ReturnFindTacticalPath(startNode, endNode);
         wayPoints = path.ConvertAll(node => node.Position);
