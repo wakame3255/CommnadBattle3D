@@ -35,11 +35,10 @@ public class GridGeneratePresenter : MonoBehaviour
         _model.InitializeGrid();
     }
 
-    private void Start()
-    {
-        
-    }
-
+    /// <summary>
+    /// ノードの色を変更する
+    /// </summary>
+    /// <param name="wayPoints"></param>
     public void ChangeViewColorNode(List<Node> wayPoints)
     {
         _view.ChangeColorNode(wayPoints);

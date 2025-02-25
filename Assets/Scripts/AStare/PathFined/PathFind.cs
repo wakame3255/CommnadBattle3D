@@ -101,6 +101,13 @@ public class PathFind
         return nodeDistance;
     }
 
+    /// <summary>
+    /// 経路をまとめる
+    /// </summary>
+    /// <param name="cameFrom">ノード間の道のり辞書</param>
+    /// <param name="startNode">開始ノード</param>
+    /// <param name="endNode">最終ノード</param>
+    /// <returns>経路</returns>
     private List<Node> ReconstructPath(Dictionary<Vector3, Vector3> cameFrom, Node startNode, Node endNode)
     {
         List<Node> path = new List<Node> { endNode };
@@ -116,9 +123,13 @@ public class PathFind
             currentNode = cameFrom[currentNode];
         }
 
+        //最後にスタート地点の追加
         path.Add(startNode);
+
+        //経路を反転させて返す
         path.Reverse();
 
+        //経路の色を変更
         _gridGeneratePresenter.ChangeViewColorNode(path);
         return path;
     }

@@ -48,6 +48,10 @@ public class GridGenerateView
         _nodes = nodes;
     }
 
+    /// <summary>
+    ///    ノードの色を変更する
+    /// </summary>
+    /// <param name="wayPoints"></param>
     public void ChangeColorNode(List<Node> wayPoints)
     {
         int xMax = _cacheNodeData.GetLength(0);
@@ -66,6 +70,13 @@ public class GridGenerateView
         }
     }
 
+    /// <summary>
+    ///    ノードが一致しているか確認
+    /// </summary>
+    /// <param name="xIndex"></param>
+    /// <param name="yIndex"></param>
+    /// <param name="nodes"></param>
+    /// <returns></returns>
     private bool CheckMatchNode(int xIndex, int yIndex, List<Node> nodes)
     {
         foreach (Node node in nodes)
