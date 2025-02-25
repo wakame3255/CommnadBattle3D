@@ -29,7 +29,7 @@ public class GridGeneratePresenter : MonoBehaviour
 
     private void Awake()
     {
-        _model = new GridGenerateModel(new GridGenerateData(_gridSizeX, _gridSizeZ, _gridCellSize));
+        _model = new GridGenerateModel(new GridGenerateData(_gridSizeX, _gridSizeZ, _gridCellSize), this.transform);
         _view = new GridGenerateView(_material, this.transform, _instanceObj);
         Bind();
         _model.InitializeGrid();

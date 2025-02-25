@@ -32,6 +32,8 @@ public class GridGenerateModel
    
     private float _gridCellSize = 1.0f;
 
+    private Transform _gridPos = default;
+
     private ReactiveProperty<Node[,]> _grid;
 
     /// <summary>
@@ -42,11 +44,12 @@ public class GridGenerateModel
     public ReadOnlyReactiveProperty<Node[,]> Grid { get => _grid; }
 
     //引数をデータクラス化
-    public GridGenerateModel(GridGenerateData generateData)
+    public GridGenerateModel(GridGenerateData generateData, Transform gridPos)
     {
         _gridSizeX = generateData.GridSizeX;
         _gridSizeZ = generateData.GridSizeZ;
         _gridCellSize = generateData.GridCellSize;
+        _gridPos = gridPos;
 
         _grid = new ReactiveProperty<Node[,]>();
     }
@@ -64,7 +67,20 @@ public class GridGenerateModel
             for (int z = 0; z < _gridSizeZ; z++)
             {
                 Vector3 pos = default;
-                pos.Set(x * _gridCellSize, 0, z * _gridCellSize);
+
+                //ノードの位置を図る位置
+                pos.Set(x * _gridCellSize, _gridPos.position.y, z * _gridCellSize);
+
+                //実際のノード位置
+                pos.y = GetNodeYPosition(pos);
+
+                //グリッドのマスの生成(今後壁があるかの取得を行い、ブールに値を格納)
+                node[x, z] = new Node(pos, true);
+                //ノードの位置を図る位置
+                pos = new Vector3(x * _gridCellSize, _gridPos.position.y, z * _gridCellSize);
+
+                //実際のノード位置
+                pos.y = GetNodeYPosition(pos);
 
                 //グリッドのマスの生成(今後壁があるかの取得を行い、ブールに値を格納)
                 node[x, z] = new Node(pos, true);
@@ -80,5 +96,15 @@ public class GridGenerateModel
         xPos = Mathf.Clamp(xPos, 0, _gridSizeX - 1);
         zPos = Mathf.Clamp(zPos, 0, _gridSizeZ - 1);
         return _grid.Value[xPos, zPos];
+    }
+
+    private float GetNodeYPosition(Vector3 rayShotPos)
+    {
+        if (Physics.BoxCast(rayShotPos, Vector3.one * (_gridCellSize / 2), Vector3.down,out RaycastHit hitInfo, Quaternion.identity, Mathf.Infinity))
+        {
+            return hitInfo.point.y;
+        }
+
+        return rayShotPos.y;
     }
 }

@@ -7,12 +7,10 @@ public class PathAgent : MonoBehaviour
     private float _speed = 1.0f;
 
     [SerializeField]
-    private GridGeneratePresenter _gridGeneratePresenter = default;
+    private PathFind _pathFind = default;
 
     [SerializeField]
     private Transform _goalPosition = default;
-
-    private PathFind _pathFind = default;
 
     private Transform _transform = default;
 
@@ -23,7 +21,6 @@ public class PathAgent : MonoBehaviour
     private void Awake()
     {
         _transform = this.transform;
-        _pathFind = new PathFind(_gridGeneratePresenter);
     }
 
     private void Start()
@@ -38,8 +35,8 @@ public class PathAgent : MonoBehaviour
 
     private void SetCustomPath()
     {
-        Node startNode = _gridGeneratePresenter.GetNodeWorldPosition(_transform.position);
-        Node endNode = _gridGeneratePresenter.GetNodeWorldPosition(_goalPosition.position);
+        Node startNode = _pathFind.GetNodeWorldPosition(_transform.position);
+        Node endNode = _pathFind.GetNodeWorldPosition(_goalPosition.position);
 
         List<Node> path = _pathFind.ReturnFindTacticalPath(startNode, endNode);
         wayPoints = path.ConvertAll(node => node.Position);

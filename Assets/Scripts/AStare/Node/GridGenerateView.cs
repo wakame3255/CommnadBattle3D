@@ -39,7 +39,6 @@ public class GridGenerateView
                 GameObject cellObj = MonoBehaviour.Instantiate(_instanceObj);
                 cellObj.transform.parent = _parent;
                 cellObj.transform.position = nodeDate[x, z].Position;
-                //cellObj.transform.rotation = Quaternion.Euler(90, 0, 0);
 
                 nodes[x, z] = cellObj;
             }
@@ -91,6 +90,11 @@ public class GridGenerateView
 
     private void ChangeColor(int x, int z)
     {
+        if (_nodes[x, z] == null)
+        {
+            return;
+        }
+
         _nodes[x, z].GetComponent<Renderer>().material = _material;
     }
 }

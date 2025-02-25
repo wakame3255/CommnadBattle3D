@@ -7,15 +7,13 @@ using Cysharp.Threading.Tasks;
 /// <summary>
 /// 経路探査（ムーブ系の配下にいるべき？）
 /// </summary>
-public class PathFind
+public class PathFind : MonoBehaviour
 {
+    [SerializeField]
     private GridGeneratePresenter _gridGeneratePresenter;
 
-    public PathFind(GridGeneratePresenter gridGeneratePresenter)
-    {
-        _gridGeneratePresenter = gridGeneratePresenter;
-    }
-
+    [SerializeField]
+    private float _possibleHeight;
 
     public List<Node> ReturnFindTacticalPath(Node startNode, Node endNode)
     {
@@ -56,12 +54,12 @@ public class PathFind
             //隣接ノードを取得
             foreach (Node neighbor in GetNeighbors(currentNode))
             {
-                //評価済みのノードはスキップ
-                if (closedSet.Contains(neighbor.Position))
+                //評価済みのノードと渡れないノードはスキップ
+                if (closedSet.Contains(neighbor.Position) || (neighbor.Position.y - currentNode.Position.y) > _possibleHeight)
                 {
                     continue;
                 }
-                DebugUtility.Log(costSoFar[currentNode.Position].ToString());
+               
                 //コストの計算
                 float newCost = costSoFar[currentNode.Position] + GetCostNodeToNode(currentNode, neighbor);
 
@@ -87,6 +85,11 @@ public class PathFind
        Debug.Log("経路が見つかりませんでした");
 
         return null;
+    }
+
+    public Node GetNodeWorldPosition(Vector3 worldPosition)
+    {
+        return _gridGeneratePresenter.GetNodeWorldPosition(worldPosition);
     }
 
     /// <summary>
