@@ -130,7 +130,8 @@ public class PathFind
     /// <returns></returns>
     IEnumerable<Node> GetNeighbors(Node node)
     {
-        Vector3[] direction = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right };
+        Vector3[] direction = 
+            { Vector3.forward, Vector3.back, Vector3.left, Vector3.right, Vector3.forward + Vector3.left, Vector3.forward + Vector3.right, Vector3.back + Vector3.left, Vector3.back + Vector3.right };
         return direction
             .Select(direction => _gridGeneratePresenter.GetNodeWorldPosition(node.Position + direction * _gridGeneratePresenter.GridCellSize))
             .Where(neighbor => neighbor.IsWalkable);
