@@ -28,11 +28,12 @@ public class GridGeneratePresenter : MonoBehaviour
         _model = new GridGenerateModel(new GridGenerateData(_gridSizeX, _gridSizeZ, _gridCellSize));
         _view = new GridGenerateView(_material, this.transform);
         Bind();
+        _model.InitializeGrid();
     }
 
     private void Start()
     {
-        _model.InitializeGrid();
+        
     }
 
     public Node GetNodeWorldPosition(Vector3 worldPosition)

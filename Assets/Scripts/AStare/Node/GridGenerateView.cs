@@ -26,7 +26,6 @@ public class GridGenerateView
                 cellObj.transform.parent = _parent;
                 cellObj.transform.position = nodeDate[x, z].Position;
                 cellObj.transform.rotation = Quaternion.Euler(90, 0, 0);
-                DebugUtility.Log("Node Position: " + nodeDate[x, z].Position);
             }
         }
     }
