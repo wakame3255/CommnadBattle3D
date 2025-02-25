@@ -1,3 +1,4 @@
+using R3;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ public class PathAgent : MonoBehaviour
     private PathFind _pathFind = default;
 
     [SerializeField]
-    private Transform _goalPosition = default;
+    private PlayerInput _input = default;
 
     private Transform _transform = default;
 
@@ -25,7 +26,7 @@ public class PathAgent : MonoBehaviour
 
     private void Start()
     {
-        SetCustomPath();
+        Bind();
     }
 
     private void Update()
@@ -33,13 +34,23 @@ public class PathAgent : MonoBehaviour
         FollowCustomPath();
     }
 
-    private void SetCustomPath()
+    private void Bind()
+    {
+        _input.PointerPosition.Subscribe(point => SetCustomPath(point)).AddTo(this);
+    }
+
+    private void SetCustomPath(Vector3 pointerPosition)
     {
         Node startNode = _pathFind.GetNodeWorldPosition(_transform.position);
-        Node endNode = _pathFind.GetNodeWorldPosition(_goalPosition.position);
+        Node endNode = _pathFind.GetNodeWorldPosition(pointerPosition);
 
         List<Node> path = _pathFind.ReturnFindTacticalPath(startNode, endNode);
-        wayPoints = path.ConvertAll(node => node.Position);
+
+        if (path != null)
+        {
+            wayPoints = path.ConvertAll(node => node.Position);
+            _currentWayPointIndex = 0;
+        }  
     }
 
     private void FollowCustomPath()

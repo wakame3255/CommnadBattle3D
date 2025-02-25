@@ -55,7 +55,7 @@ public class PathFind : MonoBehaviour
             foreach (Node neighbor in GetNeighbors(currentNode))
             {
                 //•]‰¿Ï‚Ý‚Ìƒm[ƒh‚Æ“n‚ê‚È‚¢ƒm[ƒh‚ÍƒXƒLƒbƒv
-                if (closedSet.Contains(neighbor.Position) || (neighbor.Position.y - currentNode.Position.y) > _possibleHeight)
+                if (closedSet.Contains(neighbor.Position) || Mathf.Abs(neighbor.Position.y - currentNode.Position.y) > _possibleHeight)
                 {
                     continue;
                 }

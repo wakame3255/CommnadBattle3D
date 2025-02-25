@@ -19,18 +19,14 @@ public class GridGeneratePresenter : MonoBehaviour
     public float GridCellSize { get => _gridCellSize; }
 
     [SerializeField]
-    private GameObject _instanceObj;
-
-    [SerializeField]
-    private Material _material = default;
+    private GridGenerateView _view;
 
     private GridGenerateModel _model = default;
-    private GridGenerateView _view;
+   
 
     private void Awake()
     {
         _model = new GridGenerateModel(new GridGenerateData(_gridSizeX, _gridSizeZ, _gridCellSize), this.transform);
-        _view = new GridGenerateView(_material, this.transform, _instanceObj);
         Bind();
         _model.InitializeGrid();
     }

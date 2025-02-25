@@ -2,22 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridGenerateView
+public class GridGenerateView : MonoBehaviour
 {
+    [SerializeField]
     private GameObject _instanceObj;
 
-    private Material _material = default;
-    private Transform _parent = default;
+    [SerializeField]
+    private Material _wayPointMaterial = default;
+    [SerializeField]
+    private Material _normalMaterial = default;
 
     private GameObject[,] _nodes = default;
     private Node[,] _cacheNodeData = default;
 
-    public GridGenerateView(Material material, Transform parent, GameObject instanceObj)
-    {
-        _material = material;
-        _parent = parent;
-        _instanceObj = instanceObj;
-    }
     public void UpdateGrid(Node[,] nodeDate)
     {
         _cacheNodeData = nodeDate;
@@ -36,8 +33,7 @@ public class GridGenerateView
         {
             for (int z = 0; z < zMax; z++)
             {
-                GameObject cellObj = MonoBehaviour.Instantiate(_instanceObj);
-                cellObj.transform.parent = _parent;
+                GameObject cellObj = MonoBehaviour.Instantiate(_instanceObj, this.transform);
                 cellObj.transform.position = nodeDate[x, z].Position;
 
                 nodes[x, z] = cellObj;
@@ -62,9 +58,11 @@ public class GridGenerateView
             {
                 if (CheckMatchNode(x, z, wayPoints))
                 {
-                    ChangeColor(x, z);
+                    ChangeColor(x, z, true);
                     continue;
                 }
+
+                ChangeColor(x, z, false);
             }
         }
     }
@@ -88,13 +86,21 @@ public class GridGenerateView
         return false;
     }
 
-    private void ChangeColor(int x, int z)
+    private void ChangeColor(int x, int z, bool isWayPoint)
     {
         if (_nodes[x, z] == null)
         {
             return;
         }
 
-        _nodes[x, z].GetComponent<Renderer>().material = _material;
+        if (isWayPoint)
+        {
+            _nodes[x, z].GetComponent<Renderer>().material = _wayPointMaterial;
+        }
+        else
+        {
+            _nodes[x, z].GetComponent<Renderer>().material = _normalMaterial;
+        }
+
     }
 }
