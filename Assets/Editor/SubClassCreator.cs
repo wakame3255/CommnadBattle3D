@@ -24,7 +24,7 @@ public class SubClassGenerator : EditorWindow
     private string[] _interfaceOptions;//インターフェースリスト
     private int _selectedClassIndex;//選択された基底の番号
     private int _selectedMask;//選択されたインターフェースの番号
-    private string _newScriptName = "NewClass";//生成するスクリプトの名前(defaultはNewClass)
+    private string _newScriptName = "宮本です";//生成するスクリプトの名前(defaultはNewClass)
 
     private HashSet<string> _usings = new();//usingのリスト
 
