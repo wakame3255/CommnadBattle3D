@@ -10,6 +10,6 @@ public class CharacterMovementModel
 
     public CharacterMovementModel()
     {
-
+        DebugUtility.Log("CharacterMovementModel");
     }
 }
