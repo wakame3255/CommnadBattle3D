@@ -24,7 +24,7 @@ public class SubClassGenerator : EditorWindow
     private string[] _interfaceOptions;//インターフェースリスト
     private int _selectedClassIndex;//選択された基底の番号
     private int _selectedMask;//選択されたインターフェースの番号
-    private string _newScriptName = "宮本です";//生成するスクリプトの名前(defaultはNewClass)
+    private string _newScriptName = "NewClass";//生成するスクリプトの名前(defaultはNewClass)
 
     private HashSet<string> _usings = new();//usingのリスト
 
@@ -33,6 +33,9 @@ public class SubClassGenerator : EditorWindow
 
     private string _createPath = string.Empty;//生成する位置を設定する場合
 
+    private string[] suggestions = new string[0];
+    private bool showSuggestions = false;
+    private Vector2 scrollPos;
     #region temp
     private string[] _templateFiles; // テンプレートファイルのリスト
     private int _selectedTemplateIndex = 0; // 選択中のテンプレートインデックス
@@ -115,7 +118,8 @@ public class SubClassGenerator : EditorWindow
     {
         _newScriptName = EditorGUILayout.TextField("Script Name", _newScriptName);
         //パス指定のフィールド
-        _createPath = EditorGUILayout.TextField("Creat Path", _createPath);
+        //_createPath = EditorGUILayout.TextField("Creat Path", _createPath);
+        PathCreaterGUI();
         _selectModeIndex = EditorGUILayout.Popup("Select Mode", _selectModeIndex, _modeOptions);
         switch (_selectModeIndex)
         {
@@ -797,6 +801,61 @@ public class SubClassGenerator : EditorWindow
         }
     }
     #endregion Template
+    #region AutoCompletePath
+    private void PathCreaterGUI()
+    {
+        EditorGUILayout.LabelField("Enter Path:");
+        string newInput = EditorGUILayout.TextField(_createPath);
+
+        if (newInput != _createPath)
+        {
+            _createPath = newInput;
+            UpdateSuggestions();
+        }
+
+        if (showSuggestions && suggestions.Length > 0)
+        {
+            scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(100));
+            foreach (var suggestion in suggestions)
+            {
+                if (GUILayout.Button(suggestion))
+                {
+                    _createPath = suggestion;
+                    showSuggestions = false;
+                    GUI.FocusControl(null);
+                }
+            }
+            EditorGUILayout.EndScrollView();
+        }
+    }
+    private void UpdateSuggestions()
+    {
+        if (string.IsNullOrEmpty(_createPath))
+        {
+            suggestions = new string[0];
+            showSuggestions = false;
+            return;
+        }
+
+        string normalizedPath = _createPath.Replace("\\", "/"); // Windows対策
+        string basePath = "Assets/";
+
+        // 途中のディレクトリも含めた補完
+        string targetPath = Path.GetDirectoryName(normalizedPath);
+        if (string.IsNullOrEmpty(targetPath) || !Directory.Exists(targetPath))
+        {
+            targetPath = basePath;
+        }
+
+        // フォルダのみ取得 & 入力にマッチするものだけ表示
+        suggestions = Directory.GetDirectories(targetPath)
+            .Select(dir => dir.Replace("\\", "/")) // Windows用のパス変換
+            .Where(dir => dir.StartsWith(normalizedPath, System.StringComparison.OrdinalIgnoreCase))
+            .ToArray();
+
+        showSuggestions = suggestions.Length > 0;
+    }
+    #endregion AutoCompletePath
     /// <summary>
     /// 生成するパスを取得
     /// </summary>

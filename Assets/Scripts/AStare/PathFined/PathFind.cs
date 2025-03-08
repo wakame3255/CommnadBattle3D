@@ -5,7 +5,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 
 /// <summary>
-/// Œo˜H’T¸iƒ€[ƒuŒn‚Ì”z‰º‚É‚¢‚é‚×‚«Hj
+/// ï¿½oï¿½Hï¿½Tï¿½ï¿½ï¿½iï¿½ï¿½ï¿½[ï¿½uï¿½nï¿½Ì”zï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½×‚ï¿½ï¿½Hï¿½j
 /// </summary>
 public class PathFind : MonoBehaviour
 {
@@ -17,72 +17,72 @@ public class PathFind : MonoBehaviour
 
     public List<Node> ReturnFindTacticalPath(Node startNode, Node endNode)
     {
-        //‘I‘ğ‚µ‚½“¹‚Ì—Dæ“x‚ğ•\‚·
+        //ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì—Dï¿½ï¿½xï¿½ï¿½\ï¿½ï¿½
         PriorityQueue<Node, float> openList = new PriorityQueue<Node, float>();
 
-        //‚¢‚¯‚È‚¢“¹‚ğÄ•]‰¿‚µ‚È‚¢‚½‚ß‚ÌƒŠƒXƒg
+        //ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä•]ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ß‚Ìƒï¿½ï¿½Xï¿½g
         HashSet<Vector3> closedSet = new HashSet<Vector3>();
 
-        //‚Ç‚±‚©‚ç‚Ç‚±‚É—ˆ‚½‚©‚ğ‹L˜^‚·‚éƒŠƒXƒg
+        //ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½ï¿½Ç‚ï¿½ï¿½É—ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½^ï¿½ï¿½ï¿½éƒŠï¿½Xï¿½g
         Dictionary<Vector3, Vector3> cameFrom = new Dictionary<Vector3, Vector3>();
 
-        //ƒXƒ^[ƒg‚©‚ç‚ÌƒRƒXƒg‚ğ‹L˜^‚·‚éƒŠƒXƒg
+        //ï¿½Xï¿½^ï¿½[ï¿½gï¿½ï¿½ï¿½ï¿½ÌƒRï¿½Xï¿½gï¿½ï¿½ï¿½Lï¿½^ï¿½ï¿½ï¿½éƒŠï¿½Xï¿½g
         Dictionary<Vector3, float> costSoFar = new Dictionary<Vector3, float> { [startNode.Position] = 0};
 
-        //ƒXƒ^[ƒg‚©‚ç‚Ì˜Io“x‚ğ‹L˜^‚·‚éƒŠƒXƒg
+        //ï¿½Xï¿½^ï¿½[ï¿½gï¿½ï¿½ï¿½ï¿½Ì˜Iï¿½oï¿½xï¿½ï¿½ï¿½Lï¿½^ï¿½ï¿½ï¿½éƒŠï¿½Xï¿½g
         Dictionary<Vector3, float> exposureSoFar = new Dictionary<Vector3, float> { [startNode.Position] = 0};
 
 
-        //ƒXƒ^[ƒg’n“_‚ğ’Ç‰Á
+        //ï¿½Xï¿½^ï¿½[ï¿½gï¿½nï¿½_ï¿½ï¿½Ç‰ï¿½
         openList.Enqueue(startNode, 0);
 
        while (openList.Count > 0)
         {
-            //ˆê”ÔƒRƒXƒg‚ª’á‚¢ƒm[ƒh‚ğæ“¾
+            //ï¿½ï¿½ÔƒRï¿½Xï¿½gï¿½ï¿½ï¿½á‚¢ï¿½mï¿½[ï¿½hï¿½ï¿½ï¿½æ“¾
             Node currentNode = openList.Dequeue();
 
-            //ƒS[ƒ‹‚È‚Ì‚©‚ÌŠm”F
+            //ï¿½Sï¿½[ï¿½ï¿½ï¿½È‚Ì‚ï¿½ï¿½ÌŠmï¿½F
             if (currentNode.Position == endNode.Position)
             {
                 return ReconstructPath(cameFrom, startNode, endNode);
             }
 
-            //•]‰¿Ï‚İ‚É’Ç‰Á
+            //ï¿½]ï¿½ï¿½ï¿½Ï‚İ‚É’Ç‰ï¿½
             closedSet.Add(currentNode.Position);
 
 
-            //—×Úƒm[ƒh‚ğæ“¾
+            //ï¿½×Úƒmï¿½[ï¿½hï¿½ï¿½ï¿½æ“¾
             foreach (Node neighbor in GetNeighbors(currentNode))
             {
-                //•]‰¿Ï‚İ‚Ìƒm[ƒh‚Æ“n‚ê‚È‚¢ƒm[ƒh‚ÍƒXƒLƒbƒv
+                //ï¿½]ï¿½ï¿½ï¿½Ï‚İ‚Ìƒmï¿½[ï¿½hï¿½Æ“nï¿½ï¿½È‚ï¿½ï¿½mï¿½[ï¿½hï¿½ÍƒXï¿½Lï¿½bï¿½v
                 if (closedSet.Contains(neighbor.Position) || Mathf.Abs(neighbor.Position.y - currentNode.Position.y) > _possibleHeight)
                 {
                     continue;
                 }
                
-                //ƒRƒXƒg‚ÌŒvZ
+                //ï¿½Rï¿½Xï¿½gï¿½ÌŒvï¿½Z
                 float newCost = costSoFar[currentNode.Position] + GetCostNodeToNode(currentNode, neighbor);
 
-                //Å¬ƒRƒXƒg‚ÅŠJ‚¯‚ê‚ÎÄ’T¸
+                //ï¿½Åï¿½ï¿½Rï¿½Xï¿½gï¿½ÅŠJï¿½ï¿½ï¿½ï¿½ÎÄ’Tï¿½ï¿½
                 if (costSoFar.TryGetValue(neighbor.Position, out float existingCost) && newCost >= existingCost)
                 {
                     continue;
                 }
 
-                //Å¬ƒRƒXƒg‚ÌXV
+                //ï¿½Åï¿½ï¿½Rï¿½Xï¿½gï¿½ÌXï¿½V
                 costSoFar[neighbor.Position] = newCost;
 
-                //‚Ç‚Ìƒm[ƒh‚©‚ç‚Ç‚Ìƒm[ƒh‚É—ˆ‚½‚©‚ğ‹L˜^
+                //ï¿½Ç‚Ìƒmï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½Ç‚Ìƒmï¿½[ï¿½hï¿½É—ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½^
                 cameFrom[neighbor.Position] = currentNode.Position;
 
-                //ƒm[ƒhŠÔ‚ÌˆÚ“®ƒRƒXƒg‚ÆƒS[ƒ‹‚Ü‚Å‚Ì‹——£‚ğ‰Á–¡‚µ‚Ä—Dæ“x‚ğŒvZ
+                //ï¿½mï¿½[ï¿½hï¿½Ô‚ÌˆÚ“ï¿½ï¿½Rï¿½Xï¿½gï¿½ÆƒSï¿½[ï¿½ï¿½ï¿½Ü‚Å‚Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä—Dï¿½ï¿½xï¿½ï¿½ï¿½vï¿½Z
                 float priority = newCost + GetCostNodeToNode(neighbor, endNode);
 
-                //ƒS[ƒ‹‚É‹ß‚¢‚Ìƒm[ƒh‚Æ‚µ‚Ä’Ç‰Á
+                //ï¿½Sï¿½[ï¿½ï¿½ï¿½É‹ß‚ï¿½ï¿½Ìƒmï¿½[ï¿½hï¿½Æ‚ï¿½ï¿½Ä’Ç‰ï¿½
                 openList.Enqueue(neighbor, priority);
             }
         }
-       Debug.Log("Œo˜H‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½");
+       Debug.Log("ï¿½oï¿½Hï¿½ï¿½ï¿½ï¿½ï¿½Â‚ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½");
 
         return null;
     }
@@ -93,11 +93,11 @@ public class PathFind : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒm[ƒhŠÔ‚ÌƒRƒXƒg‚ğæ“¾
+    /// ï¿½mï¿½[ï¿½hï¿½Ô‚ÌƒRï¿½Xï¿½gï¿½ï¿½ï¿½æ“¾
     /// </summary>
-    /// <param name="fromNode">ƒXƒ^[ƒg’n“_</param>
-    /// <param name="toNode">–Ú“I’n</param>
-    /// <returns>ƒRƒXƒg</returns>
+    /// <param name="fromNode">ï¿½Xï¿½^ï¿½[ï¿½gï¿½nï¿½_</param>
+    /// <param name="toNode">ï¿½Ú“Iï¿½n</param>
+    /// <returns>ï¿½Rï¿½Xï¿½g</returns>
     private float GetCostNodeToNode(Node fromNode, Node toNode)
     {
         float nodeDistance = Vector3.Distance(fromNode.Position, toNode.Position);
@@ -105,42 +105,42 @@ public class PathFind : MonoBehaviour
     }
 
     /// <summary>
-    /// Œo˜H‚ğ‚Ü‚Æ‚ß‚é
+    /// ï¿½oï¿½Hï¿½ï¿½ï¿½Ü‚Æ‚ß‚ï¿½
     /// </summary>
-    /// <param name="cameFrom">ƒm[ƒhŠÔ‚Ì“¹‚Ì‚è«‘</param>
-    /// <param name="startNode">ŠJnƒm[ƒh</param>
-    /// <param name="endNode">ÅIƒm[ƒh</param>
-    /// <returns>Œo˜H</returns>
+    /// <param name="cameFrom">ï¿½mï¿½[ï¿½hï¿½Ô‚Ì“ï¿½ï¿½Ì‚è«ï¿½ï¿½</param>
+    /// <param name="startNode">ï¿½Jï¿½nï¿½mï¿½[ï¿½h</param>
+    /// <param name="endNode">ï¿½ÅIï¿½mï¿½[ï¿½h</param>
+    /// <returns>ï¿½oï¿½H</returns>
     private List<Node> ReconstructPath(Dictionary<Vector3, Vector3> cameFrom, Node startNode, Node endNode)
     {
         List<Node> path = new List<Node> { endNode };
         Vector3 currentNode = endNode.Position;
 
-        //ƒXƒ^[ƒg‚Ì‚Ü‚Å‚ÌŒo˜H‚ğ‹t‡‚Åæ“¾
+        //ï¿½Xï¿½^ï¿½[ï¿½gï¿½Ì‚Ü‚Å‚ÌŒoï¿½Hï¿½ï¿½ï¿½tï¿½ï¿½ï¿½Åæ“¾
         while (currentNode != startNode.Position)
         {
-            //“¹‚Ì‚è‚ÉŠi”[
+            //ï¿½ï¿½ï¿½Ì‚ï¿½ÉŠiï¿½[
             path.Add(new Node(currentNode));
 
-            //Ÿ‚Ìƒm[ƒh‚ğæ“¾
+            //ï¿½ï¿½ï¿½Ìƒmï¿½[ï¿½hï¿½ï¿½ï¿½æ“¾
             currentNode = cameFrom[currentNode];
         }
 
-        //ÅŒã‚ÉƒXƒ^[ƒg’n“_‚Ì’Ç‰Á
+        //ï¿½ÅŒï¿½ÉƒXï¿½^ï¿½[ï¿½gï¿½nï¿½_ï¿½Ì’Ç‰ï¿½
         path.Add(startNode);
 
-        //Œo˜H‚ğ”½“]‚³‚¹‚Ä•Ô‚·
+        //ï¿½oï¿½Hï¿½ğ”½“]ï¿½ï¿½ï¿½ï¿½ï¿½Ä•Ô‚ï¿½
         path.Reverse();
 
-        //Œo˜H‚ÌF‚ğ•ÏX
+        //ï¿½oï¿½Hï¿½ÌFï¿½ï¿½ÏX
         _gridGeneratePresenter.ChangeViewColorNode(path);
         return path;
     }
 
     /// <summary>
-    /// —×Úƒm[ƒh‚ğæ“¾
+    /// ï¿½×Úƒmï¿½[ï¿½hï¿½ï¿½ï¿½æ“¾
     /// </summary>
-    /// <param name="node">’†S‚Ìƒm[ƒh</param>
+    /// <param name="node">ï¿½ï¿½ï¿½Sï¿½Ìƒmï¿½[ï¿½h</param>
     /// <returns></returns>
     IEnumerable<Node> GetNeighbors(Node node)
     {

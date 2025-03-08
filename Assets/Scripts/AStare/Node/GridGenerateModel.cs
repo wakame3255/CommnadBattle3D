@@ -21,7 +21,7 @@ public class GridGenerateData
     }
 }
 /// <summary>
-/// ƒOƒŠƒbƒh‚Ì¶¬iãˆÊƒŒƒxƒ‹j
+/// ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½Ìï¿½ï¿½ï¿½ï¿½iï¿½ï¿½Êƒï¿½ï¿½xï¿½ï¿½ï¿½j
 /// </summary>
 public class GridGenerateModel
 {
@@ -37,13 +37,13 @@ public class GridGenerateModel
     private ReactiveProperty<Node[,]> _grid;
 
     /// <summary>
-    /// ŠëŒ¯“x‚ğ•\‚·ƒf[ƒ^
+    /// ï¿½ëŒ¯ï¿½xï¿½ï¿½\ï¿½ï¿½ï¿½fï¿½[ï¿½^
     /// </summary>
     readonly Dictionary<Vector3, int> nodeSectorData = new();
 
     public ReadOnlyReactiveProperty<Node[,]> Grid { get => _grid; }
 
-    //ˆø”‚ğƒf[ƒ^ƒNƒ‰ƒX‰»
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½fï¿½[ï¿½^ï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½
     public GridGenerateModel(GridGenerateData generateData, Transform gridPos)
     {
         _gridSizeX = generateData.GridSizeX;
@@ -55,34 +55,34 @@ public class GridGenerateModel
     }
 
     /// <summary>
-    /// ƒOƒŠƒbƒh‚Ì¶¬
+    /// ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½Ìï¿½ï¿½ï¿½
     /// </summary>
     public void InitializeGrid()
     {
         Node[,] node = new Node[_gridSizeX, _gridSizeZ];
 
-        //ƒOƒŠƒbƒh‚Ìƒ}ƒX•ªŒJ‚è•Ô‚·
+        //ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½Ìƒ}ï¿½Xï¿½ï¿½ï¿½Jï¿½ï¿½Ô‚ï¿½
         for (int x = 0; x < _gridSizeX; x++)
         {
             for (int z = 0; z < _gridSizeZ; z++)
             {
                 Vector3 pos = default;
 
-                //ƒm[ƒh‚ÌˆÊ’u‚ğ}‚éˆÊ’u
+                //ï¿½mï¿½[ï¿½hï¿½ÌˆÊ’uï¿½ï¿½}ï¿½ï¿½Ê’u
                 pos.Set(x * _gridCellSize, _gridPos.position.y, z * _gridCellSize);
 
-                //ÀÛ‚Ìƒm[ƒhˆÊ’u
+                //ï¿½ï¿½ï¿½Û‚Ìƒmï¿½[ï¿½hï¿½Ê’u
                 pos.y = GetNodeYPosition(pos);
 
-                //ƒOƒŠƒbƒh‚Ìƒ}ƒX‚Ì¶¬(¡Œã•Ç‚ª‚ ‚é‚©‚Ìæ“¾‚ğs‚¢Aƒu[ƒ‹‚É’l‚ğŠi”[)
+                //ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½Ìƒ}ï¿½Xï¿½Ìï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½é‚©ï¿½Ìæ“¾ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Aï¿½uï¿½[ï¿½ï¿½ï¿½É’lï¿½ï¿½ï¿½iï¿½[)
                 node[x, z] = new Node(pos, true);
-                //ƒm[ƒh‚ÌˆÊ’u‚ğ}‚éˆÊ’u
+                //ï¿½mï¿½[ï¿½hï¿½ÌˆÊ’uï¿½ï¿½}ï¿½ï¿½Ê’u
                 pos = new Vector3(x * _gridCellSize, _gridPos.position.y, z * _gridCellSize);
 
-                //ÀÛ‚Ìƒm[ƒhˆÊ’u
+                //ï¿½ï¿½ï¿½Û‚Ìƒmï¿½[ï¿½hï¿½Ê’u
                 pos.y = GetNodeYPosition(pos);
 
-                //ƒOƒŠƒbƒh‚Ìƒ}ƒX‚Ì¶¬(¡Œã•Ç‚ª‚ ‚é‚©‚Ìæ“¾‚ğs‚¢Aƒu[ƒ‹‚É’l‚ğŠi”[)
+                //ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½Ìƒ}ï¿½Xï¿½Ìï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½é‚©ï¿½Ìæ“¾ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Aï¿½uï¿½[ï¿½ï¿½ï¿½É’lï¿½ï¿½ï¿½iï¿½[)
                 node[x, z] = new Node(pos, true);
             }
         }
