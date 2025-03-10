@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Cysharp.Threading.Tasks;
 
 /// <summary>
-/// �o�H�T���i���[�u�n�̔z���ɂ���ׂ��H�j
+/// 経路探索（ムーブ地の配置によるべき道）
 /// </summary>
 public class PathFind : MonoBehaviour
 {
@@ -17,72 +16,72 @@ public class PathFind : MonoBehaviour
 
     public List<Node> ReturnFindTacticalPath(Node startNode, Node endNode)
     {
-        //�I���������̗D��x��\��
+        //選ばれたノードの優先度を表す
         PriorityQueue<Node, float> openList = new PriorityQueue<Node, float>();
 
-        //�����Ȃ������ĕ]�����Ȃ����߂̃��X�g
+        //既に通って評価をしたためのリスト
         HashSet<Vector3> closedSet = new HashSet<Vector3>();
 
-        //�ǂ�����ǂ��ɗ��������L�^���郊�X�g
+        //どのノードからどこに来たかを記録するリスト
         Dictionary<Vector3, Vector3> cameFrom = new Dictionary<Vector3, Vector3>();
 
-        //�X�^�[�g����̃R�X�g���L�^���郊�X�g
-        Dictionary<Vector3, float> costSoFar = new Dictionary<Vector3, float> { [startNode.Position] = 0};
+        //スタートからのコストを記録するリスト
+        Dictionary<Vector3, float> costSoFar = new Dictionary<Vector3, float> { [startNode.Position] = 0 };
 
-        //�X�^�[�g����̘I�o�x���L�^���郊�X�g
-        Dictionary<Vector3, float> exposureSoFar = new Dictionary<Vector3, float> { [startNode.Position] = 0};
+        //スタートからの露出度を記録するリスト
+        Dictionary<Vector3, float> exposureSoFar = new Dictionary<Vector3, float> { [startNode.Position] = 0 };
 
 
-        //�X�^�[�g�n�_��ǉ�
+        //スタート地点を追加
         openList.Enqueue(startNode, 0);
 
-       while (openList.Count > 0)
+        while (openList.Count > 0)
         {
-            //��ԃR�X�g���Ⴂ�m�[�h���擾
+            //一番コストの低いノードを取得
             Node currentNode = openList.Dequeue();
 
-            //�S�[���Ȃ̂��̊m�F
+            //ゴールなのか確認
             if (currentNode.Position == endNode.Position)
             {
                 return ReconstructPath(cameFrom, startNode, endNode);
             }
 
-            //�]���ς݂ɒǉ�
+            //評価済みに追加
             closedSet.Add(currentNode.Position);
 
 
-            //�אڃm�[�h���擾
+            //隣接ノードを取得
             foreach (Node neighbor in GetNeighbors(currentNode))
             {
-                //�]���ς݂̃m�[�h�Ɠn��Ȃ��m�[�h�̓X�L�b�v
+                //評価済みのノードと通れないノードはスキップ
                 if (closedSet.Contains(neighbor.Position) || Mathf.Abs(neighbor.Position.y - currentNode.Position.y) > _possibleHeight)
                 {
                     continue;
                 }
-               
-                //�R�X�g�̌v�Z
+
+                //コストの計算
                 float newCost = costSoFar[currentNode.Position] + GetCostNodeToNode(currentNode, neighbor);
 
-                //�ŏ��R�X�g�ŊJ����΍ĒT��
+                //最小コストで開くなら再探索
                 if (costSoFar.TryGetValue(neighbor.Position, out float existingCost) && newCost >= existingCost)
                 {
                     continue;
                 }
 
-                //�ŏ��R�X�g�̍X�V
+                //最小コストの更新
                 costSoFar[neighbor.Position] = newCost;
 
-                //�ǂ̃m�[�h����ǂ̃m�[�h�ɗ��������L�^
+                //どのノードからどのノードに来たかを記録
                 cameFrom[neighbor.Position] = currentNode.Position;
 
-                //�m�[�h�Ԃ̈ړ��R�X�g�ƃS�[���܂ł̋������������ėD��x���v�Z
+                //ノード間の移動コストとゴールまでの距離を合わせて優先度を計算
                 float priority = newCost + GetCostNodeToNode(neighbor, endNode);
 
-                //�S�[���ɋ߂��̃m�[�h�Ƃ��Ēǉ�
+                //ゴールに近いのノードとして追加
                 openList.Enqueue(neighbor, priority);
             }
         }
-       Debug.Log("�o�H��������܂���ł���");
+        Debug.Log("経路が見つかりませんでした");
 
         return null;
     }
@@ -93,11 +92,11 @@ public class PathFind : MonoBehaviour
     }
 
     /// <summary>
-    /// �m�[�h�Ԃ̃R�X�g���擾
+    /// ノード間のコストを取得
     /// </summary>
-    /// <param name="fromNode">�X�^�[�g�n�_</param>
-    /// <param name="toNode">�ړI�n</param>
-    /// <returns>�R�X�g</returns>
+    /// <param name="fromNode">スタート地点</param>
+    /// <param name="toNode">目的地</param>
+    /// <returns>コスト</returns>
     private float GetCostNodeToNode(Node fromNode, Node toNode)
     {
         float nodeDistance = Vector3.Distance(fromNode.Position, toNode.Position);
@@ -105,46 +104,46 @@ public class PathFind : MonoBehaviour
     }
 
     /// <summary>
-    /// �o�H���܂Ƃ߂�
+    /// 経路をまとめる
     /// </summary>
-    /// <param name="cameFrom">�m�[�h�Ԃ̓��̂莫��</param>
-    /// <param name="startNode">�J�n�m�[�h</param>
-    /// <param name="endNode">�ŏI�m�[�h</param>
-    /// <returns>�o�H</returns>
+    /// <param name="cameFrom">ノード間の動きの記録</param>
+    /// <param name="startNode">開始ノード</param>
+    /// <param name="endNode">最終ノード</param>
+    /// <returns>経路</returns>
     private List<Node> ReconstructPath(Dictionary<Vector3, Vector3> cameFrom, Node startNode, Node endNode)
     {
         List<Node> path = new List<Node> { endNode };
         Vector3 currentNode = endNode.Position;
 
-        //�X�^�[�g�̂܂ł̌o�H���t���Ŏ擾
+        //スタートまでの経路を逆順で取得
         while (currentNode != startNode.Position)
         {
-            //���̂�Ɋi�[
+            //経路に格納
             path.Add(new Node(currentNode));
 
-            //���̃m�[�h���擾
+            //次のノードを取得
             currentNode = cameFrom[currentNode];
         }
 
-        //�Ō�ɃX�^�[�g�n�_�̒ǉ�
+        //最後にスタート地点の追加
         path.Add(startNode);
 
-        //�o�H�𔽓]�����ĕԂ�
+        //経路を反転して返す
         path.Reverse();
 
-        //�o�H�̐F��ύX
+        //経路の色を変更
         _gridGeneratePresenter.ChangeViewColorNode(path);
         return path;
     }
 
     /// <summary>
-    /// �אڃm�[�h���擾
+    /// 隣接ノードを取得
     /// </summary>
-    /// <param name="node">���S�̃m�[�h</param>
+    /// <param name="node">中心のノード</param>
     /// <returns></returns>
     IEnumerable<Node> GetNeighbors(Node node)
     {
-        Vector3[] direction = 
+        Vector3[] direction =
             { Vector3.forward, Vector3.back, Vector3.left, Vector3.right, Vector3.forward + Vector3.left, Vector3.forward + Vector3.right, Vector3.back + Vector3.left, Vector3.back + Vector3.right };
         return direction
             .Select(direction => _gridGeneratePresenter.GetNodeWorldPosition(node.Position + direction * _gridGeneratePresenter.GridCellSize))
