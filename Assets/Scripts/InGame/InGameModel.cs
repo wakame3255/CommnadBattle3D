@@ -9,7 +9,7 @@ public enum GameState
     GameOver
 }
 
-public class InGameModel : IInitialize, IGameStateChenger
+public class InGameModel : IInitialize, IGameStateChanger
 {
 
     //ƒƒCƒ“ƒQ[ƒ€‚Ìó‘Ô•Û
@@ -23,7 +23,7 @@ public class InGameModel : IInitialize, IGameStateChenger
         _currentGameState.Value = GameState.Ready;
     }
 
-    public void ChengeGameState(GameState gameState)
+    public void ChangeGameState(GameState gameState)
     {
         _currentGameState.Value = gameState;
     }

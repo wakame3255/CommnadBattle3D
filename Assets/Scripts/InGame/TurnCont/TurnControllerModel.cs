@@ -1,23 +1,23 @@
 using System;
 using R3;
 
-public class TrunControllerModel : IInitialize
+public class TurnControllerModel : IInitialize
 {
     /// <summary>
     /// 変更依頼を送るためのインターフェース
     /// </summary>
-    private IGameStateChenger _gameStateChenger;
+    private IGameStateChanger _gameStateChenger;
 
     /// <summary>
     /// 現在のメインゲーム状態保持
     /// </summary>
-    private GameState _cullentGameState;
+    private GameState _currentGameState;
 
     /// <summary>
     /// ゲーム管理クラスへの依存注入
     /// </summary>
     /// <param name="gameStateChenger">ゲームステートクラス</param>
-    public TrunControllerModel(IGameStateChenger gameStateChenger)
+    public TurnControllerModel(IGameStateChanger gameStateChenger)
     {
         _gameStateChenger = gameStateChenger;
 
@@ -37,15 +37,15 @@ public class TrunControllerModel : IInitialize
     private void Bind()
     {
         //メインゲームステートの購読
-        _gameStateChenger.CurrentGameState.Subscribe(ChengeGameState);
+        _gameStateChenger.CurrentGameState.Subscribe(ChangeGameState);
     }
 
     /// <summary>
     /// 保持しているゲームステート変更、ステートによっての処理を行う
     /// </summary>
     /// <param name="gameState">メインゲームステート</param>
-    public void ChengeGameState(GameState gameState)
+    public void ChangeGameState(GameState gameState)
     {
-        _cullentGameState = gameState;
+        _currentGameState = gameState;
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using R3;
 
-public interface IGameStateChenger
+public interface IGameStateChanger
 {
     /// <summary>
     /// 現在のメインゲーム状態公開保持
@@ -12,5 +12,5 @@ public interface IGameStateChenger
     /// メインゲーム状態変更依頼
     /// </summary>
     /// <param name="gameState">移行したいステート</param>
-    public void ChengeGameState(GameState gameState);
+    public void ChangeGameState(GameState gameState);
 }
