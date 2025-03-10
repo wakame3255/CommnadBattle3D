@@ -6,7 +6,7 @@ public class TurnControllerModel : IInitialize
     /// <summary>
     /// 変更依頼を送るためのインターフェース
     /// </summary>
-    private IGameStateChanger _gameStateChenger;
+    private IGameStateChanger _gameStateChanger;
 
     /// <summary>
     /// 現在のメインゲーム状態保持
@@ -19,7 +19,7 @@ public class TurnControllerModel : IInitialize
     /// <param name="gameStateChenger">ゲームステートクラス</param>
     public TurnControllerModel(IGameStateChanger gameStateChenger)
     {
-        _gameStateChenger = gameStateChenger;
+        _gameStateChanger = gameStateChenger;
 
         Initialize();
 
@@ -37,7 +37,7 @@ public class TurnControllerModel : IInitialize
     private void Bind()
     {
         //メインゲームステートの購読
-        _gameStateChenger.CurrentGameState.Subscribe(ChangeGameState);
+        _gameStateChanger.CurrentGameState.Subscribe(ChangeGameState);
     }
 
     /// <summary>
