@@ -9,8 +9,13 @@ public enum GameState
     GameOver
 }
 
-public class InGameModel
+public class InGameModel : IInitialize
 {
-    private ReactiveProperty<GameState> _gameState = new ReactiveProperty<GameState>();
-    public ReadOnlyReactiveProperty<GameState> GameState { get => _gameState; }
+    private ReactiveProperty<GameState> _currentGameState = new ReactiveProperty<GameState>();
+    public ReadOnlyReactiveProperty<GameState> CurrentGameState { get => _currentGameState; }
+
+    public void Initialize()
+    {
+        _currentGameState.Value = GameState.Ready;
+    }
 }
