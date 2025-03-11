@@ -9,26 +9,42 @@ public class TurnControllerModel : IInitialize
     private IGameStateChanger _gameStateChanger;
 
     /// <summary>
+    /// キャラクター生成クラス
+    /// </summary>
+    private ICharacterGenerator _characterGenerator;
+
+    /// <summary>
     /// 現在のメインゲーム状態保持
     /// </summary>
     private GameState _currentGameState;
 
     /// <summary>
+    /// キャラクターイベント
+    /// </summary>
+    private ReactiveProperty<ICharacterStateHandler[]> _characterStateHandlers;
+
+    /// <summary>
+    /// キャラクターステートハンドラーのイベント公開
+    /// </summary>
+    public ReadOnlyReactiveProperty<ICharacterStateHandler[]> CharacterStateHandlers { get => _characterStateHandlers; }
+
+    /// <summary>
     /// ゲーム管理クラスへの依存注入
     /// </summary>
     /// <param name="gameStateChenger">ゲームステートクラス</param>
-    public TurnControllerModel(IGameStateChanger gameStateChenger)
+    public TurnControllerModel(IGameStateChanger gameStateChenger, ICharacterGenerator characterGenerator)
     {
         _gameStateChanger = gameStateChenger;
-
-        Initialize();
-
-        Bind();
+        _characterGenerator = characterGenerator;
     }
 
     public void Initialize()
     {
-        throw new NotImplementedException();
+        _characterStateHandlers = new ReactiveProperty<ICharacterStateHandler[]>();
+
+        GenerateCharacter();
+
+        Bind();
     }
 
     /// <summary>
@@ -47,5 +63,22 @@ public class TurnControllerModel : IInitialize
     public void ChangeGameState(GameState gameState)
     {
         _currentGameState = gameState;
+
+        switch (_currentGameState)
+        {
+            case GameState.Ready:
+                break;
+            case GameState.Play:
+                break;
+            case GameState.Pause:
+                break;
+            case GameState.GameOver:
+                break;
+        }
+    }
+
+    private void GenerateCharacter()
+    {
+        _characterStateHandlers.Value = _characterGenerator.GenerateCharacter();
     }
 }

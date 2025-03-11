@@ -1,16 +1,27 @@
 using System;
 using R3;
 
-public class InGamePresenter : IDisposable
+public class InGamePresenter : IDisposable, IBinder
 {
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
+    private InGameModel _model;
+
+    private InGameView _view;
+
     public InGamePresenter(InGameModel model, InGameView view)
     {
-        model.Initialize();
-        view.Initialize();
+        _model = model;
 
-        model.CurrentGameState.Subscribe(view.UpdateView).AddTo(_disposables);
+        _view = view;
+
+        model.Initialize();
+        view.Initialize();     
+    }
+
+    public void Bind()
+    {
+        _model.CurrentGameState.Subscribe(_view.UpdateView).AddTo(_disposables);
     }
 
     public void Dispose()
