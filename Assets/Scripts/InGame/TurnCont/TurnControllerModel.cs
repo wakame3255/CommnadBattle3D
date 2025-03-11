@@ -77,6 +77,9 @@ public class TurnControllerModel : IInitialize
         }
     }
 
+    /// <summary>
+    /// キャラクター生成
+    /// </summary>
     private void GenerateCharacter()
     {
         _characterStateHandlers.Value = _characterGenerator.GenerateCharacter();
