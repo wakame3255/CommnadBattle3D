@@ -12,6 +12,6 @@ public class InGameView : MonoBehaviour, IInitialize
 
     public void Initialize()
     {
-        throw new NotImplementedException();
+       
     }
 }

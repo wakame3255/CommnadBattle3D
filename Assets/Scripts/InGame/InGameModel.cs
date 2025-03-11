@@ -11,7 +11,10 @@ public enum GameState
 
 public class InGameModel : IInitialize, IGameStateChanger
 {
-
+    public InGameModel()
+    {
+        
+    }
     //ƒƒCƒ“ƒQ[ƒ€‚Ìó‘Ô•Û
     private ReactiveProperty<GameState> _currentGameState = new ReactiveProperty<GameState>();
 
