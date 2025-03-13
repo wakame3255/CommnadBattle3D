@@ -1,13 +1,10 @@
-using System;
 using R3;
 
 public enum CharacterState
 {
-    Idle,
+    Stay,
     Move,
-    Attack,
-    Damage,
-    Dead
+    End,
 }
 
 public interface ICharacterStateHandler

@@ -4,4 +4,6 @@ using System;
 public interface IPlayerContModel
 {
     public ReadOnlyReactiveProperty<CharacterState> RPCurrentState { get; }
+
+    public void Initialize();
 }
