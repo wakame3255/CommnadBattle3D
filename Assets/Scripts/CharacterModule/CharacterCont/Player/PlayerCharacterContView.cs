@@ -1,20 +1,25 @@
 using R3;
+using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayerCharacterContView : IInitialize
+public class PlayerCharacterContView : MonoBehaviour, IInitialize
 {
-    private ReactiveProperty<bool> _rPEndTurn;
+    //ターン終了ボタン
+    [SerializeField]
+    private Button _endTurnButton = default;
 
-    public ReadOnlyReactiveProperty<bool> RPEndTurn { get => _rPEndTurn; }
+    //公開ターン終了ボタン
+    public Button EndTurnButton { get => _endTurnButton; }
 
     public void Initialize()
     {
-        _rPEndTurn = new ReactiveProperty<bool>(false);
+       
     }
 
     /// <summary>
-    /// ���f���̏�Ԃɉ����ăr���[���X�V����
+    /// モデルの状態に応じてビューを更新する
     /// </summary>
-    /// <param name="state">���</param>
+    /// <param name="state">状態</param>
     public void UpdateView(CharacterState state)
     {
         switch (state)
@@ -22,9 +27,27 @@ public class PlayerCharacterContView : IInitialize
             case CharacterState.Stay:
                 break;
             case CharacterState.Move:
+                ShowView();
                 break;
             case CharacterState.End:
+                HideView();
                 break;
         }
+    }
+
+    /// <summary>
+    /// ビューを表示する
+    /// </summary>
+    private void ShowView()
+    {
+        this.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// ビューを非表示にする
+    /// </summary>
+    private void HideView()
+    {
+        this.gameObject.SetActive(false);
     }
 }

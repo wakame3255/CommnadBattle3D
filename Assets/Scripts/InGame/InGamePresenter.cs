@@ -1,7 +1,7 @@
 using System;
 using R3;
 
-public class InGamePresenter : IDisposable, IBinder
+public class InGamePresenter : IBinder ,IDisposable
 {
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
