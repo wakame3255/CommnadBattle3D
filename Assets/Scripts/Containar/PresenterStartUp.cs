@@ -8,15 +8,21 @@ public class PresenterStartUp : IStartable
 
     private InGamePresenter _inGamePresenter;
 
-    public PresenterStartUp(TurnControllerPresenter turnController, InGamePresenter inGamePresenter)
+    private PlayerCharacterContPresenter _playerCharacterContPresenter;
+
+    public PresenterStartUp(TurnControllerPresenter turnController, InGamePresenter inGamePresenter, PlayerCharacterContPresenter playerCharacter)
     {
         _turnControllerPresenter = turnController;
 
         _inGamePresenter = inGamePresenter;
+
+        _playerCharacterContPresenter = playerCharacter;
     }
     public void Start()
     {
-       _turnControllerPresenter.Bind();
+        //各プレゼンターのバインド処理
+        _turnControllerPresenter.Bind();
        _inGamePresenter.Bind();
+        _playerCharacterContPresenter.Bind();
     }
 }

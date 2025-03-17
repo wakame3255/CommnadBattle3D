@@ -1,13 +1,12 @@
 using System;
 using UnityEngine;
+using VContainer;
 
 public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
 {
 
-    public CharacterGenerator()
-    {
-
-    }
+    [SerializeField] 
+    private GameObject characterPrefab;
 
     public ICharacterStateHandler[] GenerateCharacter()
     {
