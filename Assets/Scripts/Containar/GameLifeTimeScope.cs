@@ -6,20 +6,23 @@ public class GameLifeTimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {
-        //ƒ‚ƒfƒ‹‚Ì“o˜^
+        //ãƒ¢ãƒ‡ãƒ«ã®ç™»éŒ²
         builder.Register<InGameModel>(Lifetime.Singleton).As<IGameStateChanger, InGameModel>();
         builder.Register<TurnControllerModel>(Lifetime.Singleton);
+        builder.Register<PlayerCharacterContModel>(Lifetime.Singleton).As<IPlayerContModel>();
 
-        //ƒvƒŒƒ[ƒ“ƒ^[‚Ì“o˜^
+        //ãƒ—ãƒ¬ã‚¼ãƒ³ã‚¿ãƒ¼ã®ç™»éŒ²
         builder.Register<InGamePresenter>(Lifetime.Singleton);
         builder.Register<TurnControllerPresenter>(Lifetime.Singleton);
+        builder.Register<PlayerCharacterContPresenter>(Lifetime.Singleton);
 
-        //ƒrƒ…[‚Ì“o˜^
+        //ãƒ“ãƒ¥ãƒ¼ã®ç™»éŒ²
         builder.RegisterComponentInHierarchy<InGameView>();
         builder.RegisterComponentInHierarchy<TurnControllerView>();
+        builder.RegisterComponentInHierarchy<PlayerCharacterContView>();
         builder.RegisterComponentInHierarchy<CharacterGenerator>().As<ICharacterGenerator, CharacterGenerator>();
 
-        //ƒXƒ^[ƒgƒAƒbƒv‚Ì“o˜^
+        //ã‚¹ã‚¿ãƒ¼ãƒˆã‚¢ãƒƒãƒ—ã®ç™»éŒ²
         builder.RegisterEntryPoint<PresenterStartUp>(Lifetime.Singleton);
     }
 }

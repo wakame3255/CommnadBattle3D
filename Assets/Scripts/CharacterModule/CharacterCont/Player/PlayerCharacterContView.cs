@@ -13,7 +13,7 @@ public class PlayerCharacterContView : MonoBehaviour, IInitialize
 
     public void Initialize()
     {
-       
+        HideView();
     }
 
     /// <summary>
