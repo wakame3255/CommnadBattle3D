@@ -17,6 +17,11 @@ public class PlayerCharacterContModel : ICharacterStateHandler, IPlayerContModel
         
     }
 
+    public void NoticeEndTurn()
+    {
+        ChangeCharacterState(CharacterState.End);
+    }
+
     public void ChangeCharacterState(CharacterState characterState)
     {
         _rPCurrentState.Value = characterState;
