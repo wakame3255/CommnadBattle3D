@@ -22,7 +22,7 @@ public class CpuLogicModel
     /// <param name="characterState">キャラクターの状態</param>
     private void SetChangeState(CharacterState characterState)
     {
-        switch(characterState)
+        switch (characterState)
         {
             case CharacterState.Stay:
                 break;
@@ -39,6 +39,6 @@ public class CpuLogicModel
     /// </summary>
     private void StartThinkCPU()
     {
-        SetChangeState(CharacterState.End);
+        _cpuCharacter.ChangeCharacterState(CharacterState.End);
     }
 }

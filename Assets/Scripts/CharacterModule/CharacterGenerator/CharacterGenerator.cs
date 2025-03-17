@@ -1,15 +1,26 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
 
 public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
 {
+    List<ICharacterStateHandler> _characterStateHandlers = new List<ICharacterStateHandler>();
 
-    [SerializeField] 
-    private GameObject characterPrefab;
-
-    public ICharacterStateHandler[] GenerateCharacter()
+    /// <summary>
+    /// プレイヤーキャラクターのモデルを受け取る
+    /// </summary>
+    /// <param name="playerCharacterContModel">プレイヤー</param>
+    [Inject]
+    public void Construct(PlayerCharacterContModel playerCharacterContModel)
     {
-        return new ICharacterStateHandler[2];
+        _characterStateHandlers.Add(playerCharacterContModel);
+    }
+
+    public List<ICharacterStateHandler> GenerateCharacter()
+    {
+        _characterStateHandlers.Add(new CpuCharacterContModel());
+
+        return _characterStateHandlers;
     }
 }

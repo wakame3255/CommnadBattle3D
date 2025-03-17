@@ -9,7 +9,7 @@ public class GameLifeTimeScope : LifetimeScope
         //モデルの登録
         builder.Register<InGameModel>(Lifetime.Singleton).As<IGameStateChanger, InGameModel>();
         builder.Register<TurnControllerModel>(Lifetime.Singleton);
-        builder.Register<PlayerCharacterContModel>(Lifetime.Singleton).As<IPlayerContModel>();
+        builder.Register<PlayerCharacterContModel>(Lifetime.Singleton).As<IPlayerContModel, PlayerCharacterContModel>();
 
         //プレゼンターの登録
         builder.Register<InGamePresenter>(Lifetime.Singleton);
