@@ -3,23 +3,20 @@ using R3;
 
 public class CpuCharacterContModel : ICharacterStateHandler
 {
-    public ReadOnlyReactiveProperty<CharacterState> RPCurrentState { get; }
+    private ReactiveProperty<CharacterState> _currentState;
+    public ReadOnlyReactiveProperty<CharacterState> RPCurrentState { get => _currentState; }
+
+    private CpuLogicModel _cpuLogicModel;
 
     public CpuCharacterContModel()
     {
-        RPCurrentState = new ReactiveProperty<CharacterState>(CharacterState.Stay);
+        _currentState = new ReactiveProperty<CharacterState>(CharacterState.Stay);
+
+        _cpuLogicModel = new CpuLogicModel(this);
     }
 
     public void ChangeCharacterState(CharacterState characterState)
     {
-        switch (characterState)
-        {
-            case CharacterState.Stay:
-                break;
-            case CharacterState.Move:
-                break;
-            case CharacterState.End:
-                break;
-        }
+        _currentState.Value = characterState;
     }
 }

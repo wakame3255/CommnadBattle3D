@@ -19,6 +19,9 @@ public class PlayerCharacterContModel : ICharacterStateHandler, IPlayerContModel
         
     }
 
+    /// <summary>
+    /// ターン終了通知
+    /// </summary>
     public void NoticeEndTurn()
     {
         ChangeCharacterState(CharacterState.End);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public interface ICharacterGenerator
 {
@@ -6,5 +7,5 @@ public interface ICharacterGenerator
     /// キャラクターを生成する
     /// </summary>
     /// <returns>キャラクター情報</returns>
-    public ICharacterStateHandler[] GenerateCharacter();
+    public List<ICharacterStateHandler> GenerateCharacter();
 }

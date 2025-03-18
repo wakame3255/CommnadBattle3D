@@ -1,6 +1,6 @@
 using System;
 using R3;
-
+using Cysharp.Threading.Tasks;
 public class CpuLogicModel
 {
     CpuCharacterContModel _cpuCharacter;
@@ -22,12 +22,12 @@ public class CpuLogicModel
     /// <param name="characterState">キャラクターの状態</param>
     private void SetChangeState(CharacterState characterState)
     {
-        switch(characterState)
+        switch (characterState)
         {
             case CharacterState.Stay:
                 break;
             case CharacterState.Move:
-                StartThinkCPU();
+                StartThinkCPU().Forget();
                 break;
             case CharacterState.End:
                 break;
@@ -37,8 +37,12 @@ public class CpuLogicModel
     /// <summary>
     /// CPUの思考を開始する
     /// </summary>
-    private void StartThinkCPU()
+    private async UniTask StartThinkCPU()
     {
-        SetChangeState(CharacterState.End);
+        await UniTask.Delay(TimeSpan.FromSeconds(2));
+
+        _cpuCharacter.ChangeCharacterState(CharacterState.End);
+
+        DebugUtility.Log("CPUの思考を終了");
     }
 }
