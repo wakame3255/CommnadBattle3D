@@ -110,7 +110,7 @@ public class TurnControllerModel : IInitialize, IDisposable
     /// <summary>
     /// 行動するキャラクターの変更
     /// </summary>
-    private void CheckCharcterStae(CharacterState characterState)
+    private void ChangeCharacterState(CharacterState characterState)
     {
         if (characterState == CharacterState.End)
         {
@@ -140,7 +140,7 @@ public class TurnControllerModel : IInitialize, IDisposable
 
         //キャラクターの状態を購読
         _subscriptionState = _currentCharacter.RPCurrentState
-            .Subscribe(CheckCharcterStae)
+            .Subscribe(ChangeCharacterState)
             .AddTo(_disposable);
 
         DebugUtility.Log(_currentCharacter.ToString());
