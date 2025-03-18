@@ -20,6 +20,8 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     public List<ICharacterStateHandler> GenerateCharacter()
     {
         _characterStateHandlers.Add(new CpuCharacterContModel());
+        _characterStateHandlers.Add(new CpuCharacterContModel());
+        _characterStateHandlers.Add(new CpuCharacterContModel());
 
         return _characterStateHandlers;
     }

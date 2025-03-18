@@ -41,7 +41,6 @@ public class PlayerCharacterContView : MonoBehaviour, IInitialize
     private void ShowView()
     {
         this.gameObject.SetActive(true);
-        DebugUtility.Log("表示");
     }
 
     /// <summary>
@@ -50,6 +49,5 @@ public class PlayerCharacterContView : MonoBehaviour, IInitialize
     private void HideView()
     {
         this.gameObject.SetActive(false);
-        DebugUtility.Log("費用時");
     }
 }

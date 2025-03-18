@@ -143,7 +143,7 @@ public class TurnControllerModel : IInitialize, IDisposable
             .Subscribe(CheckCharcterStae)
             .AddTo(_disposable);
 
-        DebugUtility.Log(characterState.ToString());
+        DebugUtility.Log(_currentCharacter.ToString());
     }
 
     /// <summary>
