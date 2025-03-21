@@ -10,6 +10,23 @@ public class CharacterStatusModel : IInitialize, IMoveNotice
     public ReadOnlyReactiveProperty<float> TravelDistance { get => _travelDistance; }
 
     /// <summary>
+    /// キャラクターの状態ハンドラ
+    /// </summary>
+    private ICharacterStateHandler _stateHandler;
+
+    public CharacterStatusModel(ICharacterStateHandler stateHandler)
+    {
+        _stateHandler = stateHandler;
+    }
+
+    public void Initialize()
+    {
+        _travelDistance = new ReactiveProperty<float>(0);
+
+        _stateHandler.RPCurrentState.Subscribe(ChangeState);
+    }
+
+    /// <summary>
     /// 状態のリセット
     /// </summary>
     public void ResetStatus()
@@ -21,8 +38,22 @@ public class CharacterStatusModel : IInitialize, IMoveNotice
     {
 
     }
-    public void Initialize()
+
+    /// <summary>
+    /// 状態の変更イベント
+    /// </summary>
+    /// <param name="state"></param>
+    private void ChangeState(CharacterState state)
     {
-        throw new NotImplementedException();
+        switch (state)
+        {
+            case CharacterState.Stay:
+                break;
+            case CharacterState.Move:
+                ResetStatus();
+                break;
+            case CharacterState.End:
+                break;
+        }
     }
 }

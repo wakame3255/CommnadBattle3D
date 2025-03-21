@@ -21,15 +21,15 @@ public class GridGenerateData
     }
 }
 /// <summary>
-/// �O���b�h�̐����i��ʃ��x���j
+/// グリッドの生成（画面レベル）
 /// </summary>
 public class GridGenerateModel
 {
-   
+
     private int _gridSizeX = 10;
-   
+
     private int _gridSizeZ = 10;
-   
+
     private float _gridCellSize = 1.0f;
 
     private Transform _gridPos = default;
@@ -37,13 +37,13 @@ public class GridGenerateModel
     private ReactiveProperty<Node[,]> _grid;
 
     /// <summary>
-    /// �댯�x��\���f�[�^
+    /// 密度レベル表示データ
     /// </summary>
     readonly Dictionary<Vector3, int> nodeSectorData = new();
 
     public ReadOnlyReactiveProperty<Node[,]> Grid { get => _grid; }
 
-    //�������f�[�^�N���X��
+    //初期化データクラス用
     public GridGenerateModel(GridGenerateData generateData, Transform gridPos)
     {
         _gridSizeX = generateData.GridSizeX;
@@ -55,34 +55,34 @@ public class GridGenerateModel
     }
 
     /// <summary>
-    /// �O���b�h�̐���
+    /// グリッドの生成
     /// </summary>
     public void InitializeGrid()
     {
         Node[,] node = new Node[_gridSizeX, _gridSizeZ];
 
-        //�O���b�h�̃}�X���J��Ԃ�
+        //グリッドのマスを繰り返す
         for (int x = 0; x < _gridSizeX; x++)
         {
             for (int z = 0; z < _gridSizeZ; z++)
             {
                 Vector3 pos = default;
 
-                //�m�[�h�̈ʒu��}��ʒu
+                //ノードの位置をマップ位置
                 pos.Set(x * _gridCellSize, _gridPos.position.y, z * _gridCellSize);
 
-                //���ۂ̃m�[�h�ʒu
+                //実際のノード位置
                 pos.y = GetNodeYPosition(pos);
 
-                //�O���b�h�̃}�X�̐���(����ǂ����邩�̎擾���s���A�u�[���ɒl���i�[)
+                //グリッドのマスの生成(歩行できるかどうかの取得を行い、ブールに値を格納)
                 node[x, z] = new Node(pos, true);
-                //�m�[�h�̈ʒu��}��ʒu
+                //ノードの位置をマップ位置
                 pos = new Vector3(x * _gridCellSize, _gridPos.position.y, z * _gridCellSize);
 
-                //���ۂ̃m�[�h�ʒu
+                //実際のノード位置
                 pos.y = GetNodeYPosition(pos);
 
-                //�O���b�h�̃}�X�̐���(����ǂ����邩�̎擾���s���A�u�[���ɒl���i�[)
+                //グリッドのマスの生成(歩行できるかどうかの取得を行い、ブールに値を格納)
                 node[x, z] = new Node(pos, true);
             }
         }
@@ -100,7 +100,7 @@ public class GridGenerateModel
 
     private float GetNodeYPosition(Vector3 rayShotPos)
     {
-        if (Physics.BoxCast(rayShotPos, Vector3.one * (_gridCellSize / 2), Vector3.down,out RaycastHit hitInfo, Quaternion.identity, Mathf.Infinity))
+        if (Physics.BoxCast(rayShotPos, Vector3.one * (_gridCellSize / 2), Vector3.down, out RaycastHit hitInfo, Quaternion.identity, Mathf.Infinity))
         {
             return hitInfo.point.y;
         }

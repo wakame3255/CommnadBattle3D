@@ -55,7 +55,7 @@ public class PathAgent : MonoBehaviour, IPathAgenter
     }
 
     /// <summary>
-    /// 次の目的地の向きを取得するメソッド
+    /// 次の目的地の向きを取得するメソッド(Updateで呼んでください)
     /// </summary>
     /// <param name="nowPos">現在の位置</param>
     /// <returns>次の目的地への向き</returns>
