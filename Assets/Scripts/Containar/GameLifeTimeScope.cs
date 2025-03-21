@@ -20,7 +20,15 @@ public class GameLifeTimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<InGameView>();
         builder.RegisterComponentInHierarchy<TurnControllerView>();
         builder.RegisterComponentInHierarchy<PlayerCharacterContView>();
+
+        //キャラクター生成機能の登録
         builder.RegisterComponentInHierarchy<CharacterGenerator>().As<ICharacterGenerator, CharacterGenerator>();
+
+        //プレイヤーが使用する入力情報
+        builder.RegisterComponentInHierarchy<PlayerInput>();
+
+        //すべてのキャラが共通で使用する機能
+        builder.RegisterComponentInHierarchy<PathFind>();
 
         //スタートアップの登録
         builder.RegisterEntryPoint<PresenterStartUp>(Lifetime.Singleton);

@@ -2,37 +2,20 @@ using R3;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathAgent : MonoBehaviour, IPathAgenter
+public class PathAgent :  IPathAgenter
 {
-    [SerializeField]
-    private float _speed = 1.0f;
-
-    [SerializeField]
     private PathFind _pathFind = default;
 
-    [SerializeField]
-    private PlayerInput _input = default;
-
-    private Transform _transform = default;
+    private Vector3 _transformPos = default;
 
     private List<Vector3> wayPoints = new List<Vector3>();
 
     private int _currentWayPointIndex = 0;
 
-    private void Awake()
+    public PathAgent(PathFind pathFind, Transform transform)
     {
-        _transform = this.transform;
-    }
-
-    private void Start()
-    {
-        Bind();
-    }
-
-    private void Bind()
-    {
-        //インプットが設定されていれば、ポインターの位置を購読
-        _input?.PointerPosition.Subscribe(point => SetCustomPath(point)).AddTo(this);
+        _pathFind = pathFind;
+        _transformPos = transform.position;
     }
 
     /// <summary>
@@ -41,7 +24,7 @@ public class PathAgent : MonoBehaviour, IPathAgenter
     /// <param name="pointerPosition">目的地</param>
     public void SetCustomPath(Vector3 pointerPosition)
     {
-        Node startNode = _pathFind?.GetNodeWorldPosition(_transform.position);
+        Node startNode = _pathFind?.GetNodeWorldPosition(_transformPos);
         Node endNode = _pathFind?.GetNodeWorldPosition(pointerPosition);
 
         //経路探索
@@ -75,7 +58,7 @@ public class PathAgent : MonoBehaviour, IPathAgenter
 
         //次の目的地を取得
         Vector3 targetPosition = wayPoints[_currentWayPointIndex];
-        Vector3 moveDirection = targetPosition - _transform.position;
+        Vector3 moveDirection = targetPosition - _transformPos;
 
         //目的地に到達したら次の目的地へ
         if (Vector3.Distance(nowPos, targetPosition) < 0.1f)
