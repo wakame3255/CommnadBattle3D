@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class MoveView : MonoBehaviour, IInitialize
 {
+
     public void Initialize()
     {
 
