@@ -15,14 +15,14 @@ public class MovePresenter : IBinder, IDisposable
 
         _model.Initialize();
         _view.Initialize();
-
-        _model.SetPosition(Vector3Extensions.ToSystemVector3(_view.transform.position));
     }
    
     public void Bind()
     {
+        _model.SetPosition(Vector3Extensions.ToSystemVector3(_view.transform.position));
+
         //位置情報の更新
-        _model.RPTransformPosition.Subscribe(pos => Vector3Extensions.ToUnityVector3(pos)).AddTo(_disposables);
+        _model.RPTransformPosition.Subscribe(pos => _view.SetPosition(Vector3Extensions.ToUnityVector3(pos))).AddTo(_disposables);
 
         //クリック位置の更新
         _view.RPClickPos.Subscribe(pos => _model.SetPosition(Vector3Extensions.ToSystemVector3(pos))).AddTo(_disposables);

@@ -1,13 +1,14 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CharacterStatusView : MonoBehaviour, IInitialize
 {
-    [SerializeField]
+    [SerializeField, Required]
     private Text _healthText;
 
-    [SerializeField]
+    [SerializeField, Required]
     private Text _travelDistanceText;
 
     //行動コスト
