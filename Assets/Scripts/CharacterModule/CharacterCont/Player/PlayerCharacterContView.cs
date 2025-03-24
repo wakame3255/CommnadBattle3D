@@ -1,11 +1,12 @@
 using R3;
+using System.ComponentModel.DataAnnotations;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerCharacterContView : MonoBehaviour, IInitialize
 {
     //ターン終了ボタン
-    [SerializeField]
+    [SerializeField, Required]
     private Button _endTurnButton = default;
 
     //公開ターン終了ボタン
