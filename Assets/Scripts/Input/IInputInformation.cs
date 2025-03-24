@@ -1,7 +1,7 @@
 using R3;
 using UnityEngine;
 
-public interface IInputInfomation
+public interface IInputInformation
 {
     public ReadOnlyReactiveProperty<Vector3> PointerPosition { get; }
 }
