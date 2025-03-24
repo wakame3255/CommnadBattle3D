@@ -9,6 +9,11 @@ public class CharacterStatusModel : IInitialize, IMoveNotice
     private ReactiveProperty<float> _travelDistance;
     public ReadOnlyReactiveProperty<float> TravelDistance { get => _travelDistance; }
 
+    //プレイヤーの状態
+    private ReactiveProperty<CharacterState> _rPCurrentState;
+    //プレイヤーの状態公開
+    public ReadOnlyReactiveProperty<CharacterState> RPCurrentState { get => _rPCurrentState; }
+
     /// <summary>
     /// キャラクターの状態ハンドラ
     /// </summary>
@@ -22,6 +27,8 @@ public class CharacterStatusModel : IInitialize, IMoveNotice
     public void Initialize()
     {
         _travelDistance = new ReactiveProperty<float>(0);
+
+        _rPCurrentState = new ReactiveProperty<CharacterState>();
 
         _stateHandler.RPCurrentState.Subscribe(ChangeState);
     }
@@ -45,6 +52,8 @@ public class CharacterStatusModel : IInitialize, IMoveNotice
     /// <param name="state"></param>
     private void ChangeState(CharacterState state)
     {
+        _rPCurrentState.Value = state;
+
         switch (state)
         {
             case CharacterState.Stay:

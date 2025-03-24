@@ -3,7 +3,7 @@ using UnityEngine;
 using R3;
 using UnityEngine.InputSystem;
 
-public class PlayerInput : MonoBehaviour, IInputInfomation
+public class PlayerInput : MonoBehaviour, IInputInformation
 {
 
     private ReactiveProperty<Vector3> _pointerPositionRP = new ReactiveProperty<Vector3>();

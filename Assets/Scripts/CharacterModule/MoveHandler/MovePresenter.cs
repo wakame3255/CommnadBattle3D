@@ -21,7 +21,11 @@ public class MovePresenter : IBinder, IDisposable
    
     public void Bind()
     {
-        _model.RPTransformPosition.Subscribe(pos => Vector3Extensions.ToUnityVector3(pos)).AddTo(_disposables);    
+        //位置情報の更新
+        _model.RPTransformPosition.Subscribe(pos => Vector3Extensions.ToUnityVector3(pos)).AddTo(_disposables);
+
+        //クリック位置の更新
+        _view.RPClickPos.Subscribe(pos => _model.SetPosition(Vector3Extensions.ToSystemVector3(pos))).AddTo(_disposables);
     }
 
     public void Dispose()
