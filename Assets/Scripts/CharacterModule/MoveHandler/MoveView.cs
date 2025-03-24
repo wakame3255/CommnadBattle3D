@@ -19,7 +19,7 @@ public class MoveView : MonoBehaviour, IInitialize
 
     public void Initialize()
     {
-
+        _rPClickPos = new ReactiveProperty<Vector3>();
     }
 
     /// <summary>

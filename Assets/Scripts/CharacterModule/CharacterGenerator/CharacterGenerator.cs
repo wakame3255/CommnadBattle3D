@@ -12,9 +12,13 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     /// </summary>
     /// <param name="playerCharacterContModel">プレイヤー</param>
     [Inject]
-    public void Construct(PlayerCharacterContModel playerCharacterContModel)
+    public void Construct(PlayerCharacterContModel playerCharacterContModel, CharacterStatusView characterStatus)
     {
         _characterStateHandlers.Add(playerCharacterContModel);
+
+        //キャラクターステータスの生成
+        CharacterStatusModel characterStatusModel = new CharacterStatusModel(playerCharacterContModel);
+        new CharacterStatusPresenter(characterStatusModel, characterStatus);
     }
 
     public List<ICharacterStateHandler> GenerateCharacter()
