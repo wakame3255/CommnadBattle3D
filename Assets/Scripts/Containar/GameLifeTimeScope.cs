@@ -26,7 +26,7 @@ public class GameLifeTimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<CharacterGenerator>().As<ICharacterGenerator, CharacterGenerator>();
 
         //プレイヤーが使用する入力情報
-        builder.RegisterComponentInHierarchy<PlayerInput>();
+        builder.RegisterComponentInHierarchy<PlayerInput>().As<IInputInformation>();
 
         //すべてのキャラが共通で使用する機能
         builder.RegisterComponentInHierarchy<PathFind>();

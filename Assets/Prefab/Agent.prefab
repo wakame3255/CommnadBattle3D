@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 558380058961667781}
   - component: {fileID: 4826320689526853410}
   - component: {fileID: 7351595458516056917}
-  - component: {fileID: 8406338416977418773}
   - component: {fileID: 7754512064093649197}
   m_Layer: 0
   m_Name: Agent
@@ -85,18 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8406338416977418773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8684704263959260353}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7885ee91d49d95c44b98e9b4fc370ef9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &7754512064093649197
 CapsuleCollider:
   m_ObjectHideFlags: 0

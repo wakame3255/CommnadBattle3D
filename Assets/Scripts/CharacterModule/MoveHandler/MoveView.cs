@@ -14,12 +14,13 @@ public class MoveView : MonoBehaviour, IInitialize
     /// <param name="inputInfomation">インプット情報</param>
     public void SetInput(IInputInformation inputInfomation)
     {
+        _rPClickPos = new ReactiveProperty<Vector3>();
         inputInfomation.PointerPosition.Subscribe(OnClick).AddTo(this);
     }
 
     public void Initialize()
     {
-        _rPClickPos = new ReactiveProperty<Vector3>();
+       
     }
 
     /// <summary>
@@ -38,5 +39,7 @@ public class MoveView : MonoBehaviour, IInitialize
     private void OnClick(Vector3 clickPos)
     {
        _rPClickPos.Value = clickPos;
+
+        DebugUtility.Log("ClickPos" + clickPos);
     }
 }
