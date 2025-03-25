@@ -3,7 +3,7 @@ using UnityEngine;
 using R3;
 using System.Collections.Generic;
 /// <summary>
-/// ƒOƒŠƒbƒhî•ñ‚Ìó‚¯“n‚µ(ŠO•”‚©‚çƒf[ƒ^‚ğ‚à‚ç‚¤‚±‚Æ‚ª‚Å‚«‚ê‚Îmonobe‚È‚­‚È‚é)
+/// ã‚°ãƒªãƒƒãƒ‰æƒ…å ±ã®å—ã‘æ¸¡ã—(å¤–éƒ¨ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’ã‚‚ã‚‰ã†ã“ã¨ãŒã§ãã‚Œã°monobeãªããªã‚‹)
 /// </summary>
 public class GridGeneratePresenter : MonoBehaviour
 {
@@ -32,7 +32,7 @@ public class GridGeneratePresenter : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒm[ƒh‚ÌF‚ğ•ÏX‚·‚é
+    /// ãƒãƒ¼ãƒ‰ã®è‰²ã‚’å¤‰æ›´ã™ã‚‹
     /// </summary>
     /// <param name="wayPoints"></param>
     public void ChangeViewColorNode(List<Node> wayPoints)
@@ -42,7 +42,7 @@ public class GridGeneratePresenter : MonoBehaviour
 
     public Node GetNodeWorldPosition(Vector3 worldPosition)
     {
-      return _model.GetNodeFromWorldPosition(worldPosition);
+      return _model?.GetNodeFromWorldPosition(worldPosition);
     }
 
     private void Bind()
