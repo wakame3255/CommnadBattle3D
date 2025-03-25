@@ -34,4 +34,6 @@ public class GameLifeTimeScope : LifetimeScope
         //スタートアップの登録
         builder.RegisterEntryPoint<PresenterStartUp>(Lifetime.Singleton);
     }
+
+    
 }

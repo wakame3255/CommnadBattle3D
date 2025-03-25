@@ -5,5 +5,5 @@ public interface IPathAgenter
 {
     public void SetCustomPath(Vector3 pointerPosition);
 
-    public Vector3 GetNextPath(Vector3 nowPos);
+    public System.Numerics.Vector3 GetNextPath(Vector3 nowPos);
 }
