@@ -59,6 +59,10 @@ public class MoveModel : IInitialize, IUpdateHandler
         _rPTransformPosition.Value = position;
     }
 
+    /// <summary>
+    /// 残りの移動距離更新
+    /// </summary>
+    /// <param name="travelDistance">残り移動距離</param>
     private void UpdateTravelDistance(float travelDistance)
     {
         if (travelDistance <= 0)

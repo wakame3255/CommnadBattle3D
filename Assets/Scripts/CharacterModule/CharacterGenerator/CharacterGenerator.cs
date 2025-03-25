@@ -43,6 +43,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         _updateHandlers.Add(playerMoveModel);
     }
 
+    [Obsolete]
     private void Update()
     {
         for (int i = 0; i < _updateHandlers.Count; i++)
