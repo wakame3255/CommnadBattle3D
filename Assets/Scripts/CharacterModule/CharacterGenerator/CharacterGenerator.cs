@@ -43,6 +43,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         _updateHandlers.Add(playerMoveModel);
     }
 
+    [Obsolete("いずれは依存をなくしたい")]
     private void Update()
     {
         for (int i = 0; i < _updateHandlers.Count; i++)

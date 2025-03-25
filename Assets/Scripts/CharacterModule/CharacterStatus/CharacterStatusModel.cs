@@ -1,13 +1,19 @@
 using System;
 using R3;
 
-public class CharacterStatusModel : IInitialize, IMoveNotice
+public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice
 {
     /// <summary>
     /// 残りの移動距離
     /// </summary>
     private ReactiveProperty<float> _travelDistance;
     public ReadOnlyReactiveProperty<float> TravelDistance { get => _travelDistance; }
+
+    /// <summary>
+    /// 行動コスト
+    /// </summary>
+    private ReactiveProperty<int> _rPActionCost;
+    public ReadOnlyReactiveProperty<int> RPActionCost { get => _rPActionCost; }
 
     //プレイヤーの状態
     private ReactiveProperty<CharacterState> _rPCurrentState;
@@ -28,6 +34,8 @@ public class CharacterStatusModel : IInitialize, IMoveNotice
     {
         _travelDistance = new ReactiveProperty<float>(0);
 
+        _rPActionCost = new ReactiveProperty<int>(0);
+
         _rPCurrentState = new ReactiveProperty<CharacterState>();
 
         _stateHandler.RPCurrentState.Subscribe(ChangeState);
@@ -39,8 +47,13 @@ public class CharacterStatusModel : IInitialize, IMoveNotice
     public void ResetStatus()
     {
         _travelDistance.Value = 10;
+        _rPActionCost.Value = 2;
     }
 
+    /// <summary>
+    /// 移動距離の通知
+    /// </summary>
+    /// <param name="moveDistance"></param>
     public void NotifyMove(float moveDistance)
     {
         _travelDistance.Value -= moveDistance;
@@ -50,6 +63,15 @@ public class CharacterStatusModel : IInitialize, IMoveNotice
         {
             _travelDistance.Value = 0;
         }
+    }
+
+    /// <summary>
+    /// 行動コストの通知
+    /// </summary>
+    /// <param name="actionCost"></param>
+    public void NotifyUseActionCost(int actionCost)
+    {
+        _rPActionCost.Value -= actionCost;
     }
 
     /// <summary>
