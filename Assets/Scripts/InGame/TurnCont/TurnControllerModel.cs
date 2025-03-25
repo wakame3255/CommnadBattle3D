@@ -142,8 +142,6 @@ public class TurnControllerModel : IInitialize, IDisposable
         _subscriptionState = _currentCharacter.RPCurrentState
             .Subscribe(ChangeCharacterState)
             .AddTo(_disposable);
-
-        DebugUtility.Log(_currentCharacter.ToString());
     }
 
     /// <summary>

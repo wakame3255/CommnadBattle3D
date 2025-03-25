@@ -9,7 +9,11 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     [SerializeField, Required]
     private GameObject _characterPrefab = default;
 
-    List<ICharacterStateHandler> _characterStateHandlers = new List<ICharacterStateHandler>();
+    private ModelUpdater _modelUpdater;
+
+    private List<ICharacterStateHandler> _characterStateHandlers = new List<ICharacterStateHandler>();
+
+    private List<IUpdateHandler> _updateHandlers = new List<IUpdateHandler>();
 
     /// <summary>
     /// プレイヤーキャラクターのモデルを受け取る
@@ -27,14 +31,24 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         new CharacterStatusPresenter(characterStatusModel, characterStatus).Bind();
 
         //プレイヤーのインプット情報依存注入
-        MoveView playerMove = player.AddComponent<MoveView>();
-        playerMove.SetInput(input);
+        MoveView playerView = player.AddComponent<MoveView>();
+        playerView.SetInput(input);
 
-        IPathAgenter path = new PathAgent(pathFind, player.transform);
+        IPathAgenter path = new PathAgent(pathFind, playerView.transform);
 
         //プレイヤーの移動機能の生成
         MoveModel playerMoveModel = new MoveModel(path, characterStatusModel);
-        new MovePresenter(playerMoveModel, playerMove).Bind();
+        new MovePresenter(playerMoveModel, playerView).Bind();
+
+        _updateHandlers.Add(playerMoveModel);
+    }
+
+    private void Update()
+    {
+        for (int i = 0; i < _updateHandlers.Count; i++)
+        {
+            _updateHandlers[i].Updateable();
+        }
     }
 
     public List<ICharacterStateHandler> GenerateCharacter()

@@ -1,6 +1,6 @@
 using System;
 
-public interface IUpdateHandller
+public interface IUpdateHandler
 {
     public void Updateable();
 }

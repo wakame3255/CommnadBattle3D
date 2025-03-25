@@ -2,7 +2,7 @@ using System;
 using System.Numerics;
 using R3;
 
-public class MoveModel : IInitialize, IUpdateHandller
+public class MoveModel : IInitialize, IUpdateHandler
 {
     private IPathAgenter _pathAgent;
 
@@ -25,6 +25,9 @@ public class MoveModel : IInitialize, IUpdateHandller
 
     public void Updateable()
     {
+        Vector3 moveDirection = _pathAgent.GetNextPath(Vector3Extensions.ToUnityVector3(_rPTransformPosition.Value));
+
+        _rPTransformPosition.Value += moveDirection * 0.02f;
 
     }
 
@@ -32,7 +35,7 @@ public class MoveModel : IInitialize, IUpdateHandller
     /// 目的地の設定
     /// </summary>
     /// <param name="pos">目的地</param>
-    public void MovePotision(Vector3 pos)
+    public void MovePosition(Vector3 pos)
     {
         _pathAgent.SetCustomPath(Vector3Extensions.ToUnityVector3(pos));
     }
