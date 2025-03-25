@@ -11,6 +11,9 @@ public class CharacterStatusView : MonoBehaviour, IInitialize
     [SerializeField, Required]
     private Text _travelDistanceText;
 
+    [SerializeField, Required]
+    private Text _actionCost;
+
     //行動コスト
 
     public void Initialize()
@@ -41,6 +44,15 @@ public class CharacterStatusView : MonoBehaviour, IInitialize
         }
 
         _travelDistanceText.text = "残り移動距離 : " + distance.ToString();
+    }
+
+    public void SetActionCost(int actionCost)
+    {
+        if (_actionCost == null)
+        {
+            return;
+        }
+        _actionCost.text = "行動コスト : " + actionCost.ToString();
     }
 
     private void ShowUI()

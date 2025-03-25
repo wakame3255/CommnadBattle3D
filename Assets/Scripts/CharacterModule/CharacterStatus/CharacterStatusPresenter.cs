@@ -20,6 +20,9 @@ public class CharacterStatusPresenter : IBinder
         // モデルの残り移動距離をビューにバインド
         _model.TravelDistance.Subscribe(_view.SetTravelDistance);
 
+        // モデルの行動コストをビューにバインド
+        _model.RPActionCost.Subscribe(_view.SetActionCost);
+
         // モデルのキャラクターの状態をビューにバインド
         _model.RPCurrentState.Subscribe(_view.SetCharacterState);
     }
