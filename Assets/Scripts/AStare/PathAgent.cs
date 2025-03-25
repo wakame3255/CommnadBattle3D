@@ -54,8 +54,6 @@ public class PathAgent :  IPathAgenter
         Vector3 targetPosition = wayPoints[_currentWayPointIndex];
         Vector3 moveDirection = targetPosition - _transform.position;
 
-        DebugUtility.Log(moveDirection.ToString() + targetPosition + _transform);
-
         //目的地に到達したら次の目的地へ
         if (Vector3.Distance(nowPos, targetPosition) < 0.1f)
         {

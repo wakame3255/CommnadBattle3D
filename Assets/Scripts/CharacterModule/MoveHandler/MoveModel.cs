@@ -8,6 +8,8 @@ public class MoveModel : IInitialize, IUpdateHandler
 
     private IMoveNotice _moveNotice;
 
+    private bool _isMoveEnd = false;
+
     private ReactiveProperty<Vector3> _rPTransformPosition;
 
     public ReadOnlyReactiveProperty<Vector3> RPTransformPosition { get => _rPTransformPosition; }
@@ -21,14 +23,22 @@ public class MoveModel : IInitialize, IUpdateHandler
     public void Initialize()
     {
         _rPTransformPosition = new ReactiveProperty<Vector3>();
+
+        _moveNotice.TravelDistance.Subscribe(UpdateTravelDistance);
     }
 
     public void Updateable()
     {
         Vector3 moveDirection = _pathAgent.GetNextPath(Vector3Extensions.ToUnityVector3(_rPTransformPosition.Value));
 
+        if (moveDirection == Vector3.Zero || _isMoveEnd)
+        {
+            return;
+        }
+
         _rPTransformPosition.Value += moveDirection * 0.02f;
 
+        _moveNotice.NotifyMove(0.02f);
     }
 
     /// <summary>
@@ -47,5 +57,19 @@ public class MoveModel : IInitialize, IUpdateHandler
     public void SetPosition(Vector3 position)
     {
         _rPTransformPosition.Value = position;
+    }
+
+    private void UpdateTravelDistance(float travelDistance)
+    {
+        if (travelDistance <= 0)
+        {
+            _isMoveEnd = true;
+
+            _pathAgent.SetCustomPath(Vector3Extensions.ToUnityVector3(_rPTransformPosition.CurrentValue));
+        }
+        else
+        {
+            _isMoveEnd = false;
+        }
     }
 }

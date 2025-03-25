@@ -38,12 +38,18 @@ public class CharacterStatusModel : IInitialize, IMoveNotice
     /// </summary>
     public void ResetStatus()
     {
-
+        _travelDistance.Value = 10;
     }
 
     public void NotifyMove(float moveDistance)
     {
+        _travelDistance.Value -= moveDistance;
 
+        //ゼロリセット
+        if (_travelDistance.Value < 0)
+        {
+            _travelDistance.Value = 0;
+        }
     }
 
     /// <summary>
