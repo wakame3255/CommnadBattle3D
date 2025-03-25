@@ -2,7 +2,7 @@ using System;
 using System.Numerics;
 using R3;
 
-public class MoveModel : IInitialize
+public class MoveModel : IInitialize, IUpdateHandller
 {
     private IPathAgenter _pathAgent;
 
@@ -20,7 +20,21 @@ public class MoveModel : IInitialize
 
     public void Initialize()
     {
-       
+        _rPTransformPosition = new ReactiveProperty<Vector3>();
+    }
+
+    public void Updateable()
+    {
+
+    }
+
+    /// <summary>
+    /// 目的地の設定
+    /// </summary>
+    /// <param name="pos">目的地</param>
+    public void MovePotision(Vector3 pos)
+    {
+        _pathAgent.SetCustomPath(Vector3Extensions.ToUnityVector3(pos));
     }
 
     /// <summary>

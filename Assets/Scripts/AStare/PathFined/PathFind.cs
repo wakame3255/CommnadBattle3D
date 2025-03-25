@@ -16,6 +16,11 @@ public class PathFind : MonoBehaviour
 
     public List<Node> ReturnFindTacticalPath(Node startNode, Node endNode)
     {
+        if (startNode == null || endNode == null)
+        {
+            return null;
+        }
+
         //選ばれたノードの優先度を表す
         PriorityQueue<Node, float> openList = new PriorityQueue<Node, float>();
 

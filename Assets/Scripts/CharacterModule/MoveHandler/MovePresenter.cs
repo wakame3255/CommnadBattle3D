@@ -25,7 +25,7 @@ public class MovePresenter : IBinder, IDisposable
         _model.RPTransformPosition.Subscribe(pos => _view.SetPosition(Vector3Extensions.ToUnityVector3(pos))).AddTo(_disposables);
 
         //クリック位置の更新
-        _view.RPClickPos.Subscribe(pos => _model.SetPosition(Vector3Extensions.ToSystemVector3(pos))).AddTo(_disposables);
+        _view.RPClickPos.Subscribe(pos => _model.MovePotision(Vector3Extensions.ToSystemVector3(pos))).AddTo(_disposables);
     }
 
     public void Dispose()

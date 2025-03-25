@@ -13,8 +13,6 @@ public class CharacterStatusPresenter : IBinder
 
         _model.Initialize();
         _view.Initialize();
-
-        Bind();
     }
 
     public void Bind()

@@ -24,7 +24,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
 
         //キャラクターステータスの生成
         CharacterStatusModel characterStatusModel = new CharacterStatusModel(playerCharacterContModel);
-        new CharacterStatusPresenter(characterStatusModel, characterStatus);
+        new CharacterStatusPresenter(characterStatusModel, characterStatus).Bind();
 
         //プレイヤーのインプット情報依存注入
         MoveView playerMove = player.AddComponent<MoveView>();
@@ -34,7 +34,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
 
         //プレイヤーの移動機能の生成
         MoveModel playerMoveModel = new MoveModel(path, characterStatusModel);
-        new MovePresenter(playerMoveModel, playerMove);
+        new MovePresenter(playerMoveModel, playerMove).Bind();
     }
 
     public List<ICharacterStateHandler> GenerateCharacter()
