@@ -9,11 +9,17 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     [SerializeField, Required]
     private GameObject _characterPrefab = default;
 
-    private ModelUpdater _modelUpdater;
-
     private List<ICharacterStateHandler> _characterStateHandlers = new List<ICharacterStateHandler>();
 
+    /// <summary>
+    /// 更新処理を行うハンドラ群
+    /// </summary>
     private List<IUpdateHandler> _updateHandlers = new List<IUpdateHandler>();
+
+    /// <summary>
+    /// 攻撃計算を行うクラス
+    /// </summary>
+    private AttackCalculation _attackCalculation = new AttackCalculation();
 
     /// <summary>
     /// プレイヤーキャラクターのモデルを受け取る
@@ -40,7 +46,13 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         MoveModel playerMoveModel = new MoveModel(path, characterStatusModel);
         new MovePresenter(playerMoveModel, playerView).Bind();
 
+        //キャラクターの情報注入
         _updateHandlers.Add(playerMoveModel);
+
+        if (player.TryGetComponent<Collider>(out Collider collider))
+        {
+            _attackCalculation.AddDamageNotice(characterStatusModel, collider);
+        }
     }
 
     [Obsolete("いずれは依存をなくしたい")]

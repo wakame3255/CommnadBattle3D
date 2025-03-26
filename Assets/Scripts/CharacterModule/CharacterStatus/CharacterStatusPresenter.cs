@@ -25,7 +25,10 @@ public class CharacterStatusPresenter : IBinder
 
         // モデルのキャラクターの状態をビューにバインド
         _model.RPCurrentState.Subscribe(_view.SetCharacterState);
+
+        // モデルのキャラクターのHPをビューにバインド
+        _model.RPHelth.Subscribe(_view.SetHealth);
     }
 
-    
+
 }
