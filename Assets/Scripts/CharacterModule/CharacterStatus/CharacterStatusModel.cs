@@ -18,9 +18,8 @@ public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDa
     /// <summary>
     /// キャラクターのHP
     /// </summary>
-    private ReactiveProperty<int> _rPHelth;
-    public ReadOnlyReactiveProperty<int> RPHelth { get => _rPHelth; }
-
+    private ReactiveProperty<int> _rPHealth;
+    public ReadOnlyReactiveProperty<int> RPHealth { get => _rPHealth; }
     //プレイヤーの状態
     private ReactiveProperty<CharacterState> _rPCurrentState;
     //プレイヤーの状態公開
