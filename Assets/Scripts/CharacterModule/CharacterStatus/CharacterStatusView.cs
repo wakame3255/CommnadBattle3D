@@ -55,6 +55,15 @@ public class CharacterStatusView : MonoBehaviour, IInitialize
         _actionCost.text = "行動コスト : " + actionCost.ToString();
     }
 
+    public void SetHealth(int health)
+    {
+        if (_healthText == null)
+        {
+            return;
+        }
+        _healthText.text = "HP : " + health.ToString();
+    }
+
     private void ShowUI()
     {
         gameObject.SetActive(true);

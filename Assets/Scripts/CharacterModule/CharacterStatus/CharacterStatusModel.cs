@@ -1,7 +1,7 @@
 using System;
 using R3;
 
-public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice
+public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDamageNotice
 {
     /// <summary>
     /// 残りの移動距離
@@ -14,6 +14,12 @@ public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice
     /// </summary>
     private ReactiveProperty<int> _rPActionCost;
     public ReadOnlyReactiveProperty<int> RPActionCost { get => _rPActionCost; }
+
+    /// <summary>
+    /// キャラクターのHP
+    /// </summary>
+    private ReactiveProperty<int> _rPHelth;
+    public ReadOnlyReactiveProperty<int> RPHelth { get => _rPHelth; }
 
     //プレイヤーの状態
     private ReactiveProperty<CharacterState> _rPCurrentState;
@@ -35,6 +41,8 @@ public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice
         _travelDistance = new ReactiveProperty<float>(0);
 
         _rPActionCost = new ReactiveProperty<int>(0);
+
+        _rPHelth = new ReactiveProperty<int>(10);
 
         _rPCurrentState = new ReactiveProperty<CharacterState>();
 
@@ -72,6 +80,15 @@ public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice
     public void NotifyUseActionCost(int actionCost)
     {
         _rPActionCost.Value -= actionCost;
+    }
+
+    /// <summary>
+    /// ダメージ通知
+    /// </summary>
+    /// <param name="damage"></param>
+    public void NotifyDamage(int damage)
+    {
+        _rPHelth.Value -= damage;
     }
 
     /// <summary>
