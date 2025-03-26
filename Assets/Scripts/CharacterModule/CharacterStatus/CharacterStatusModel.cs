@@ -41,7 +41,7 @@ public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDa
 
         _rPActionCost = new ReactiveProperty<int>(0);
 
-        _rPHelth = new ReactiveProperty<int>(10);
+        _rPHealth = new ReactiveProperty<int>(10);
 
         _rPCurrentState = new ReactiveProperty<CharacterState>();
 
@@ -87,7 +87,7 @@ public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDa
     /// <param name="damage"></param>
     public void NotifyDamage(int damage)
     {
-        _rPHelth.Value -= damage;
+        _rPHealth.Value -= damage;
     }
 
     /// <summary>
