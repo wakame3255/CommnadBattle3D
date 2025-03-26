@@ -18,7 +18,14 @@ public class AttackCalculation
     public void RequestForAttack(Collider collider, int damage)
     {
         // ダメージ通知
-        _damageNoticeMap[collider].NotifyDamage(damage);
+        if (_damageNoticeMap.TryGetValue(collider, out var damageNotice))
+        {
+            damageNotice.NotifyDamage(damage);
+        }
+        else
+        {
+            Debug.LogError("Collider not found in damage notice map.");
+        }
     }
 
     /// <summary>
