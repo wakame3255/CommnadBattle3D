@@ -24,7 +24,7 @@ public class AttackCalculation
         }
         else
         {
-            Debug.LogError("Collider not found in damage notice map.");
+            Debug.LogError("Collider is not be found in damage notice map.");
         }
     }
 
