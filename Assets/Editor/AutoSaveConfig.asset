@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: AutoSaveConfig
   m_EditorClassIdentifier: Assembly-CSharp-Editor::AutoSaveConfig
   isEnabled: 1
-  saveInterval: 2
+  saveInterval: 30
