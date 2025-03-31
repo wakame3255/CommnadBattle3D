@@ -6,8 +6,8 @@ public abstract class ActionFactoryBase : MonoBehaviour
     /// <summary>
     /// アクションのモデルとviewを返す
     /// </summary>
-    /// <returns>生成したmodelとview</returns>
-    public abstract ActionMVPData CreateAction();
+    /// <returns>modelとview</returns>
+    public abstract ActionMVPData CreateAction(Transform parent);
 }
 
 public class ActionMVPData

@@ -9,6 +9,9 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     [SerializeField, Required]
     private GameObject _characterPrefab = default;
 
+    [SerializeField, Required, Obsolete]
+    private MeleeAttackFactory _actionViewBasePrefab = default;
+
     private List<ICharacterStateHandler> _characterStateHandlers = new List<ICharacterStateHandler>();
 
     /// <summary>
@@ -45,6 +48,18 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         //プレイヤーの移動機能の生成
         MoveModel playerMoveModel = new MoveModel(path, characterStatusModel);
         new MovePresenter(playerMoveModel, playerView).Bind();
+
+        ActionMVPData actionMVPData = _actionViewBasePrefab.CreateAction(this.transform);
+        //プレイヤーのアクション機能の生成
+        List<CharacterActionBase> actionBases = new List<CharacterActionBase>();
+        actionBases.Add(actionMVPData.Model);
+        ActionContModel actionContModel = new ActionContModel(characterStatusModel, actionBases);
+
+        //プレイヤーのアクションビューの生成
+        List<ActionViewBase> actionViewBases = new List<ActionViewBase>();
+        actionViewBases.Add(actionMVPData.View);
+        ActionContView actionContView = player.AddComponent<ActionContView>();
+        actionContView.SetActionView(actionViewBases);
 
         //キャラクターの情報注入
         _updateHandlers.Add(playerMoveModel);

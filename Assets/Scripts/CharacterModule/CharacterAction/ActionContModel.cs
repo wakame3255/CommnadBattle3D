@@ -1,14 +1,21 @@
 using System;
+using System.Collections.Generic;
+using R3;
 
 public class ActionContModel : IInitialize
 {
-    public void Initialize()
+    IActionNotice _actionNotice;
+
+    private List<CharacterActionBase> _actionList = new List<CharacterActionBase>();
+
+    public ActionContModel(IActionNotice actionNotice, List<CharacterActionBase> characterActions)
     {
-        throw new NotImplementedException();
+        _actionNotice = actionNotice;
+        _actionList = characterActions;
     }
 
-    /// <summary>
-    /// 攻撃アクション
-    /// </summary>
-    private MeleeAttackModel _meleeAttackAction;
+    public void Initialize()
+    {
+        
+    }
 }

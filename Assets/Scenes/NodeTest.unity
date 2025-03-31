@@ -1003,6 +1003,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterPrefab: {fileID: 8684704263959260353, guid: 3b4db5da41f4555439f0d3b36a499664, type: 3}
+  _actionViewBasePrefab: {fileID: 4066348534469420884, guid: fe0ee2711835a784fad0437d7bb3980f, type: 3}
 --- !u!114 &1437405710
 MonoBehaviour:
   m_ObjectHideFlags: 0

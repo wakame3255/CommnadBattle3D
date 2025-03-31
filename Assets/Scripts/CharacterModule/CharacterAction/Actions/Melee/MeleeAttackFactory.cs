@@ -6,12 +6,14 @@ public class MeleeAttackFactory : ActionFactoryBase
     [SerializeField] 
     private MeleeAttackView _view;
 
-    public override ActionMVPData CreateAction()
+    public override ActionMVPData CreateAction(Transform parent)
     {
+        MeleeAttackView view = Instantiate(_view, parent);
+
         MeleeAttackModel model = new MeleeAttackModel();
 
-        new ActionPresenter(model, _view).Bind();
+         new ActionPresenter(model, view).Bind();
 
-        return new ActionMVPData(model, _view);
+        return new ActionMVPData(model, view);
     }
 }
