@@ -17,7 +17,7 @@ public class PlayerInput : MonoBehaviour, IInputInformation
 
     private void GetMousePosition()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current.rightButton.wasPressedThisFrame)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
