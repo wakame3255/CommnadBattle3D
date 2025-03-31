@@ -1,22 +1,21 @@
 using System;
+using R3;
 
 public class ActionPresenter : IBinder
 {
-    private ActionModel _model;
+    CharacterActionBase _model;
 
-    private ActionView _view;
+    ActionViewBase _view;
 
-    public ActionPresenter(ActionModel model, ActionView view)
+    public ActionPresenter(CharacterActionBase model, ActionViewBase view)
     {
         _model = model;
         _view = view;
-
-        _model.Initialize();
-        _view.Initialize();
     }
 
     public void Bind()
     {
-        
+      _view.ActionButton.OnClickAsObservable()
+          .Subscribe(_ => _model.DoAction());
     }
 }
