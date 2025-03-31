@@ -1,6 +1,6 @@
 using System;
 
-public class MeleeAttackModel : CharacterActionBase
+public class MeleeAttackModel : ActionModelBase
 {
     public MeleeAttackModel()
     {

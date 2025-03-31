@@ -12,13 +12,13 @@ public abstract class ActionFactoryBase : MonoBehaviour
 
 public class ActionMVPData
 {
-    private CharacterActionBase _model;
+    private ActionModelBase _model;
     private ActionViewBase _view;
 
-    public CharacterActionBase Model => _model;
+    public ActionModelBase Model => _model;
     public ActionViewBase View => _view;
 
-    public ActionMVPData(CharacterActionBase model, ActionViewBase view)
+    public ActionMVPData(ActionModelBase model, ActionViewBase view)
     {
         _model = model;
         _view = view;

@@ -1,4 +1,5 @@
 using System;
+using R3;
 
 public class ActionContPresenter : IBinder
 {
@@ -17,6 +18,6 @@ public class ActionContPresenter : IBinder
 
     public void Bind()
     {
-        
+        _model.RPCurrentAction.Subscribe(_view.SetAttackRange);
     }
 }
