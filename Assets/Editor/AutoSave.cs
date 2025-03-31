@@ -1,14 +1,47 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.SceneManagement; // EditorSceneManager‚Ì‚½‚ß‚É•K—v
-using UnityEngine.SceneManagement; // SceneŠÇ—‚Ì‹@”\‚Ì‚½‚ß‚É•K—v
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 using System;
+using System.IO;
 
-// ƒGƒfƒBƒ^[Šg’£‚ÌƒNƒ‰ƒX
+// ã‚¨ãƒ‡ã‚£ã‚¿ãƒ¼æ‹¡å¼µã®ã‚¯ãƒ©ã‚¹
 public class AutoSaveConfig : ScriptableObject
 {
     public bool isEnabled = true;
-    public float saveInterval = 60f; // 5•ªi•b’PˆÊj
+    public float saveInterval = 60f; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ60ç§’
+
+    // è¨­å®šã‚¢ã‚»ãƒƒãƒˆã®ãƒ‘ã‚¹
+    private const string ASSET_PATH = "Assets/Editor/AutoSaveConfig.asset";
+
+    // è¨­å®šã®èª­ã¿è¾¼ã¿
+    public static AutoSaveConfig GetOrCreateSettings()
+    {
+        var settings = AssetDatabase.LoadAssetAtPath<AutoSaveConfig>(ASSET_PATH);
+        if (settings == null)
+        {
+            // è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯æ–°è¦ä½œæˆ
+            settings = ScriptableObject.CreateInstance<AutoSaveConfig>();
+
+            // ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ä½œæˆ
+            string directoryPath = Path.GetDirectoryName(ASSET_PATH);
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            AssetDatabase.CreateAsset(settings, ASSET_PATH);
+            AssetDatabase.SaveAssets();
+        }
+        return settings;
+    }
+
+    // è¨­å®šã®ä¿å­˜
+    public void Save()
+    {
+        EditorUtility.SetDirty(this);
+        AssetDatabase.SaveAssets();
+    }
 }
 
 [InitializeOnLoad]
@@ -17,11 +50,11 @@ public class AutoSave
     private static AutoSaveConfig config;
     private static DateTime lastSaveTime;
 
-    // ƒRƒ“ƒXƒgƒ‰ƒNƒ^iƒGƒfƒBƒ^[‹N“®‚ÉÀsj
+    // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼ˆã‚¨ãƒ‡ã‚£ã‚¿ãƒ¼èµ·å‹•æ™‚ã«å®Ÿè¡Œï¼‰
     static AutoSave()
     {
-        // İ’è‚Ì“Ç‚İ‚İ
-        config = ScriptableObject.CreateInstance<AutoSaveConfig>();
+        // è¨­å®šã®èª­ã¿è¾¼ã¿
+        config = AutoSaveConfig.GetOrCreateSettings();
         EditorApplication.update += Update;
         lastSaveTime = DateTime.Now;
     }
@@ -31,7 +64,7 @@ public class AutoSave
         if (!config.isEnabled)
             return;
 
-        // İ’è‚³‚ê‚½ŠÔŠu‚Å•Û‘¶‚ğÀs
+        // è¨­å®šã•ã‚ŒãŸé–“éš”ã§ä¿å­˜ã‚’å®Ÿè¡Œ
         if ((DateTime.Now - lastSaveTime).TotalSeconds >= config.saveInterval)
         {
             SaveAll();
@@ -39,22 +72,22 @@ public class AutoSave
         }
     }
 
-    // ƒV[ƒ“‚ÆƒAƒZƒbƒg‚Ì•Û‘¶‚ğÀs
+    // ã‚·ãƒ¼ãƒ³ã¨ã‚¢ã‚»ãƒƒãƒˆã®ä¿å­˜ã‚’å®Ÿè¡Œ
     static void SaveAll()
     {
         if (!EditorApplication.isPlaying)
         {
             EditorSceneManager.SaveOpenScenes();
             AssetDatabase.SaveAssets();
-            Debug.Log($"[AutoSave] ƒvƒƒWƒFƒNƒg‚ğ©“®•Û‘¶‚µ‚Ü‚µ‚½: {DateTime.Now}");
-        } 
+            Debug.Log($"[AutoSave] ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’è‡ªå‹•ä¿å­˜ã—ã¾ã—ãŸ: {DateTime.Now}");
+        }
     }
 }
 
-// İ’è—p‚ÌƒGƒfƒBƒ^[ƒEƒBƒ“ƒhƒE
+// è¨­å®šç”¨ã®ã‚¨ãƒ‡ã‚£ã‚¿ãƒ¼ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
 public class AutoSaveSettingsWindow : EditorWindow
 {
-    private static AutoSaveConfig config;
+    private AutoSaveConfig config;
 
     [MenuItem("Tools/Auto Save/Settings")]
     public static void ShowWindow()
@@ -62,18 +95,28 @@ public class AutoSaveSettingsWindow : EditorWindow
         GetWindow<AutoSaveSettingsWindow>("Auto Save Settings");
     }
 
+    void OnEnable()
+    {
+        // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒé–‹ã‹ã‚ŒãŸæ™‚ã«è¨­å®šã‚’èª­ã¿è¾¼ã‚€
+        config = AutoSaveConfig.GetOrCreateSettings();
+    }
+
     void OnGUI()
     {
         if (config == null)
-            config = ScriptableObject.CreateInstance<AutoSaveConfig>();
+        {
+            config = AutoSaveConfig.GetOrCreateSettings();
+        }
+
+        EditorGUI.BeginChangeCheck();
 
         config.isEnabled = EditorGUILayout.Toggle("Auto Save Enabled", config.isEnabled);
         config.saveInterval = EditorGUILayout.FloatField("Save Interval (seconds)", config.saveInterval);
 
-        if (GUILayout.Button("İ’è‚Ì•Û‘¶"))
+        if (EditorGUI.EndChangeCheck())
         {
-            config = ScriptableObject.CreateInstance<AutoSaveConfig>();
-            Debug.Log("•Û‘¶");
+            // å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã¯ãƒãƒ¼ã‚¯ã‚’ä»˜ã‘ã‚‹
+            EditorUtility.SetDirty(config);
         }
     }
 }

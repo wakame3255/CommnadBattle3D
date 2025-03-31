@@ -1,5 +1,3 @@
-
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +24,7 @@ public class ActionContView : MonoBehaviour, IInitialize
 
     public void Initialize()
     {
-        
+
     }
 
     /// <summary>
@@ -38,7 +36,7 @@ public class ActionContView : MonoBehaviour, IInitialize
         {
             return;
         }
-
+        _rangeObj.transform.position = transform.position;
         _rangeObj.transform.localScale = actionModel.AttackRange * Vector3.one;
     }
 }
