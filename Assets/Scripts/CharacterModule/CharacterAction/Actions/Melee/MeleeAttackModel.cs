@@ -1,8 +1,8 @@
 using System;
 
-public class MeleeAttackAction : CharacterActionBase
+public class MeleeAttackModel : CharacterActionBase
 {
-    public MeleeAttackAction()
+    public MeleeAttackModel()
     {
         _attackRange = 2.0f;
         _scopeOfEffect = 1.0f;

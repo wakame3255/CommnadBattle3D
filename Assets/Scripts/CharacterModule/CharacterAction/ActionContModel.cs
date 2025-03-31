@@ -1,6 +1,6 @@
 using System;
 
-public class ActionModel : IInitialize
+public class ActionContModel : IInitialize
 {
     public void Initialize()
     {
@@ -10,5 +10,5 @@ public class ActionModel : IInitialize
     /// <summary>
     /// 攻撃アクション
     /// </summary>
-    private MeleeAttackAction _meleeAttackAction;
+    private MeleeAttackModel _meleeAttackAction;
 }
