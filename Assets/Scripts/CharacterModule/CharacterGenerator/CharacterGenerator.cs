@@ -51,7 +51,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
 
         ActionMVPData actionMVPData = _actionViewBasePrefab.CreateAction(this.transform);
         //プレイヤーのアクション機能の生成
-        List<CharacterActionBase> actionBases = new List<CharacterActionBase>();
+        List<ActionModelBase> actionBases = new List<ActionModelBase>();
         actionBases.Add(actionMVPData.Model);
         ActionContModel actionContModel = new ActionContModel(characterStatusModel, actionBases);
 
@@ -60,6 +60,8 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         actionViewBases.Add(actionMVPData.View);
         ActionContView actionContView = player.AddComponent<ActionContView>();
         actionContView.SetActionView(actionViewBases);
+
+        new ActionContPresenter(actionContModel, actionContView).Bind();
 
         //キャラクターの情報注入
         _updateHandlers.Add(playerMoveModel);

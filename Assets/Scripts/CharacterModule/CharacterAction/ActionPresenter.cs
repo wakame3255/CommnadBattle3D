@@ -3,11 +3,11 @@ using R3;
 
 public class ActionPresenter : IBinder
 {
-    CharacterActionBase _model;
+    ActionModelBase _model;
 
     ActionViewBase _view;
 
-    public ActionPresenter(CharacterActionBase model, ActionViewBase view)
+    public ActionPresenter(ActionModelBase model, ActionViewBase view)
     {
         _model = model;
         _view = view;
@@ -16,6 +16,6 @@ public class ActionPresenter : IBinder
     public void Bind()
     {
       _view.ActionButton.OnClickAsObservable()
-          .Subscribe(_ => _model.DoAction());
+          .Subscribe(_ => _model.NoticeActionModel());
     }
 }
