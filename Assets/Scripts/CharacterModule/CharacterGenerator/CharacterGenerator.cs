@@ -22,7 +22,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     /// <summary>
     /// 攻撃計算を行うクラス
     /// </summary>
-    private AttackCalculation _attackCalculation = new AttackCalculation();
+    private AttackService _attackCalculation = new AttackService();
 
     /// <summary>
     /// プレイヤーキャラクターのモデルを受け取る

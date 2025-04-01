@@ -1,0 +1,49 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+ディレクトリ構成と、実装の際に参考にしてほしい既存ファイルの例について説明します。
+
+■ ディレクトリ構成
+設計思想として、MVPを採用しています。
+---
+
+CommnadBattle3D/Assets/Scripts/
+├── CharacterModule/           # キャラクター関連のモジュール
+├── Input/                    # 入力処理関連
+├── Tests/                    # テストコード
+├── Containar/               # DIコンテナ関連
+├── AStare/                  # A*経路探索アルゴリズム
+├── Common/                  # 共通機能
+├── MVP/                     # MVPアーキテクチャの基本実装
+├── InGame/                  # ゲーム進行関連
+└── Utility/                # ユーティリティ機能
+
+CharacterModule/
+├── AttackService.cs          # 攻撃処理サービス
+├── CharacterGenerator/       # キャラクター生成関連
+├── CharacterAction/         # キャラクターアクション関連
+├── CharacterStatus/         # キャラクターステータス関連
+├── MoveHandler/            # 移動処理関連
+└── CharacterCont/          # キャラクター制御関連
+
+CharacterModule/CharacterAction/
+├── Actions/                 # 具体的なアクション実装
+├── ActionContView.cs        # アクションコンテナのView
+├── ActionContPresenter.cs   # アクションコンテナのPresenter
+├── ActionContModel.cs       # アクションコンテナのModel
+├── ActionModelBase.cs       # アクションModelの基底クラス
+├── ActionPresenter.cs       # アクションのPresenter
+├── ActionViewBase.cs        # アクションViewの基底クラス
+└── IActionNotice.cs        # アクション通知インターフェース
+
+CharacterModule/CharacterAction/Actions/
+├── Melee/                  # 近接攻撃関連
+├── ActionFactoryBase.cs    # アクションファクトリーの基底クラス
+└── ISetActionModel.cs      # アクションモデル設定インターフェース
+
+CharacterModule/CharacterAction/Actions/Melee/
+├── MeleeAttackModel.cs     # 近接攻撃のModel
+├── MeleeAttackFactory.cs   # 近接攻撃のファクトリー
+└── MeleeAttackView.cs      # 近接攻撃のView
