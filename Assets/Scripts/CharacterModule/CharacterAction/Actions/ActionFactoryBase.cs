@@ -7,7 +7,7 @@ public abstract class ActionFactoryBase : MonoBehaviour
     /// アクションのモデルとviewを返す
     /// </summary>
     /// <returns>modelとview</returns>
-    public abstract ActionMVPData CreateAction(Transform parent);
+    public abstract ActionMVPData CreateAction(Transform parent, IAttackHandler attackService);
 }
 
 public class ActionMVPData

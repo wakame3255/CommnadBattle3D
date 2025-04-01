@@ -20,9 +20,9 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     private List<IUpdateHandler> _updateHandlers = new List<IUpdateHandler>();
 
     /// <summary>
-    /// 攻撃計算を行うクラス
+    /// 攻撃を行うクラス
     /// </summary>
-    private AttackCalculation _attackCalculation = new AttackCalculation();
+    private AttackService _attackService = new AttackService();
 
     /// <summary>
     /// プレイヤーキャラクターのモデルを受け取る
@@ -49,7 +49,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         MoveModel playerMoveModel = new MoveModel(path, characterStatusModel);
         new MovePresenter(playerMoveModel, playerView).Bind();
 
-        ActionMVPData actionMVPData = _actionViewBasePrefab.CreateAction(this.transform);
+        ActionMVPData actionMVPData = _actionViewBasePrefab.CreateAction(this.transform, _attackService);
         //プレイヤーのアクション機能の生成
         List<ActionModelBase> actionBases = new List<ActionModelBase>();
         actionBases.Add(actionMVPData.Model);
@@ -68,7 +68,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
 
         if (player.TryGetComponent<Collider>(out Collider collider))
         {
-            _attackCalculation.AddDamageNotice(characterStatusModel, collider);
+            _attackService.AddDamageNotice(characterStatusModel, collider);
         }
     }
 
