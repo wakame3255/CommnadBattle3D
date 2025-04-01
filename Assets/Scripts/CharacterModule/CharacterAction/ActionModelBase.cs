@@ -22,6 +22,11 @@ public abstract class ActionModelBase
     protected ISetActionModel _contModel;
 
     /// <summary>
+    /// 攻撃を行うサービス
+    /// </summary>
+    protected IAttackHandler _attackService;
+
+    /// <summary>
     /// 行動を実行する（引数としてアクション対象を選択？）
     /// </summary>
     public abstract void DoAction();
