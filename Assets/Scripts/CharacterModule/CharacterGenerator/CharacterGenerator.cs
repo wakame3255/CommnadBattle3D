@@ -20,7 +20,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     private List<IUpdateHandler> _updateHandlers = new List<IUpdateHandler>();
 
     /// <summary>
-    /// 攻撃計算を行うクラス
+    /// 攻撃を行うクラス
     /// </summary>
     private AttackService _attackService = new AttackService();
 
