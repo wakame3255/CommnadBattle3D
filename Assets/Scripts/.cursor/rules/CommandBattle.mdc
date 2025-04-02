@@ -1,6 +1,11 @@
 ---
 description: 
 globs: 
+alwaysApply: false
+---
+---
+description: 
+globs: 
 alwaysApply: true
 ---
 
@@ -24,7 +29,8 @@ alwaysApply: true
 - コードの意図・背景などのコメントを各行に積極的に入れてください。また関数にはsummaryを入れることが推奨されます。
 - MVPにおけるModelとPresenterはMonoBehaviour
 を継承しないでください。
--ViewはMonoBehaviourを継承しても大丈夫です。
+- ViewはMonoBehaviourを継承しても大丈夫です。
+- コードの変更を勝手に適応しないでください。
 ---
 
 それでは、指示に従ってタスクを遂行してください。
