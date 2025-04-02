@@ -19,13 +19,16 @@ public class ActionContModel : IInitialize, ISetActionModel
 
     private List<ActionModelBase> _actionList = new List<ActionModelBase>();
 
-    public ActionContModel(IActionNotice actionNotice, List<ActionModelBase> characterActions)
+    public ActionContModel(IActionNotice actionNotice, INoticePosition noticePosition, List<ActionModelBase> characterActions)
     {
         _actionNotice = actionNotice;
         _actionList = characterActions;
 
+        //キャラクターの位置を購読
+        noticePosition.RPTransformPosition.Subscribe(pos => SetCharacterPos(Vector3Extensions.ToUnityVector3(pos)));
+
         //依存注入
-        foreach(ActionModelBase modelBase in _actionList)
+        foreach (ActionModelBase modelBase in _actionList)
         {
             modelBase.SetActionCont(this);
         }
@@ -39,5 +42,10 @@ public class ActionContModel : IInitialize, ISetActionModel
     public void SetActionModel(ActionModelBase characterAction)
     {
         _rPCurrentAction.Value = characterAction;
+    }
+
+    private void SetCharacterPos(Vector3 pos)
+    {
+        _characterPos = pos;
     }
 }

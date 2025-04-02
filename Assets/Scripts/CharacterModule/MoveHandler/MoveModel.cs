@@ -2,7 +2,7 @@ using System;
 using System.Numerics;
 using R3;
 
-public class MoveModel : IInitialize, IUpdateHandler
+public class MoveModel : IInitialize, IUpdateHandler, INoticePosition
 {
     private IPathAgenter _pathAgent;
 

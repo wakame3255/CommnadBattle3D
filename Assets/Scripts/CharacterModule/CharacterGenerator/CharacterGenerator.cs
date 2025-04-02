@@ -53,7 +53,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         //プレイヤーのアクション機能の生成
         List<ActionModelBase> actionBases = new List<ActionModelBase>();
         actionBases.Add(actionMVPData.Model);
-        ActionContModel actionContModel = new ActionContModel(characterStatusModel, actionBases);
+        ActionContModel actionContModel = new ActionContModel(characterStatusModel, playerMoveModel, actionBases);
 
         //プレイヤーのアクションビューの生成
         List<ActionViewBase> actionViewBases = new List<ActionViewBase>();
