@@ -1,7 +1,7 @@
 using System;
 using R3;
 
-public class PlayerCharacterContModel : ICharacterStateHandler, IPlayerContModel
+public class PlayerCharacterContModel : ICharacterStateController, IPlayerContModel
 {
     //プレイヤーの状態
     private ReactiveProperty<CharacterState> _rPCurrentState;

@@ -22,17 +22,17 @@ public class TurnControllerModel : IInitialize, IDisposable
     /// <summary>
     /// 現在のキャラクター保持
     /// </summary>
-    private ICharacterStateHandler _currentCharacter;
+    private ICharacterStateController _currentCharacter;
 
     /// <summary>
     /// キャラクターイベント
     /// </summary>
-    private ReactiveProperty<List<ICharacterStateHandler>> _characterStateHandlers;
+    private ReactiveProperty<List<ICharacterStateController>> _characterStateHandlers;
 
     /// <summary>
     /// キャラクターステートハンドラーのイベント公開
     /// </summary>
-    public ReadOnlyReactiveProperty<List<ICharacterStateHandler>> CharacterStateHandlers { get => _characterStateHandlers; }
+    public ReadOnlyReactiveProperty<List<ICharacterStateController>> CharacterStateHandlers { get => _characterStateHandlers; }
 
     private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
@@ -53,7 +53,7 @@ public class TurnControllerModel : IInitialize, IDisposable
 
     public void Initialize()
     {
-        _characterStateHandlers = new ReactiveProperty<List<ICharacterStateHandler>>();
+        _characterStateHandlers = new ReactiveProperty<List<ICharacterStateController>>();
 
         GenerateCharacter();
 
@@ -132,7 +132,7 @@ public class TurnControllerModel : IInitialize, IDisposable
     /// 行動するキャラクターステートの購読
     /// </summary>
     /// <param name="characterState"></param>
-    private void SubscribeCharacterState(ICharacterStateHandler characterState)
+    private void SubscribeCharacterState(ICharacterStateController characterState)
     {
         _currentCharacter = characterState;
 
@@ -149,7 +149,7 @@ public class TurnControllerModel : IInitialize, IDisposable
     /// </summary>
     /// <param name="characterState">現在のキャラクター</param>
     /// <returns>次のキャラのインデックス</returns>
-    private int GetNextCharacterStateIndex(ICharacterStateHandler characterState)
+    private int GetNextCharacterStateIndex(ICharacterStateController characterState)
     {
         //今保持しているキャラクターのインデックスを取得
         int currentIndex = _characterStateHandlers.Value.IndexOf(characterState);

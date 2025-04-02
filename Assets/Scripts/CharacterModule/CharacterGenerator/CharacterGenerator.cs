@@ -12,7 +12,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     [SerializeField, Required, Obsolete]
     private MeleeAttackFactory _actionViewBasePrefab = default;
 
-    private List<ICharacterStateHandler> _characterStateHandlers = new List<ICharacterStateHandler>();
+    private List<ICharacterStateController> _characterStateHandlers = new List<ICharacterStateController>();
 
     /// <summary>
     /// 更新処理を行うハンドラ群
@@ -36,7 +36,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         _characterStateHandlers.Add(playerCharacterContModel);
 
         //キャラクターステータスの生成
-        CharacterStatusModel characterStatusModel = new CharacterStatusModel(playerCharacterContModel);
+        CharacterStatusModel characterStatusModel = new CharacterStatusModel(playerCharacterContModel, Faction.Player);
         new CharacterStatusPresenter(characterStatusModel, characterStatus).Bind();
 
         //プレイヤーのインプット情報依存注入
@@ -66,10 +66,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         //キャラクターの情報注入
         _updateHandlers.Add(playerMoveModel);
 
-        if (player.TryGetComponent<Collider>(out Collider collider))
-        {
-            _attackService.AddDamageNotice(characterStatusModel, collider);
-        }
+        AttachCollider(player, characterStatusModel);
     }
 
     [Obsolete("いずれは依存をなくしたい")]
@@ -81,12 +78,44 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         }
     }
 
-    public List<ICharacterStateHandler> GenerateCharacter()
+    public List<ICharacterStateController> GenerateCharacter()
     {
-        _characterStateHandlers.Add(new CpuCharacterContModel());
-        _characterStateHandlers.Add(new CpuCharacterContModel());
-        _characterStateHandlers.Add(new CpuCharacterContModel());
+
+        for (int i = 0; i < 3; i++)
+        {
+            CpuCharacterContModel cpuCharacterContModel = new CpuCharacterContModel();
+
+            _characterStateHandlers.Add(cpuCharacterContModel);
+
+            SetupCpuCharacter(cpuCharacterContModel);
+        }
 
         return _characterStateHandlers;
+    }
+
+    private void SetupCpuCharacter(ICharacterStateController characterState)
+    {
+        //敵の生成
+        GameObject enemy = Instantiate(_characterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+
+        //キャラクターステータスの生成
+        CharacterStatusModel characterStatusModel = new CharacterStatusModel(characterState, Faction.Enemy);
+
+        AttachCollider(enemy, characterStatusModel);
+    }
+
+    /// <summary>
+    /// コライダーを付与するメソッド
+    /// </summary>
+    /// <param name="character">キャラクター</param>
+    /// <param name="characterState">ステータス</param>
+    private void AttachCollider(GameObject character, CharacterStatusModel characterState)
+    {
+        if (!character.TryGetComponent<Collider>(out Collider collider))
+        {
+            collider = character.AddComponent<CapsuleCollider>();
+        }
+
+        _attackService.AddDamageNotice(characterState, collider);
     }
 }

@@ -7,7 +7,7 @@ public enum CharacterState
     End,
 }
 
-public interface ICharacterStateHandler
+public interface ICharacterStateController
 {
     /// <summary>
     /// キャラクターの現在の状態

@@ -1,7 +1,7 @@
 using System;
 using R3;
 
-public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDamageNotice
+public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDamageNotice, IFactionMember
 {
     /// <summary>
     /// 残りの移動距離
@@ -20,19 +20,30 @@ public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDa
     /// </summary>
     private ReactiveProperty<int> _rPHealth;
     public ReadOnlyReactiveProperty<int> RPHealth { get => _rPHealth; }
+
     //プレイヤーの状態
     private ReactiveProperty<CharacterState> _rPCurrentState;
     //プレイヤーの状態公開
     public ReadOnlyReactiveProperty<CharacterState> RPCurrentState { get => _rPCurrentState; }
 
     /// <summary>
+    /// キャラクターの派閥
+    /// </summary>
+    private Faction _faction = Faction.Neutral;
+    public Faction Faction { get => _faction; }
+
+    /// <summary>
     /// キャラクターの状態ハンドラ
     /// </summary>
-    private ICharacterStateHandler _stateHandler;
+    private ICharacterStateController _stateHandler;
 
-    public CharacterStatusModel(ICharacterStateHandler stateHandler)
+    public CharacterStatusModel(ICharacterStateController stateHandler, Faction faction)
     {
         _stateHandler = stateHandler;
+
+        _faction = faction;
+
+        Initialize();
     }
 
     public void Initialize()

@@ -13,6 +13,7 @@ public class MeleeAttackModel : ActionModelBase
     }
     public override void DoAction()
     {
-        //攻撃処理
+        DebugUtility.Log("MeleeAttackModel DoAction");
+        _attackService.ExecuteAttack(_actionNotifier.CharacterPos, _scopeOfEffect, 10, _owner.Faction);
     }
 }

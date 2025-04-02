@@ -1,31 +1,36 @@
- 
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackService : IAttackHandler
 {
-    private Dictionary<Collider, IDamageNotice> _damageNoticeMap = default;
+    private Dictionary<Collider, (IDamageNotice, IFactionMember)> _damageNoticeMap = default;
 
     public AttackService()
     {
-        _damageNoticeMap = new Dictionary<Collider, IDamageNotice>();
+        _damageNoticeMap = new Dictionary<Collider, (IDamageNotice, IFactionMember)>();
     }
 
     /// <summary>
     /// 攻撃リクエスト
     /// </summary>
-    private void RequestForAttack(Collider collider, int damage)
+    private void RequestForAttack(Collider collider, int damage, Faction owner)
     {
-        // ダメージ通知
-        if (_damageNoticeMap.TryGetValue(collider, out var damageNotice))
+        //辞書にいるキャラかの判断
+        if (!_damageNoticeMap.TryGetValue(collider, out (IDamageNotice Damage, IFactionMember Faction) hitCharacter))
         {
-            damageNotice.NotifyDamage(damage);
+            return;        
         }
-        else
+
+        //自分の陣営の場合は攻撃しない
+        if (hitCharacter.Faction.Faction == owner)
         {
-            Debug.LogError("Collider is not be found in damage notice map.");
+            DebugUtility.Log("My Friend");
+            return;
         }
+
+        //ダメージを与える
+        hitCharacter.Damage.NotifyDamage(damage);
+        DebugUtility.Log(collider.name + damage);
     }
 
     /// <summary>
@@ -34,23 +39,23 @@ public class AttackService : IAttackHandler
     /// <param name="attackPosition">攻撃を行う地点</param>
     /// <param name="attackRange">攻撃範囲</param>
     /// <param name="damage">攻撃力</param>
-    public void ExecuteAttack(Vector3 attackPosition, float attackRange, int damage)
+    public void ExecuteAttack(Vector3 attackPosition, float attackRange, int damage, Faction owner)
     {
         Collider[] hitColliders = Physics.OverlapSphere(attackPosition, attackRange);
 
         foreach (Collider hitCollider in hitColliders)
         {
-            RequestForAttack(hitCollider, damage);
+            RequestForAttack(hitCollider, damage, owner);
         }
     }
 
     /// <summary>
-    /// キャラクターの追加
+    /// キャラクターを辞書に登録
     /// </summary>
     /// <param name="damageNotice"></param>
-    public void AddDamageNotice(IDamageNotice damageNotice, Collider collider)
+    public void AddDamageNotice(CharacterStatusModel characterStatus, Collider collider)
     {
-        _damageNoticeMap.Add(collider, damageNotice);
+        _damageNoticeMap.Add(collider, (characterStatus, characterStatus));
     }
 
 
