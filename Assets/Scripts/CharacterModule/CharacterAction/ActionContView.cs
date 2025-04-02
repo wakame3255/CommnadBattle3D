@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ActionContView : MonoBehaviour, IInitialize
 {
     private List<ActionViewBase> _viewBases = new List<ActionViewBase>();
 
     private GameObject _rangeObj;
+
+    private Button _actionButton;
 
     private void Start()
     {
