@@ -24,6 +24,8 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     /// </summary>
     private AttackService _attackService = new AttackService();
 
+    private TargetSelectionModel _targetSelectionModel = new TargetSelectionModel();
+
     /// <summary>
     /// プレイヤーキャラクターのモデルを受け取る
     /// </summary>
@@ -42,12 +44,17 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         //プレイヤーのインプット情報依存注入
         MoveView playerView = player.AddComponent<MoveView>();
         playerView.SetInput(input);
+        TargetSelectionView targetSelectionView = player.AddComponent<TargetSelectionView>();
+        targetSelectionView.SetInputSelect(input);
 
         IPathAgenter path = new PathAgent(pathFind, playerView.transform);
 
         //プレイヤーの移動機能の生成
         MoveModel playerMoveModel = new MoveModel(path, characterStatusModel);
         new MovePresenter(playerMoveModel, playerView).Bind();
+
+        //プレイヤーのターゲット選択機能の生成
+        new TargetSelectionPresenter(_targetSelectionModel, targetSelectionView).Bind();
 
         ActionMVPData actionMVPData = _actionViewBasePrefab.CreateAction(this.transform, _attackService);
         //プレイヤーのアクション機能の生成
@@ -117,5 +124,6 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         }
 
         _attackService.AddDamageNotice(characterState, collider);
+        _targetSelectionModel.AddCharacterStatus(characterState, collider);
     }
 }
