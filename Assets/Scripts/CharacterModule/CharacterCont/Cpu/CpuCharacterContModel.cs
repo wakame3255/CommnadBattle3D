@@ -1,7 +1,7 @@
 using System;
 using R3;
 
-public class CpuCharacterContModel : ICharacterStateHandler
+public class CpuCharacterContModel : ICharacterStateController
 {
     private ReactiveProperty<CharacterState> _currentState;
     public ReadOnlyReactiveProperty<CharacterState> RPCurrentState { get => _currentState; }

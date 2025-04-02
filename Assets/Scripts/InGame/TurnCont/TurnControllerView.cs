@@ -13,7 +13,7 @@ public class TurnControllerView : MonoBehaviour, IInitialize
        
     }
 
-    public void UpdateView(List<ICharacterStateHandler> characterStateHandlers)
+    public void UpdateView(List<ICharacterStateController> characterStateHandlers)
     {
         for (int i = 0; i < characterStateHandlers.Count; i++)
         {

@@ -18,9 +18,10 @@ public class AttackService : IAttackHandler
     private void RequestForAttack(Collider collider, int damage)
     {
         // ダメージ通知
-        if (_damageNoticeMap.TryGetValue(collider, out var damageNotice))
+        if (_damageNoticeMap.TryGetValue(collider, out IDamageNotice damageNotice))
         {
             damageNotice.NotifyDamage(damage);
+            DebugUtility.Log(collider.name + damage);
         }
         else
         {

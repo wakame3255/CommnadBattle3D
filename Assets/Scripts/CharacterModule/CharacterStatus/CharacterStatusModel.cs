@@ -28,11 +28,13 @@ public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDa
     /// <summary>
     /// キャラクターの状態ハンドラ
     /// </summary>
-    private ICharacterStateHandler _stateHandler;
+    private ICharacterStateController _stateHandler;
 
-    public CharacterStatusModel(ICharacterStateHandler stateHandler)
+    public CharacterStatusModel(ICharacterStateController stateHandler)
     {
         _stateHandler = stateHandler;
+
+        Initialize();
     }
 
     public void Initialize()

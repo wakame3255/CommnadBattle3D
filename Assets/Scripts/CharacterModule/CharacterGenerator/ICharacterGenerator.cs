@@ -7,5 +7,5 @@ public interface ICharacterGenerator
     /// キャラクターを生成する
     /// </summary>
     /// <returns>キャラクター情報</returns>
-    public List<ICharacterStateHandler> GenerateCharacter();
+    public List<ICharacterStateController> GenerateCharacter();
 }
