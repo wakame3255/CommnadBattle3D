@@ -36,7 +36,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         _characterStateHandlers.Add(playerCharacterContModel);
 
         //キャラクターステータスの生成
-        CharacterStatusModel characterStatusModel = new CharacterStatusModel(playerCharacterContModel);
+        CharacterStatusModel characterStatusModel = new CharacterStatusModel(playerCharacterContModel, Faction.Player);
         new CharacterStatusPresenter(characterStatusModel, characterStatus).Bind();
 
         //プレイヤーのインプット情報依存注入
@@ -87,19 +87,19 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
 
             _characterStateHandlers.Add(cpuCharacterContModel);
 
-            SetCpuCharacterInfomation(cpuCharacterContModel);
+            SetupCpuCharacter(cpuCharacterContModel);
         }
 
         return _characterStateHandlers;
     }
 
-    private void SetCpuCharacterInfomation(ICharacterStateController characterState)
+    private void SetupCpuCharacter(ICharacterStateController characterState)
     {
         //敵の生成
         GameObject enemy = Instantiate(_characterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
         //キャラクターステータスの生成
-        CharacterStatusModel characterStatusModel = new CharacterStatusModel(characterState);
+        CharacterStatusModel characterStatusModel = new CharacterStatusModel(characterState, Faction.Enemy);
 
         AttachCollider(enemy, characterStatusModel);
     }

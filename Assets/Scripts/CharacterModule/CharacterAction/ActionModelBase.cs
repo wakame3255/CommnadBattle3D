@@ -19,7 +19,12 @@ public abstract class ActionModelBase
     /// <summary>
     /// 通知先
     /// </summary>
-    protected ISetActionModel _contModel;
+    protected ISetActionModel _actionNotifier;
+
+    /// <summary>
+    /// 所属派閥
+    /// </summary>
+    protected IFactionMember _owner;
 
     /// <summary>
     /// 攻撃を行うサービス
@@ -36,7 +41,7 @@ public abstract class ActionModelBase
     /// </summary>
     public void NoticeActionModel()
     {
-        _contModel?.SetActionModel(this);
+        _actionNotifier?.SetActionModel(this);
         DoAction();
     }
 
@@ -44,8 +49,9 @@ public abstract class ActionModelBase
     /// 通知先の注入
     /// </summary>
     /// <param name="actionCont">通知先</param>
-    public void SetActionCont(ISetActionModel actionCont)
+    public void SetActionCont(ActionContModel actionCont)
     {
-        _contModel = actionCont;
+        _actionNotifier = actionCont;
+        _owner = actionCont.Faction;
     }
 }

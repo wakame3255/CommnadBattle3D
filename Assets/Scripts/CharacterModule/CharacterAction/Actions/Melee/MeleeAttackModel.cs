@@ -14,6 +14,6 @@ public class MeleeAttackModel : ActionModelBase
     public override void DoAction()
     {
         DebugUtility.Log("MeleeAttackModel DoAction");
-        _attackService.ExecuteAttack(_contModel.CharacterPos, _scopeOfEffect, 10);
+        _attackService.ExecuteAttack(_actionNotifier.CharacterPos, _scopeOfEffect, 10, _owner.Faction);
     }
 }
