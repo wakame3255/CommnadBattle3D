@@ -28,8 +28,6 @@ public class TargetSelectionModel
     /// <param name="collider"></param>
     public void CheckTarget(Collider collider)
     {
-       
-
         if (collider == null)
         {
             return;
@@ -37,7 +35,6 @@ public class TargetSelectionModel
         
         if (!_characterStatusMap.ContainsKey(collider))
         {
-        
             return;
         }
         DebugUtility.Log("Target");
