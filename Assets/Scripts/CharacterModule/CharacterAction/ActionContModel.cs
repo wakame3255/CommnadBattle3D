@@ -12,6 +12,12 @@ public class ActionContModel : IInitialize, ISetActionModel
     public ReadOnlyReactiveProperty<ActionModelBase> RPCurrentAction => _rPCurrentAction;
 
     /// <summary>
+    /// 影響範囲にいるターゲット
+    /// </summary>
+    private ReactiveProperty<Collider[]> _rPTargets;
+    public ReadOnlyReactiveProperty<Collider[]> RPTargets => _rPTargets;
+
+    /// <summary>
     /// キャラクターの位置
     /// </summary>
     private Vector3 _characterPos = default;
@@ -46,11 +52,17 @@ public class ActionContModel : IInitialize, ISetActionModel
     public void Initialize()
     {
         _rPCurrentAction = new ReactiveProperty<ActionModelBase>();
+        _rPTargets = new ReactiveProperty<Collider[]>();
     }
 
     public void SetActionModel(ActionModelBase characterAction)
     {
         _rPCurrentAction.Value = characterAction;
+    }
+
+    public void SetScopeTarget(Collider[] targets)
+    {
+        _rPTargets.Value = targets;
     }
 
     private void SetCharacterPos(Vector3 pos)

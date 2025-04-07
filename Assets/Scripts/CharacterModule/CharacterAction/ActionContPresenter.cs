@@ -7,10 +7,13 @@ public class ActionContPresenter : IBinder
 
     private ActionContView _view;
 
-    public ActionContPresenter(ActionContModel model, ActionContView view)
+    private ActionHighlightsView _actionHighlights;
+
+    public ActionContPresenter(ActionContModel model, ActionContView view, ActionHighlightsView actionHighlights)
     {
         _model = model;
         _view = view;
+        _actionHighlights = actionHighlights;
 
         _model.Initialize();
         _view.Initialize();
@@ -19,5 +22,7 @@ public class ActionContPresenter : IBinder
     public void Bind()
     {
         _model.RPCurrentAction.Subscribe(_view.SetAttackRange);
+
+        _model.RPTargets.Subscribe(_actionHighlights.InstanceHighlight);
     }
 }

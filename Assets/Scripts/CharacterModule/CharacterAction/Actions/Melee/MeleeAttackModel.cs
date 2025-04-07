@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class MeleeAttackModel : ActionModelBase
 {
@@ -14,6 +16,8 @@ public class MeleeAttackModel : ActionModelBase
     public override void DoAction()
     {
         DebugUtility.Log("MeleeAttackModel DoAction");
-        _attackService.ExecuteAttack(_actionNotifier.CharacterPos, _scopeOfEffect, 10, _owner.Faction);
+        Collider[] targets = _attackService.ExecuteAttack(_actionNotifier.CharacterPos, _scopeOfEffect, 10, _owner.Faction);
+
+        _actionNotifier.SetScopeTarget(targets);
     }
 }

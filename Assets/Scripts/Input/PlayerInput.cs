@@ -27,14 +27,33 @@ public class PlayerInput : MonoBehaviour, IInputInformation
     /// </summary>
     private void GetMousePosition()
     {
+        // マウスの位置を取得
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
-            {
-                _pointerPositionRP.Value = hit.point;
-                _pointerColliderRP.Value = hit.collider;
-            }
-        }     
+            _pointerPositionRP.Value = ReturnHitInfo().point;
+        }
+
+        // マウスの位置にあるコライダーを取得
+        if (Mouse.current.leftButton.wasReleasedThisFrame)
+        {
+            _pointerColliderRP.Value = ReturnHitInfo().collider;
+            //DebugUtility.Log(_pointerColliderRP.Value.ToString());
+        }
+    }
+
+    /// <summary>
+    /// マウスの位置にあるhit情報を取得するメソッド
+    /// </summary>
+    /// <returns></returns>
+    private RaycastHit ReturnHitInfo()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
+        {
+            return hit;
+        }
+
+        return default;
     }
 }
