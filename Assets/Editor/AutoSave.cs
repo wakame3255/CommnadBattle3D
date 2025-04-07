@@ -4,6 +4,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using System;
 using System.IO;
+using System.Linq;
 
 // エディター拡張のクラス
 public class AutoSaveConfig : ScriptableObject
@@ -123,8 +124,9 @@ public class AutoSave
             return;
 
         bool anySceneDirty = false;
+        bool anyAssetDirty = false;
 
-        // 変更があるシーンを確認
+        // シーンの変更を確認
         for (int i = 0; i < SceneManager.sceneCount; i++)
         {
             if (SceneManager.GetSceneAt(i).isDirty)
@@ -134,15 +136,25 @@ public class AutoSave
             }
         }
 
-        // 変更があるシーンがある場合のみ保存
+        // アセットの変更を確認
+        string[] dirtyAssets = AssetDatabase.GetAllAssetPaths()
+            .Where(path => EditorUtility.IsDirty(AssetDatabase.LoadMainAssetAtPath(path)))
+            .ToArray();
+        anyAssetDirty = dirtyAssets.Length > 0;
+
+        // 変更があるシーンのみ保存
         if (anySceneDirty)
         {
             EditorSceneManager.SaveOpenScenes();
             Debug.Log($"[AutoSave] シーンを自動保存しました: {DateTime.Now}");
         }
 
-        AssetDatabase.SaveAssets();
-        Debug.Log($"[AutoSave] アセットを自動保存しました: {DateTime.Now}");
+        // 変更があるアセットのみ保存
+        if (anyAssetDirty)
+        {
+            AssetDatabase.SaveAssets();
+            Debug.Log($"[AutoSave] アセットを自動保存しました: {DateTime.Now}");
+        }
     }
 
     // 設定更新時に呼び出すメソッド
