@@ -16,8 +16,7 @@ public class PlayerInput : MonoBehaviour, IInputInformation
     /// マウスの位置にあるコライダー
     /// </summary>
     private ReactiveProperty<Collider> _pointerColliderRP = new ReactiveProperty<Collider>();
-    public ReadOnlyReactiveProperty<Collider> PointerCollider { get; }
-
+    public ReadOnlyReactiveProperty<Collider> PointerCollider => _pointerColliderRP;
     private void Update()
     {
         GetMousePosition();       
