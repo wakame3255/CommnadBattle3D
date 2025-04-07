@@ -5,11 +5,17 @@ using System.Collections.Generic;
 
 public class TargetSelectionModel
 {
-    private Dictionary<Collider, CharacterStatusModel> _characterStatusMap = default;
+    private Dictionary<Collider, CharacterStatusModel> _characterStatusMap;
+
+    private ReactiveProperty<CharacterStatusModel> _rPCharacterStatus;
+
+    public ReadOnlyReactiveProperty<CharacterStatusModel> RPCharacterStatus => _rPCharacterStatus;
 
     public TargetSelectionModel()
     {
         _characterStatusMap = new Dictionary<Collider, CharacterStatusModel>();
+
+        _rPCharacterStatus = new ReactiveProperty<CharacterStatusModel>();
     }
 
     /// <summary>
@@ -33,10 +39,12 @@ public class TargetSelectionModel
             return;
         }
         
-        if (!_characterStatusMap.ContainsKey(collider))
+        if (!_characterStatusMap.TryGetValue(collider, out CharacterStatusModel characterStatus))
         {
             return;
         }
-        DebugUtility.Log("Target");
+
+        //キャラクターの状態を取得
+        _rPCharacterStatus.Value = characterStatus;
     }
 }
