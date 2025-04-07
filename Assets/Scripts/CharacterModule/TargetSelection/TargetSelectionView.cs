@@ -7,7 +7,7 @@ using VContainer;
 
 public class TargetSelectionView : MonoBehaviour
 {
-    private ReactiveProperty<Collider> _rPSelectedTarget = default;
+    private ReactiveProperty<Collider> _rPSelectedTarget = new ReactiveProperty<Collider>();
     public ReadOnlyReactiveProperty<Collider> RPSelectedTarget => _rPSelectedTarget;
 
     /// <summary>
