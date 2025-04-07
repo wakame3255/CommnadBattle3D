@@ -31,7 +31,13 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     /// </summary>
     /// <param name="playerCharacterContModel">プレイヤー</param>
     [Inject]
-    public void GeneratePlayer(PlayerCharacterContModel playerCharacterContModel, CharacterStatusView characterStatus, IInputInformation input, PathFind pathFind, SelectTargetStatusView statusView)
+    public void GeneratePlayer(
+        PlayerCharacterContModel playerCharacterContModel,
+        CharacterStatusView characterStatus,
+        IInputInformation input,
+        PathFind pathFind,
+        SelectTargetStatusView statusView,
+        ActionHighlightsView highlightsView)
     {
         GameObject player = Instantiate(_characterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
@@ -68,7 +74,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         ActionContView actionContView = player.AddComponent<ActionContView>();
         actionContView.SetActionView(actionViewBases);
 
-        new ActionContPresenter(actionContModel, actionContView).Bind();
+        new ActionContPresenter(actionContModel, actionContView, highlightsView).Bind();
 
         //キャラクターの情報注入
         _updateHandlers.Add(playerMoveModel);

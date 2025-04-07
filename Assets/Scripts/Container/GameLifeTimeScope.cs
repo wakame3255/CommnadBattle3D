@@ -22,6 +22,7 @@ public class GameLifeTimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<PlayerCharacterContView>();
         builder.RegisterComponentInHierarchy<CharacterStatusView>();
         builder.RegisterComponentInHierarchy<SelectTargetStatusView>();
+        builder.RegisterComponentInHierarchy<ActionHighlightsView>();
 
         //キャラクター生成機能の登録
         builder.RegisterComponentInHierarchy<CharacterGenerator>().As<ICharacterGenerator, CharacterGenerator>();

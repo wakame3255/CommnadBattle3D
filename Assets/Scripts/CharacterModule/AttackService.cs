@@ -39,7 +39,7 @@ public class AttackService : IAttackHandler
     /// <param name="attackPosition">攻撃を行う地点</param>
     /// <param name="attackRange">攻撃範囲</param>
     /// <param name="damage">攻撃力</param>
-    public void ExecuteAttack(Vector3 attackPosition, float attackRange, int damage, Faction owner)
+    public Collider[] ExecuteAttack(Vector3 attackPosition, float attackRange, int damage, Faction owner)
     {
         Collider[] hitColliders = Physics.OverlapSphere(attackPosition, attackRange);
 
@@ -47,6 +47,8 @@ public class AttackService : IAttackHandler
         {
             RequestForAttack(hitCollider, damage, owner);
         }
+
+        return hitColliders;
     }
 
     /// <summary>
