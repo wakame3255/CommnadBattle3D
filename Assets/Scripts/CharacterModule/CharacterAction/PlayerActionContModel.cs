@@ -25,14 +25,28 @@ public class PlayerActionContModel : ActionContModelBase
     }
 
     /// <summary>
-    /// ターゲット選択の情報を挿入
+    /// ターゲット選択の情報を挿入し、情報の更新を行う
     /// </summary>
     /// <param name="target"></param>
-    private void SetSelectTargetl(Collider target)
+    private void SetSelectTargetl(Collider selectTarget)
     {
-        List<Collider> targets = new List<Collider>();
-        targets.Add(target);
+        List<SelectionTargetData> targetData = new List<SelectionTargetData>();
 
-        _rPTargets.Value = targets;
+        //選択されたターゲットのみハイライトの変更
+        foreach (SelectionTargetData scopeTarget in _rPTargets.CurrentValue)
+        {
+            if (scopeTarget.Collider == selectTarget)
+            {
+                targetData.Add(new SelectionTargetData(scopeTarget.Collider, true));
+            }
+            else
+            {
+                targetData.Add(new SelectionTargetData(scopeTarget.Collider, false));
+            }
+        }
+
+        _rPTargets.Value = targetData;
+
+        DebugUtility.Log("助長オブ");
     }
 }

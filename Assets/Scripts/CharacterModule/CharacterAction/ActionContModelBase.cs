@@ -3,6 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
+public class SelectionTargetData
+{
+    private Collider _collider;
+    private bool _isSelected;
+
+    public Collider Collider => _collider;
+    public bool IsSelected => _isSelected;
+
+    public SelectionTargetData(Collider collider, bool isSelected)
+    {
+        _collider = collider;
+        _isSelected = isSelected;
+    }
+}
 public abstract class ActionContModelBase : IInitialize, ISetActionModel
 {
     /// <summary>
@@ -14,8 +28,8 @@ public abstract class ActionContModelBase : IInitialize, ISetActionModel
     /// <summary>
     /// 影響範囲にいるターゲット
     /// </summary>
-    protected ReactiveProperty<List<Collider>> _rPTargets = new ReactiveProperty<List<Collider>>();
-    public ReadOnlyReactiveProperty<List<Collider>> RPTargets => _rPTargets;
+    protected ReactiveProperty<List<SelectionTargetData>> _rPTargets = new ReactiveProperty<List<SelectionTargetData>>();
+    public ReadOnlyReactiveProperty<List<SelectionTargetData>> RPTargets => _rPTargets;
 
     /// <summary>
     /// キャラクターの位置
@@ -36,17 +50,33 @@ public abstract class ActionContModelBase : IInitialize, ISetActionModel
     public void Initialize()
     {
         _rPCurrentAction = new ReactiveProperty<ActionModelBase>();
-        _rPTargets = new ReactiveProperty<List<Collider>>();
+        _rPTargets = new ReactiveProperty<List<SelectionTargetData>>();
     }
 
+    /// <summary>
+    /// 現在選択されている行動を格納
+    /// </summary>
+    /// <param name="characterAction"></param>
     public void SetActionModel(ActionModelBase characterAction)
     {
         _rPCurrentAction.Value = characterAction;
     }
 
+    /// <summary>
+    /// 範囲内のターゲットを格納
+    /// </summary>
+    /// <param name="targets"></param>
     public void SetScopeTarget(List<Collider> targets)
     {
-        _rPTargets.Value = targets;
+        List<SelectionTargetData> targetList = new List<SelectionTargetData>();
+
+        foreach (Collider target in targets)
+        {
+            SelectionTargetData targetData = new SelectionTargetData(target, false);
+            targetList.Add(targetData);
+        }
+
+        _rPTargets.Value = targetList;
     }
 
     protected void SetCharacterPos(Vector3 pos)

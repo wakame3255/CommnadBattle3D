@@ -248,6 +248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _highlightPrefab: {fileID: 8187697595770817015, guid: 272a723c6d588f54fb9b0176d767528a, type: 3}
+  _selectHighlightPrefab: {fileID: 8187697595770817015, guid: 54a54948f515ac34694124c923eb945c, type: 3}
 --- !u!1 &198370883
 GameObject:
   m_ObjectHideFlags: 0
