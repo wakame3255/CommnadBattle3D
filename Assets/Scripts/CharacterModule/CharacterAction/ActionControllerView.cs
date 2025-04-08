@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ActionContView : MonoBehaviour, IInitialize
+public class ActionControllerView : MonoBehaviour, IInitialize
 {
     private List<ActionViewBase> _viewBases = new List<ActionViewBase>();
 

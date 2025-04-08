@@ -10,14 +10,14 @@ public abstract class ActionViewBase : MonoBehaviour, IInitialize
 
     public Button ActionButton => _actionButton;
 
-    protected ActionContView _actionContView;
+    protected ActionControllerView _actionContView;
 
     public void Initialize()
     {
         
     }
 
-    public void SetActionContView(ActionContView actionCont)
+    public void SetActionContView(ActionControllerView actionCont)
     {
         _actionContView = actionCont;
     }

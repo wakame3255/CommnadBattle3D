@@ -17,7 +17,7 @@ public class SelectionTargetData
         _isSelected = isSelected;
     }
 }
-public abstract class ActionContModelBase : IInitialize, ISetActionModel
+public abstract class ActionControllerModelBase : IInitialize, ISetActionModel
 {
     /// <summary>
     /// 現在選択している行動
@@ -79,7 +79,7 @@ public abstract class ActionContModelBase : IInitialize, ISetActionModel
         _rPTargets.Value = targetList;
     }
 
-    protected void SetCharacterPos(Vector3 pos)
+    protected void SetCharacterPosition(Vector3 pos)
     {
         _characterPos = pos;
     }

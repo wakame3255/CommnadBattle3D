@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using R3;
 using UnityEngine;
-public class PlayerActionContModel : ActionContModelBase
+public class PlayerActionControllerModel : ActionControllerModelBase
 {
     private TargetSelectionModel _targetSelectionModel;
-    public PlayerActionContModel(CharacterStatusModel actionContModel, INoticePosition noticePosition, List<ActionModelBase> characterActions, TargetSelectionModel selectionModel)
+    public PlayerActionControllerModel(CharacterStatusModel actionContModel, INoticePosition noticePosition, List<ActionModelBase> characterActions, TargetSelectionModel selectionModel)
     {
         _actionNotice = actionContModel;
         _actionList = characterActions;
@@ -13,9 +13,9 @@ public class PlayerActionContModel : ActionContModelBase
         _targetSelectionModel = selectionModel;
 
         //キャラクターの位置を購読
-        noticePosition.RPTransformPosition.Subscribe(pos => SetCharacterPos(Vector3Extensions.ToUnityVector3(pos)));
+        noticePosition.RPTransformPosition.Subscribe(pos => SetCharacterPosition(Vector3Extensions.ToUnityVector3(pos)));
         //ターゲット選択の情報を購読
-        selectionModel.RPSelectedTarget.Subscribe(SetSelectTargetl);
+        selectionModel.RPSelectedTarget.Subscribe(SetSelectTarget);
 
         //依存注入
         foreach (ActionModelBase modelBase in _actionList)
@@ -28,7 +28,7 @@ public class PlayerActionContModel : ActionContModelBase
     /// ターゲット選択の情報を挿入し、情報の更新を行う
     /// </summary>
     /// <param name="target"></param>
-    private void SetSelectTargetl(Collider selectTarget)
+    private void SetSelectTarget(Collider selectTarget)
     {
         List<SelectionTargetData> targetData = new List<SelectionTargetData>();
 

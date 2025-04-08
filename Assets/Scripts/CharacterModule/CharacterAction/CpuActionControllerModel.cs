@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using R3;
 using UnityEngine;
-public class CpuActionContModel : ActionContModelBase
+public class CpuActionControllerModel : ActionControllerModelBase
 {
 
 
-    public CpuActionContModel(CharacterStatusModel actionContModel, INoticePosition noticePosition, List<ActionModelBase> characterActions)
+    public CpuActionControllerModel(CharacterStatusModel actionContModel, INoticePosition noticePosition, List<ActionModelBase> characterActions)
     {
         _actionNotice = actionContModel;
         _actionList = characterActions;
@@ -14,7 +14,7 @@ public class CpuActionContModel : ActionContModelBase
        
 
         //キャラクターの位置を購読
-        noticePosition.RPTransformPosition.Subscribe(pos => SetCharacterPos(Vector3Extensions.ToUnityVector3(pos)));
+        noticePosition.RPTransformPosition.Subscribe(pos => SetCharacterPosition(Vector3Extensions.ToUnityVector3(pos)));
         
 
         //依存注入

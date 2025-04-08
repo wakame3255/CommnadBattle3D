@@ -1,15 +1,15 @@
 using System;
 using R3;
 
-public class ActionContPresenter : IBinder
+public class ActionControllerPresenter : IBinder
 {
-    private ActionContModelBase _model;
+    private ActionControllerModelBase _model;
 
-    private ActionContView _view;
+    private ActionControllerView _view;
 
     private ActionHighlightsView _actionHighlights;
 
-    public ActionContPresenter(ActionContModelBase model, ActionContView view, ActionHighlightsView actionHighlights)
+    public ActionControllerPresenter(ActionControllerModelBase model, ActionControllerView view, ActionHighlightsView actionHighlights)
     {
         _model = model;
         _view = view;
