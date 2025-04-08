@@ -40,6 +40,6 @@ public class MoveView : MonoBehaviour, IInitialize
     {
        _rPClickPos.Value = clickPos;
 
-        DebugUtility.Log("ClickPos" + clickPos);
+        //DebugUtility.Log("ClickPos" + clickPos);
     }
 }

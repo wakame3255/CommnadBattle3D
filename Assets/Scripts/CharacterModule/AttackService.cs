@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.UI.GridLayoutGroup;
 
 public class AttackService : IAttackHandler
 {
@@ -11,54 +14,79 @@ public class AttackService : IAttackHandler
     }
 
     /// <summary>
-    /// 攻撃リクエスト
+    ///  攻撃を行うための判定処理
     /// </summary>
-    private void RequestForAttack(Collider collider, int damage, Faction owner)
+    /// <param name="damage">攻撃力</param>
+    public void ExecuteAttack(List<Collider> attackTarget, int damage)
     {
-        //辞書にいるキャラかの判断
-        if (!_damageNoticeMap.TryGetValue(collider, out (IDamageNotice Damage, IFactionMember Faction) hitCharacter))
+        foreach (Collider target in attackTarget)
         {
-            return;        
+            if (_damageNoticeMap.TryGetValue(target, out (IDamageNotice Damage, IFactionMember Faction) hitCharacter))
+            {
+                //ダメージを与える
+                hitCharacter.Damage.NotifyDamage(damage);
+                DebugUtility.Log(target.ToString() + damage);
+            }             
         }
-
-        //自分の陣営の場合は攻撃しない
-        if (hitCharacter.Faction.Faction == owner)
-        {
-            DebugUtility.Log("My Friend");
-            return;
-        }
-
-        //ダメージを与える
-        hitCharacter.Damage.NotifyDamage(damage);
-        DebugUtility.Log(collider.name + damage);
     }
 
     /// <summary>
-    ///  攻撃を行うための判定処理
+    /// 攻撃範囲を取得する
     /// </summary>
-    /// <param name="attackPosition">攻撃を行う地点</param>
-    /// <param name="attackRange">攻撃範囲</param>
-    /// <param name="damage">攻撃力</param>
-    public Collider[] ExecuteAttack(Vector3 attackPosition, float attackRange, int damage, Faction owner)
+    /// <param name="attackPosition"></param>
+    /// <param name="attackRange"></param>
+    /// <param name="owner"></param>
+    /// <returns>範囲内の対象</returns>
+    public List<Collider> ReturnScopeTarget(Vector3 attackPosition, float attackRange, Faction owner)
     {
         Collider[] hitColliders = Physics.OverlapSphere(attackPosition, attackRange);
 
-        foreach (Collider hitCollider in hitColliders)
-        {
-            RequestForAttack(hitCollider, damage, owner);
-        }
-
-        return hitColliders;
+        return ReturnOtherThanOneselfStatus(hitColliders.ToList(), owner);
     }
 
     /// <summary>
-    /// キャラクターを辞書に登録
+    /// 辞書に登録
     /// </summary>
-    /// <param name="damageNotice"></param>
+    /// <param name="characterStatus"></param>
+    /// <param name="collider"></param>
     public void AddDamageNotice(CharacterStatusModel characterStatus, Collider collider)
     {
         _damageNoticeMap.Add(collider, (characterStatus, characterStatus));
     }
 
+    /// <summary>
+    /// 攻撃リクエスト
+    /// </summary>
+    private void RequestForAttack(List<Collider> targets, int damage)
+    {
+      
+    }
 
+    /// <summary>
+    /// 自分以外のキャラクターを取得する
+    /// </summary>
+    /// <param name="checkTargets"></param>
+    /// <param name="owner"></param>
+    /// <returns>自身を抜いたターゲット</returns>
+    private List<Collider> ReturnOtherThanOneselfStatus(List<Collider> checkTargets, Faction owner)
+    {
+        List<Collider> targets = new List<Collider>();
+
+        foreach (Collider target in checkTargets)
+        {
+            //辞書にいるキャラかの判断
+            if (!_damageNoticeMap.TryGetValue(target, out (IDamageNotice Damage, IFactionMember Faction) hitCharacter))
+            {
+                continue;
+            }
+
+            //自分の陣営以外の格納
+            if (hitCharacter.Faction.Faction != owner)
+            {
+                targets.Add(target);
+            }
+        }
+
+        return targets;
+    }
 }

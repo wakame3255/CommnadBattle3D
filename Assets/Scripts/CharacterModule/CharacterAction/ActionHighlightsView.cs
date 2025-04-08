@@ -14,7 +14,7 @@ public class ActionHighlightsView : MonoBehaviour
     /// ターゲットの頭上にハイライトの生成
     /// </summary>
     /// <param name="targets"></param>
-    public void InstanceHighlight(Collider[] targets)
+    public void InstanceHighlight(List<Collider> targets)
     {
         //ハイライトの初期化
         DebugUtility.Log("poolにして");
