@@ -59,7 +59,7 @@ public class AttackService : IAttackHandler
     /// </summary>
     private void RequestForAttack(List<Collider> targets, int damage)
     {
-      
+      //使う可能性
     }
 
     /// <summary>

@@ -7,15 +7,27 @@ public class TargetSelectionModel
 {
     private Dictionary<Collider, CharacterStatusModel> _characterStatusMap;
 
+    /// <summary>
+    /// ターゲットの状態
+    /// </summary>
     private ReactiveProperty<CharacterStatusModel> _rPCharacterStatus;
-
     public ReadOnlyReactiveProperty<CharacterStatusModel> RPCharacterStatus => _rPCharacterStatus;
+
+    /// <summary>
+    /// 選択しているターゲット
+    /// </summary>
+    private ReactiveProperty<Collider> _rPSelectedTarget;
+    public ReadOnlyReactiveProperty<Collider> RPSelectedTarget => _rPSelectedTarget;
+
+
 
     public TargetSelectionModel()
     {
         _characterStatusMap = new Dictionary<Collider, CharacterStatusModel>();
 
         _rPCharacterStatus = new ReactiveProperty<CharacterStatusModel>();
+
+        _rPSelectedTarget = new ReactiveProperty<Collider>();
     }
 
     /// <summary>
@@ -46,5 +58,7 @@ public class TargetSelectionModel
 
         //キャラクターの状態を取得
         _rPCharacterStatus.Value = characterStatus;
+        //キャラクターのコライダーを取得
+        _rPSelectedTarget.Value = collider;
     }
 }

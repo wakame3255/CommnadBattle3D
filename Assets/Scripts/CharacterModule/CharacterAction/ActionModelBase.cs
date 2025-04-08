@@ -56,7 +56,7 @@ public abstract class ActionModelBase
     /// 通知先の注入
     /// </summary>
     /// <param name="actionCont">通知先</param>
-    public void SetActionCont(ActionContModel actionCont)
+    public void SetActionCont(ActionContModelBase actionCont)
     {
         _actionNotifier = actionCont;
         _owner = actionCont.Faction;

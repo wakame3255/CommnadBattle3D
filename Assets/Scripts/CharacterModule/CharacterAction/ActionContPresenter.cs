@@ -3,13 +3,13 @@ using R3;
 
 public class ActionContPresenter : IBinder
 {
-    private ActionContModel _model;
+    private ActionContModelBase _model;
 
     private ActionContView _view;
 
     private ActionHighlightsView _actionHighlights;
 
-    public ActionContPresenter(ActionContModel model, ActionContView view, ActionHighlightsView actionHighlights)
+    public ActionContPresenter(ActionContModelBase model, ActionContView view, ActionHighlightsView actionHighlights)
     {
         _model = model;
         _view = view;

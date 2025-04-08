@@ -6,6 +6,8 @@ using VContainer;
 
 public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
 {
+    private int _characterCount = 0;
+
     [SerializeField, Required]
     private GameObject _characterPrefab = default;
 
@@ -66,7 +68,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         //プレイヤーのアクション機能の生成
         List<ActionModelBase> actionBases = new List<ActionModelBase>();
         actionBases.Add(actionMVPData.Model);
-        ActionContModel actionContModel = new ActionContModel(characterStatusModel, playerMoveModel, actionBases);
+        ActionContModelBase actionContModel = new PlayerActionContModel(characterStatusModel, playerMoveModel, actionBases, _targetSelectionModel);
 
         //プレイヤーのアクションビューの生成
         List<ActionViewBase> actionViewBases = new List<ActionViewBase>();
@@ -109,12 +111,14 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     private void SetupCpuCharacter(ICharacterStateController characterState)
     {
         //敵の生成
-        GameObject enemy = Instantiate(_characterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject enemy = Instantiate(_characterPrefab, new Vector3(0, 0, _characterCount), Quaternion.identity);
 
         //キャラクターステータスの生成
         CharacterStatusModel characterStatusModel = new CharacterStatusModel(characterState, Faction.Enemy);
 
         AttachCollider(enemy, characterStatusModel);
+
+        _characterCount += 2;
     }
 
     /// <summary>
