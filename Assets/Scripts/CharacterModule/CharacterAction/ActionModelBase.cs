@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class ActionModelBase
 {
@@ -34,7 +36,12 @@ public abstract class ActionModelBase
     /// <summary>
     /// 行動を実行する（引数としてアクション対象を選択？）
     /// </summary>
-    public abstract void DoAction();
+    public abstract void DoAction(List<Collider> targets);
+
+    /// <summary>
+    /// 行動対象を検出する
+    /// </summary>
+    public abstract void CheckActionTarget();
 
     /// <summary>
     /// 行動選択を通知する
@@ -42,7 +49,7 @@ public abstract class ActionModelBase
     public void NoticeActionModel()
     {
         _actionNotifier?.SetActionModel(this);
-        DoAction();
+        CheckActionTarget();
     }
 
     /// <summary>

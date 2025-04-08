@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using R3;
 using UnityEngine;
 
@@ -8,5 +9,5 @@ public interface ISetActionModel
 
     public void SetActionModel(ActionModelBase characterAction);
 
-    public void SetScopeTarget(Collider[] targets);
+    public void SetScopeTarget(List<Collider> targets);
 }

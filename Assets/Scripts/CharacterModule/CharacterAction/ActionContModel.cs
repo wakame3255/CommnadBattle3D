@@ -14,8 +14,8 @@ public class ActionContModel : IInitialize, ISetActionModel
     /// <summary>
     /// 影響範囲にいるターゲット
     /// </summary>
-    private ReactiveProperty<Collider[]> _rPTargets;
-    public ReadOnlyReactiveProperty<Collider[]> RPTargets => _rPTargets;
+    private ReactiveProperty<List<Collider>> _rPTargets;
+    public ReadOnlyReactiveProperty<List<Collider>> RPTargets => _rPTargets;
 
     /// <summary>
     /// キャラクターの位置
@@ -52,7 +52,7 @@ public class ActionContModel : IInitialize, ISetActionModel
     public void Initialize()
     {
         _rPCurrentAction = new ReactiveProperty<ActionModelBase>();
-        _rPTargets = new ReactiveProperty<Collider[]>();
+        _rPTargets = new ReactiveProperty<List<Collider>>();
     }
 
     public void SetActionModel(ActionModelBase characterAction)
@@ -60,7 +60,7 @@ public class ActionContModel : IInitialize, ISetActionModel
         _rPCurrentAction.Value = characterAction;
     }
 
-    public void SetScopeTarget(Collider[] targets)
+    public void SetScopeTarget(List<Collider> targets)
     {
         _rPTargets.Value = targets;
     }
