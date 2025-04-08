@@ -6,6 +6,8 @@ using VContainer;
 
 public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
 {
+    private int _characterCount = 0;
+
     [SerializeField, Required]
     private GameObject _characterPrefab = default;
 
@@ -66,15 +68,15 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         //プレイヤーのアクション機能の生成
         List<ActionModelBase> actionBases = new List<ActionModelBase>();
         actionBases.Add(actionMVPData.Model);
-        ActionContModel actionContModel = new ActionContModel(characterStatusModel, playerMoveModel, actionBases);
+        ActionControllerModelBase actionContModel = new PlayerActionControllerModel(characterStatusModel, playerMoveModel, actionBases, _targetSelectionModel);
 
         //プレイヤーのアクションビューの生成
         List<ActionViewBase> actionViewBases = new List<ActionViewBase>();
         actionViewBases.Add(actionMVPData.View);
-        ActionContView actionContView = player.AddComponent<ActionContView>();
+        ActionControllerView actionContView = player.AddComponent<ActionControllerView>();
         actionContView.SetActionView(actionViewBases);
 
-        new ActionContPresenter(actionContModel, actionContView, highlightsView).Bind();
+        new ActionControllerPresenter(actionContModel, actionContView, highlightsView).Bind();
 
         //キャラクターの情報注入
         _updateHandlers.Add(playerMoveModel);
@@ -109,12 +111,14 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     private void SetupCpuCharacter(ICharacterStateController characterState)
     {
         //敵の生成
-        GameObject enemy = Instantiate(_characterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject enemy = Instantiate(_characterPrefab, new Vector3(0, 0, _characterCount), Quaternion.identity);
 
         //キャラクターステータスの生成
         CharacterStatusModel characterStatusModel = new CharacterStatusModel(characterState, Faction.Enemy);
 
         AttachCollider(enemy, characterStatusModel);
+
+        _characterCount += 2;
     }
 
     /// <summary>

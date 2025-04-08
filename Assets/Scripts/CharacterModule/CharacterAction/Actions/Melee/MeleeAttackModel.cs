@@ -8,7 +8,7 @@ public class MeleeAttackModel : ActionModelBase
 
     public MeleeAttackModel(IAttackHandler attackService)
     {
-        _attackRange = 2.0f;
+        _attackRange = 5.0f;
         _scopeOfEffect = 1.0f;
 
         _attackService = attackService; 

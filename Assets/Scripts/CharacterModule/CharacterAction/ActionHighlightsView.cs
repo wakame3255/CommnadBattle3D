@@ -8,17 +8,20 @@ public class ActionHighlightsView : MonoBehaviour
     [SerializeField, Required]
     private GameObject _highlightPrefab;
 
+    [SerializeField, Required]
+    private GameObject _selectHighlightPrefab;
+
     List<GameObject> _highlights = new List<GameObject>();
 
     /// <summary>
     /// ターゲットの頭上にハイライトの生成
     /// </summary>
     /// <param name="targets"></param>
-    public void InstanceHighlight(List<Collider> targets)
+    public void InstanceHighlight(List<SelectionTargetData> targets)
     {
         //ハイライトの初期化
         DebugUtility.Log("poolにして");
-        foreach (var highlight in _highlights)
+        foreach (GameObject highlight in _highlights)
         {
             Destroy(highlight);
         }
@@ -28,10 +31,21 @@ public class ActionHighlightsView : MonoBehaviour
             return;
         }
 
-        foreach (var target in targets)
+        //ターゲットの頭上にハイライトを生成
+        foreach (SelectionTargetData target in targets)
         {
-            var highlight = Instantiate(_highlightPrefab, target.transform.position + (Vector3.up * 3), Quaternion.identity);
-            highlight.transform.SetParent(target.transform);
+            GameObject highlight = null;
+
+            if (target.IsSelected)
+            {
+                highlight = Instantiate(_selectHighlightPrefab, target.Collider.transform.position + (Vector3.up * 3), Quaternion.identity);
+            }
+            else
+            {
+                highlight = Instantiate(_highlightPrefab, target.Collider.transform.position + (Vector3.up * 3), Quaternion.identity);
+            }
+            
+            highlight.transform.SetParent(target.Collider.transform);
             _highlights.Add(highlight);
         }
     }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ActionContView : MonoBehaviour, IInitialize
+public class ActionControllerView : MonoBehaviour, IInitialize
 {
     private List<ActionViewBase> _viewBases = new List<ActionViewBase>();
 
@@ -14,6 +14,8 @@ public class ActionContView : MonoBehaviour, IInitialize
     {
         _rangeObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         _rangeObj.transform.position = transform.position;
+
+        _rangeObj.GetComponent<Collider>().enabled = false;
     }
 
     /// <summary>

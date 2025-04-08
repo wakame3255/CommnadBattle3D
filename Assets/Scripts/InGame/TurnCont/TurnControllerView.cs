@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TurnControllerView : MonoBehaviour, IInitialize
 {
-    [SerializeField]
+    [SerializeField, Required]
     private Button _CharacterButton = default;
 
     public void Initialize()
