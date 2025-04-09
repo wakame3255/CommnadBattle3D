@@ -48,6 +48,7 @@ public class TargetSelectionModel
     {
         if (collider == null)
         {
+            _rPSelectedTarget.Value = null;
             return;
         }
         

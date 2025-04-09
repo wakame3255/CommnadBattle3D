@@ -30,6 +30,13 @@ public class PlayerActionControllerModel : ActionControllerModelBase
     /// <param name="target"></param>
     private void SetSelectTarget(Collider selectTarget)
     {
+     
+
+        if (_rPTargets.CurrentValue == null || selectTarget == null)
+        {
+            return;
+        }
+
         List<SelectionTargetData> targetData = new List<SelectionTargetData>();
 
         //選択されたターゲットのみハイライトの変更
@@ -47,6 +54,6 @@ public class PlayerActionControllerModel : ActionControllerModelBase
 
         _rPTargets.Value = targetData;
 
-        DebugUtility.Log("助長オブ");
+        DebugUtility.Log("再インスタンス生成は助長");
     }
 }

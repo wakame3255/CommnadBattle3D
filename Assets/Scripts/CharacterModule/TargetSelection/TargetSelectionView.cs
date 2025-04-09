@@ -26,5 +26,6 @@ public class TargetSelectionView : MonoBehaviour
     private void SetTargetCollider(Collider collider)
     {
         _rPSelectedTarget.Value = collider;
+        
     }
 }
