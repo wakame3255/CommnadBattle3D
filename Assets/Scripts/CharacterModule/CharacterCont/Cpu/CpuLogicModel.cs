@@ -1,14 +1,26 @@
 using System;
 using R3;
 using Cysharp.Threading.Tasks;
-public class CpuLogicModel
+public class CpuLogicModel : IUpdateHandler, IChangeActionRequest
 {
-    CpuCharacterContModel _cpuCharacter;
+   private CpuCharacterContModel _cpuCharacter;
+
     public CpuLogicModel(CpuCharacterContModel cpuCharacterCont)
     {
         _cpuCharacter = cpuCharacterCont;
 
         SetEvent();
+    }
+
+    public void Updateable()
+    {
+        // CPUの思考を更新する処理が必要な場合はここに記述
+    }
+
+    public void ChangeActionRequest()
+    {
+        // CPUの行動を変更するリクエストを受け取った場合の処理
+        // 例えば、CPUが移動するなどの処理をここに記述
     }
 
     private void SetEvent()

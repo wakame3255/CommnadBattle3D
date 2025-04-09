@@ -10,6 +10,7 @@ public class MeleeAttackModel : ActionModelBase
     {
         _attackRange = 5.0f;
         _scopeOfEffect = 1.0f;
+        _actionCost = 1;
 
         _attackService = attackService; 
     }
