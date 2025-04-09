@@ -48,16 +48,26 @@ public class PlayerActionControllerModel : ActionControllerModelBase
     /// <returns></returns>
     private bool CheckAttackTarget(Collider selectTarget)
     {
-        if (selectTarget == _cacheSelectTarget)
+        //選択している敵を選んだか
+        if (selectTarget != _cacheSelectTarget)
+        {
+            return false;
+        }
+
+        //コストが足りているのか
+        if (_rPCurrentAction.Value.ActionCost <= _actionNotice.RPActionCost.CurrentValue)
         {
             List<Collider> attackTargets = new List<Collider>();
             attackTargets.Add(selectTarget);
             _rPCurrentAction.Value.DoAction(attackTargets);
 
+            _actionNotice.NotifyUseActionCost(_rPCurrentAction.Value.ActionCost);
+
             return true;
         }
         else
         {
+            DebugUtility.Log("コストが足りない");
             return false;
         }
     }

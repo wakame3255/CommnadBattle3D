@@ -8,15 +8,19 @@ public abstract class ActionModelBase
     /// 攻撃可能範囲
     /// </summary>
     protected float _attackRange;
-
     public float AttackRange => _attackRange;
 
     /// <summary>
     /// 攻撃効果範囲
     /// </summary>
     protected float _scopeOfEffect;
-
     public float ScopeOfEffect => _scopeOfEffect;
+
+    /// <summary>
+    /// 行動のコスト
+    /// </summary>
+    protected int _actionCost;
+    public int ActionCost => _actionCost;
 
     /// <summary>
     /// 通知先
