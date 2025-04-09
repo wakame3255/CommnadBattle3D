@@ -11,11 +11,9 @@ public class CpuActionControllerModel : ActionControllerModelBase
         _actionNotice = actionContModel;
         _actionList = characterActions;
         _faction = actionContModel;
-       
 
         //キャラクターの位置を購読
         noticePosition.RPTransformPosition.Subscribe(pos => SetCharacterPosition(Vector3Extensions.ToUnityVector3(pos)));
-        
 
         //依存注入
         foreach (ActionModelBase modelBase in _actionList)

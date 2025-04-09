@@ -4,13 +4,13 @@ using R3;
 using UnityEngine;
 public class PlayerActionControllerModel : ActionControllerModelBase
 {
-    private TargetSelectionModel _targetSelectionModel;
+    private Collider _cacheSelectTarget = default;
+
     public PlayerActionControllerModel(CharacterStatusModel actionContModel, INoticePosition noticePosition, List<ActionModelBase> characterActions, TargetSelectionModel selectionModel)
     {
         _actionNotice = actionContModel;
         _actionList = characterActions;
         _faction = actionContModel;
-        _targetSelectionModel = selectionModel;
 
         //キャラクターの位置を購読
         noticePosition.RPTransformPosition.Subscribe(pos => SetCharacterPosition(Vector3Extensions.ToUnityVector3(pos)));
@@ -30,6 +30,44 @@ public class PlayerActionControllerModel : ActionControllerModelBase
     /// <param name="target"></param>
     private void SetSelectTarget(Collider selectTarget)
     {
+        if (_rPTargets.CurrentValue == null || selectTarget == null)
+        {
+            return;
+        }
+
+        if (!CheckAttackTarget(selectTarget))
+        {
+            ChangeTargetHighlight(selectTarget);
+        }
+    }
+
+    /// <summary>
+    /// すでに選択されたターゲットを選択したら攻撃を行う
+    /// </summary>
+    /// <param name="selectTarget"></param>
+    /// <returns></returns>
+    private bool CheckAttackTarget(Collider selectTarget)
+    {
+        if (selectTarget == _cacheSelectTarget)
+        {
+            List<Collider> attackTargets = new List<Collider>();
+            attackTargets.Add(selectTarget);
+            _rPCurrentAction.Value.DoAction(attackTargets);
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 選択されたターゲットのハイライトを変更する
+    /// </summary>
+    /// <param name="selectTarget"></param>
+    private void ChangeTargetHighlight(Collider selectTarget)
+    {
         List<SelectionTargetData> targetData = new List<SelectionTargetData>();
 
         //選択されたターゲットのみハイライトの変更
@@ -38,6 +76,7 @@ public class PlayerActionControllerModel : ActionControllerModelBase
             if (scopeTarget.Collider == selectTarget)
             {
                 targetData.Add(new SelectionTargetData(scopeTarget.Collider, true));
+                _cacheSelectTarget = scopeTarget.Collider;
             }
             else
             {
@@ -47,6 +86,6 @@ public class PlayerActionControllerModel : ActionControllerModelBase
 
         _rPTargets.Value = targetData;
 
-        DebugUtility.Log("助長オブ");
+        DebugUtility.Log("再インスタンス生成は助長");
     }
 }

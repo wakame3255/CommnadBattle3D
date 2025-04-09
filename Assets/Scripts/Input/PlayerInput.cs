@@ -36,6 +36,7 @@ public class PlayerInput : MonoBehaviour, IInputInformation
         // マウスの位置にあるコライダーを取得
         if (Mouse.current.leftButton.wasReleasedThisFrame)
         {
+            _pointerColliderRP.Value = null;
             _pointerColliderRP.Value = ReturnHitInfo().collider;
             //DebugUtility.Log(_pointerColliderRP.Value.ToString());
         }
