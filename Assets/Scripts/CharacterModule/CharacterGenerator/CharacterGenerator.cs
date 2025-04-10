@@ -153,7 +153,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     }
 
     /// <summary>
-    /// コライダーを付与するメソッド
+    /// コライダーを付与するメソッドs
     /// </summary>
     /// <param name="character">キャラクター</param>
     /// <param name="characterState">ステータス</param>
