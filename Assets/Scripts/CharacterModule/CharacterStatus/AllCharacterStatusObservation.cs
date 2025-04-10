@@ -45,7 +45,7 @@ public class AllCharacterStatusObservation
         {
             if (_allCharacterStatus[i].Faction == myFaction)
             {
-                _allCharacterStatus.Add(_allCharacterStatus[i]);
+                _allyCharacterStatus.Add(_allCharacterStatus[i]);
             }
             else
             {
