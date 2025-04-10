@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using UnityEngine;
 using VContainer;
 
@@ -34,7 +35,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     /// <param name="playerCharacterContModel">プレイヤー</param>
     [Inject]
     public void GeneratePlayer(
-        PlayerCharacterContModel playerCharacterContModel,
+        PlayerCharacterControllerModel playerCharacterContModel,
         CharacterStatusView characterStatus,
         IInputInformation input,
         PathFind pathFind,
@@ -49,37 +50,23 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         CharacterStatusModel characterStatusModel = new CharacterStatusModel(playerCharacterContModel, Faction.Player);
         new CharacterStatusPresenter(characterStatusModel, characterStatus).Bind();
 
-        //プレイヤーのインプット情報依存注入
-        MoveView playerView = player.AddComponent<MoveView>();
-        playerView.SetInput(input);
-        TargetSelectionView targetSelectionView = player.AddComponent<TargetSelectionView>();
-        targetSelectionView.SetInputSelect(input);
-
-        IPathAgenter path = new PathAgent(pathFind, playerView.transform);
-
         //プレイヤーの移動機能の生成
-        MoveModel playerMoveModel = new MoveModel(path, characterStatusModel);
-        new MovePresenter(playerMoveModel, playerView).Bind();
+        (MoveModel moveModel, MoveView moveView) = GetMoveSystem(player, pathFind, characterStatusModel);
+        moveView.SetInput(input);
 
         //プレイヤーのターゲット選択機能の生成
+        TargetSelectionView targetSelectionView = player.AddComponent<TargetSelectionView>();
+        targetSelectionView.SetInputSelect(input);
         new TargetSelectionPresenter(_targetSelectionModel, targetSelectionView, statusView).Bind();
 
-        ActionMVPData actionMVPData = _actionViewBasePrefab.CreateAction(this.transform, _attackService);
         //プレイヤーのアクション機能の生成
-        List<ActionModelBase> actionBases = new List<ActionModelBase>();
-        actionBases.Add(actionMVPData.Model);
-        ActionControllerModelBase actionContModel = new PlayerActionControllerModel(characterStatusModel, playerMoveModel, actionBases, _targetSelectionModel);
+        (List<ActionModelBase> actionModels, List<ActionViewBase> actionViews) = GetActionModels();    
+        ActionControllerModelBase actionContModel = new PlayerActionControllerModel(characterStatusModel, moveModel, actionModels, _targetSelectionModel);
 
         //プレイヤーのアクションビューの生成
-        List<ActionViewBase> actionViewBases = new List<ActionViewBase>();
-        actionViewBases.Add(actionMVPData.View);
         ActionControllerView actionContView = player.AddComponent<ActionControllerView>();
-        actionContView.SetActionView(actionViewBases);
-
+        actionContView.SetActionView(actionViews);
         new ActionControllerPresenter(actionContModel, actionContView, highlightsView).Bind();
-
-        //キャラクターの情報注入
-        _updateHandlers.Add(playerMoveModel);
 
         AttachCollider(player, characterStatusModel);
     }
@@ -98,7 +85,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
 
         for (int i = 0; i < 3; i++)
         {
-            CpuCharacterContModel cpuCharacterContModel = new CpuCharacterContModel();
+            CpuCharacterControllerModel cpuCharacterContModel = new CpuCharacterControllerModel();
 
             _characterStateHandlers.Add(cpuCharacterContModel);
 
@@ -108,6 +95,10 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         return _characterStateHandlers;
     }
 
+    /// <summary>
+    /// CPUキャラクターの生成
+    /// </summary>
+    /// <param name="characterState"></param>
     private void SetupCpuCharacter(ICharacterStateController characterState)
     {
         //敵の生成
@@ -119,6 +110,46 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         AttachCollider(enemy, characterStatusModel);
 
         _characterCount += 2;
+    }
+
+    /// <summary>
+    /// 移動システムの取得
+    /// </summary>
+    /// <param name="obj"></param>
+    private (MoveModel, MoveView) GetMoveSystem(GameObject obj, PathFind pathFind, IMoveNotice statusModel)
+    {
+        //移動システムの生成
+        MoveView playerView = obj.AddComponent<MoveView>();
+
+        //エージェント生成
+        IPathAgenter pathAgenter = new PathAgent(pathFind, playerView.transform);
+
+        //プレイヤーの移動機能の生成
+        MoveModel playerMoveModel = new MoveModel(pathAgenter, statusModel);
+        new MovePresenter(playerMoveModel, playerView).Bind();
+
+        //キャラクターの情報注入
+        _updateHandlers.Add(playerMoveModel);
+
+        return (playerMoveModel, playerView); 
+    }
+
+    /// <summary>
+    /// アクションモデルの取得
+    /// </summary>
+    /// <returns></returns>
+    private (List<ActionModelBase>, List<ActionViewBase>) GetActionModels()
+    {
+        List<ActionModelBase> actionModelBases = new List<ActionModelBase>();
+
+        List<ActionViewBase> actionViewBases = new List<ActionViewBase>();
+
+        //ファクトリーからアクションのモデルとviewを生成
+        ActionMVPData actionMVPData = _actionViewBasePrefab.CreateAction(this.transform, _attackService);
+        actionViewBases.Add(actionMVPData.View);
+        actionModelBases.Add(actionMVPData.Model);
+
+        return (actionModelBases,actionViewBases);
     }
 
     /// <summary>

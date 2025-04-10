@@ -1,18 +1,16 @@
 using System;
 using R3;
 
-public class CpuCharacterContModel : ICharacterStateController
+public class CpuCharacterControllerModel : ICharacterStateController
 {
     private ReactiveProperty<CharacterState> _currentState;
     public ReadOnlyReactiveProperty<CharacterState> RPCurrentState { get => _currentState; }
 
-    private CpuLogicModel _cpuLogicModel;
+    private FactionStateController _factionStateController;
 
-    public CpuCharacterContModel()
+    public CpuCharacterControllerModel()
     {
         _currentState = new ReactiveProperty<CharacterState>(CharacterState.Stay);
-
-        _cpuLogicModel = new CpuLogicModel(this);
     }
 
     public void ChangeCharacterState(CharacterState characterState)
