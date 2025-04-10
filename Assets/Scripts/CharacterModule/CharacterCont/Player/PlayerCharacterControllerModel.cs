@@ -1,7 +1,7 @@
 using System;
 using R3;
 
-public class PlayerCharacterContModel : ICharacterStateController, IPlayerContModel
+public class PlayerCharacterControllerModel : ICharacterStateController, IPlayerContModel
 {
     //プレイヤーの状態
     private ReactiveProperty<CharacterState> _rPCurrentState;
@@ -9,7 +9,7 @@ public class PlayerCharacterContModel : ICharacterStateController, IPlayerContMo
     //プレイヤーの状態公開
     public ReadOnlyReactiveProperty<CharacterState> RPCurrentState { get => _rPCurrentState; }
 
-    public PlayerCharacterContModel()
+    public PlayerCharacterControllerModel()
     {
         _rPCurrentState = new ReactiveProperty<CharacterState>(CharacterState.Stay);
     }

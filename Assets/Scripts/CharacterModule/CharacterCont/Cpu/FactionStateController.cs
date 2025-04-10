@@ -1,13 +1,17 @@
 using System;
 using R3;
 using Cysharp.Threading.Tasks;
-public class CpuLogicModel : IUpdateHandler, IChangeActionRequest
+public class FactionStateController : IUpdateHandler, IChangeActionRequest
 {
-   private CpuCharacterContModel _cpuCharacter;
+   private CpuCharacterControllerModel _cpuCharacter;
 
-    public CpuLogicModel(CpuCharacterContModel cpuCharacterCont)
+    private OtherCharacterStatus _otherCharacterStatus;
+
+    public FactionStateController(CpuCharacterControllerModel cpuCharacterCont, OtherCharacterStatus otherCharacterStatus, CpuActionControllerModel actionControllerModel)
     {
         _cpuCharacter = cpuCharacterCont;
+
+        _otherCharacterStatus = otherCharacterStatus;
 
         SetEvent();
     }

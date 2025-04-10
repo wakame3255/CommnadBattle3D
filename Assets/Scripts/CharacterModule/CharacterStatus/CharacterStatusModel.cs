@@ -1,7 +1,7 @@
 using System;
 using R3;
 
-public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDamageNotice, IFactionMember
+public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDamageNotice, IFactionMember, IStatusNotice
 {
     /// <summary>
     /// 残りの移動距離
