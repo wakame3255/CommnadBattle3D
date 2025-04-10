@@ -4,7 +4,7 @@ using R3;
 
 public class MoveView : MonoBehaviour, IInitialize
 {
-    private ReactiveProperty<Vector3> _rPClickPos;
+    private ReactiveProperty<Vector3> _rPClickPos = new ReactiveProperty<Vector3>();
 
     public ReadOnlyReactiveProperty<Vector3> RPClickPos => _rPClickPos;
 
@@ -14,7 +14,7 @@ public class MoveView : MonoBehaviour, IInitialize
     /// <param name="inputInfomation">インプット情報</param>
     public void SetInput(IInputInformation inputInfomation)
     {
-        _rPClickPos = new ReactiveProperty<Vector3>();
+        
         inputInfomation.PointerPosition.Subscribe(OnClick).AddTo(this);
     }
 

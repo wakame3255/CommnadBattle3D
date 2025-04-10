@@ -5,13 +5,13 @@ public class FactionStateController : IUpdateHandler, IChangeActionRequest
 {
    private CpuCharacterControllerModel _cpuCharacter;
 
-    private OtherCharacterStatus _otherCharacterStatus;
+    private AllCharacterStatus _allCharacterStatus;
 
-    public FactionStateController(CpuCharacterControllerModel cpuCharacterCont, OtherCharacterStatus otherCharacterStatus, CpuActionControllerModel actionControllerModel)
+    public FactionStateController(CpuCharacterControllerModel cpuCharacterCont, CpuBaseActionInformation baseActionInformation)
     {
         _cpuCharacter = cpuCharacterCont;
 
-        _otherCharacterStatus = otherCharacterStatus;
+        _allCharacterStatus = baseActionInformation.AllCharacterStatus;
 
         SetEvent();
     }
