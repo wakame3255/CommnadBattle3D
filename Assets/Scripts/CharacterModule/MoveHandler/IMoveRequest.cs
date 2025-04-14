@@ -1,6 +1,6 @@
 using System;
 
-public interface ImoveReqest
+public interface IMoveRequest
 {
     public void MovePosition(System.Numerics.Vector3 pos);
 }

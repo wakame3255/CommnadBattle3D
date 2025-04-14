@@ -45,10 +45,10 @@ public class CpuBaseActionInformation
     /// <summary>
     /// 移動のリクエストを行うためのデータ
     /// </summary>
-    private ImoveReqest _moveReqest;
-    public ImoveReqest MoveReqest => _moveReqest;
+    private IMoveRequest _moveReqest;
+    public IMoveRequest MoveReqest => _moveReqest;
 
-    public CpuBaseActionInformation(CpuActionControllerModel actionControllerModel, ImoveReqest moveReqest, AllCharacterStatus allCharacterStatus)
+    public CpuBaseActionInformation(CpuActionControllerModel actionControllerModel, IMoveRequest moveReqest, AllCharacterStatus allCharacterStatus)
     {
         _actionControllerModel = actionControllerModel;
         _moveReqest = moveReqest;
