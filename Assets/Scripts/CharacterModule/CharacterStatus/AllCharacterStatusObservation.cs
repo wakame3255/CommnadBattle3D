@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class OtherCharacterStatus
+public class AllCharacterStatus
 {
     /// <summary>
     /// 味方キャラクターの状態
@@ -14,7 +14,13 @@ public class OtherCharacterStatus
     private List<IStatusNotice> _enemyCharacterStatus = new List<IStatusNotice>();
     public List<IStatusNotice> EnemyCharacterStatus => _enemyCharacterStatus;
 
-    public OtherCharacterStatus(List<IStatusNotice> allyCharacterStatus, List<IStatusNotice> enemyCharacterStatus)
+    /// <summary>
+    /// 自分のキャラクターの状態
+    /// </summary>
+    private IStatusNotice _myCharacterStatus;
+    public IStatusNotice MyCharacterStatus => _myCharacterStatus;
+
+    public AllCharacterStatus(List<IStatusNotice> allyCharacterStatus, List<IStatusNotice> enemyCharacterStatus, IStatusNotice myStatus)
     {
         _allyCharacterStatus = allyCharacterStatus;
         _enemyCharacterStatus = enemyCharacterStatus;
@@ -34,7 +40,7 @@ public class AllCharacterStatusObservation
     /// 自分以外のキャラクターの状態を取得
     /// </summary>
     /// <returns></returns>
-    public OtherCharacterStatus ReturnOtherStatus(IStatusNotice characterStatus)
+    public AllCharacterStatus ReturnOtherStatus(IStatusNotice characterStatus)
     {
         List<IStatusNotice> _allyCharacterStatus = new List<IStatusNotice>();
         List<IStatusNotice> _enemyCharacterStatus = new List<IStatusNotice>();
@@ -53,6 +59,6 @@ public class AllCharacterStatusObservation
             }
         }
 
-        return new OtherCharacterStatus(_allyCharacterStatus, _enemyCharacterStatus);
+        return new AllCharacterStatus(_allyCharacterStatus, _enemyCharacterStatus, characterStatus);
     }
 }
