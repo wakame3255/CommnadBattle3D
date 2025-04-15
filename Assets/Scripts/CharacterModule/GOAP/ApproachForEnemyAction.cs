@@ -14,14 +14,14 @@ public class ApproachForEnemyAction : GoapActionBase
         Effects.Add(WorldStateKey.EnemyIsInRange, true);
     }
 
-    public override bool Perform(GameObject agent, Dictionary<WorldStateKey, object> woldState)
+    public override bool Perform(GameObject agent, Dictionary<WorldStateKey, object> worldState)
     {
         DebugUtility.Log("敵に近づくアクションを実行中");
 
         // 近づく処理をここに実装
         _isInRange = true;
 
-        woldState[WorldStateKey.EnemyIsInRange] = true;
+        worldState[WorldStateKey.EnemyIsInRange] = true;
 
         return true;
     }
