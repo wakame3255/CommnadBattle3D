@@ -14,7 +14,7 @@ public class ApproachForEnemyAction : GoapActionBase
         Effects.Add(WorldStateKey.EnemyIsInRange, true);
     }
 
-    public override bool Parform(GameObject agent, Dictionary<WorldStateKey, object> woldState)
+    public override bool Perform(GameObject agent, Dictionary<WorldStateKey, object> woldState)
     {
         DebugUtility.Log("敵に近づくアクションを実行中");
 

@@ -14,7 +14,7 @@ public class AttackForEnemyAction : GoapActionBase
         Preconditions.Add(WorldStateKey.EnemyIsInRange, true);
     }
 
-    public override bool Parform(GameObject agent, Dictionary<WorldStateKey, object> woldState)
+    public override bool Perform(GameObject agent, Dictionary<WorldStateKey, object> woldState)
     {
         DebugUtility.Log("敵を攻撃するアクションを実行中");
         _attacked = true;

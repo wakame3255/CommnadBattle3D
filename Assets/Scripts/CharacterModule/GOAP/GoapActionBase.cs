@@ -57,9 +57,9 @@ public abstract class GoapActionBase : MonoBehaviour
     /// アクションの実行 合否を返す
     /// </summary>
     /// <param name="agent"></param>
-    /// <param name="woldState"></param>
+    /// <param name="worldState"></param>
     /// <returns></returns>
-    public abstract bool Parform(GameObject agent, Dictionary<WorldStateKey, object> woldState);
+    public abstract bool Perform(GameObject agent, Dictionary<WorldStateKey, object> worldState);
 
     /// <summary>
     /// アクションの実行後の処理 リセット処理
