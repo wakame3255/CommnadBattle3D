@@ -6,6 +6,11 @@ alwaysApply: false
 ---
 description: 
 globs: 
+alwaysApply: false
+---
+---
+description: 
+globs: 
 alwaysApply: true
 ---
 
@@ -30,7 +35,6 @@ alwaysApply: true
 - MVPにおけるModelとPresenterはMonoBehaviour
 を継承しないでください。
 - ViewはMonoBehaviourを継承しても大丈夫です。
-- コードの変更を勝手に適応しないでください。
 ---
 
 それでは、指示に従ってタスクを遂行してください。
