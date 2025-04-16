@@ -24,7 +24,7 @@ public abstract class Timer
     /// <summary>
     /// タイマーの進行度（0.0から1.0の範囲）
     /// </summary>
-    public float Progress => Time / _initialTime;
+    public float Progress => ReturnProgress();
 
     /// <summary>
     /// タイマー開始時に実行されるイベント
@@ -86,6 +86,20 @@ public abstract class Timer
     /// </summary>
     /// <param name="deltaTime">前フレームからの経過時間</param>
     public abstract void Tick(float deltaTime);
+
+    /// <summary>
+    /// カウントダウンの進行度を取得
+    /// </summary>
+    /// <returns></returns>
+    private float ReturnProgress()
+    {
+        if (_initialTime != 0)
+        {
+            return Time / _initialTime;
+        }
+
+        return Time;
+    }
 }
 
 /// <summary>
@@ -120,12 +134,23 @@ public class CountdownTimer : Timer
     /// <summary>
     /// カウントダウンが完了したかどうか
     /// </summary>
-    public bool IsFinished => Time <= 0;
+    public bool IsFinished()
+    {
+        if (Time <= 0)
+        {
+            return true;
+        }
+        return false;
+    }
+    
 
     /// <summary>
     /// タイマーを初期時間にリセット
     /// </summary>
-    public void Reset() => Time = _initialTime;
+    public void Reset()
+    {
+        Time = _initialTime;
+    }
 
     /// <summary>
     /// 新しい時間を設定してリセット

@@ -143,11 +143,11 @@ public class AgentBelief
         /// <summary>
         /// 信念の観測位置を設定
         /// </summary>
-        /// <param name="observerdLocaion">位置を取得する関数</param>
+        /// <param name="observedLocation">位置を取得する関数</param>
         /// <returns>ビルダーインスタンス</returns>
-        public Builder WithLocation(Func<Vector3> observerdLocaion)
+        public Builder WithLocation(Func<Vector3> observedLocation)
         {
-            _belief._observedLocation = observerdLocaion;
+            _belief._observedLocation = observedLocation;
             return this;
         }
 
