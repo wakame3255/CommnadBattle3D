@@ -4,14 +4,22 @@ using R3;
 
 public class MoveModel : IInitialize, IUpdateHandler, INoticePosition, IMoveRequest
 {
+    /// <summary>
+    /// 移動先のパスを取得するインターフェース
+    /// </summary>
     private IPathAgenter _pathAgent;
 
+    /// <summary>
+    /// 移動通知を行うインターフェース
+    /// </summary>
     private IMoveNotice _moveNotice;
 
     private bool _isMoveEnd = false;
 
+    /// <summary>
+    /// 位置情報のイベント発行
+    /// </summary>
     private ReactiveProperty<Vector3> _rPTransformPosition;
-
     public ReadOnlyReactiveProperty<Vector3> RPTransformPosition { get => _rPTransformPosition; }
 
     public MoveModel(IPathAgenter pathAgent, IMoveNotice moveNotice)
@@ -29,6 +37,7 @@ public class MoveModel : IInitialize, IUpdateHandler, INoticePosition, IMoveRequ
 
     public void Updateable()
     {
+        // 移動先のパスを取得
         Vector3 moveDirection = _pathAgent.GetNextPath(Vector3Extensions.ToUnityVector3(_rPTransformPosition.Value));
 
         if (moveDirection == Vector3.Zero || _isMoveEnd)
@@ -36,8 +45,9 @@ public class MoveModel : IInitialize, IUpdateHandler, INoticePosition, IMoveRequ
             return;
         }
 
+        //パスに向かって移動
         _rPTransformPosition.Value += moveDirection * 0.02f;
-
+        //移動距離の通知
         _moveNotice.NotifyMove(0.02f);
     }
 
@@ -57,6 +67,12 @@ public class MoveModel : IInitialize, IUpdateHandler, INoticePosition, IMoveRequ
     public void SetPosition(Vector3 position)
     {
         _rPTransformPosition.Value = position;
+    }
+
+    public void MoveStop()
+    {
+        // 移動を停止
+        SetPosition(_rPTransformPosition.Value);
     }
 
     /// <summary>
