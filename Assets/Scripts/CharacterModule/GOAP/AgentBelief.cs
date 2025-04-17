@@ -65,7 +65,7 @@ public class BeliefFactory
     /// <param name="pos">判定する位置</param>
     /// <param name="range">判定範囲</param>
     /// <returns>範囲内にいる場合はtrue</returns>
-    bool InRangeOf(Vector3 pos, float range) => Vector3.Distance(_agent.transform.position, pos) < range;
+    bool InRangeOf(Vector3 pos, float range) => Vector3.Distance(_agent.MyTransform.position, pos) < range;
 }
 
 /// <summary>

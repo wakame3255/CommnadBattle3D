@@ -1,52 +1,58 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-public class GoapAgent : MonoBehaviour 
+public class GoapAgent
 {
+    private AllCharacterStatus _allCharacterStatus;
 
-    //現在の状態
-    private Dictionary<WorldStateKey, object> _worldState = new Dictionary<WorldStateKey, object>();
+    private CountdownTimer _statusTimer;
 
-    //目標状態
-    private Dictionary<WorldStateKey, object> _goal = new Dictionary<WorldStateKey, object>();
+    private AgentGoal _lastGoal;
 
-    //アクションのリスト
-    private List<GoapActionBase> _actions = new List<GoapActionBase>();
+    private AgentGoal _currentGoal;
 
-    //現在のアクション
-    private Queue<GoapActionBase> _currentPlan;
+    private ActionPlan _actionPlan;
 
-    private void Awake()
+    private AgentAction _currentAction;
+
+    private Dictionary<string, AgentBelief> _beliefs;
+
+    private HashSet<AgentGoal> _goals;
+
+    public HashSet<AgentAction> Actions { get; private set; } = new HashSet<AgentAction>();
+
+    public Transform MyTransform { get;}
+
+    IGoapPlanner _goapPlanner;
+
+    public GoapAgent(AllCharacterStatus allCharacterStatus, GoapFactory goapFactory, Transform myTransform)
     {
-        //アクションの生成
-        _actions.Add(gameObject.AddComponent<AttackForEnemyAction>());
-        _actions.Add(gameObject.AddComponent<ApproachForEnemyAction>());
+        _allCharacterStatus = allCharacterStatus;
+        _goapPlanner = goapFactory.CreateGoapPlanner();
+        MyTransform = myTransform;
 
-        foreach(GoapActionBase goapAction in _actions)
-        {
-            goapAction.Setup();
-        }
-
-        //初期状態
-        _worldState.Add(WorldStateKey.EnemyIsInRange, false);
-
-        //ゴールの設定
-        _goal = new Dictionary<WorldStateKey, object>();
-        _goal.Add(WorldStateKey.EnemyIsInRange, true);
-    }
-
-    private void Start()
-    {
+        SetupBeliefs();
         
     }
 
-    private void Update()
+    private void SetupBeliefs()
     {
-        if (_currentPlan == null || _currentPlan.Count == 0)
-        {
+        _beliefs = new Dictionary<string, AgentBelief>();
+        BeliefFactory beliefFactory = new BeliefFactory(this, _beliefs);
 
-        }
+        beliefFactory.AddBelief("Nothing", () => false);
+
+        beliefFactory.AddBelief
+            ("AgentHealthLow", () => _allCharacterStatus.MyCharacterStatus.RPHealth.CurrentValue <= 5);
+        beliefFactory.AddBelief
+            ("AgentHealthHigh", () => _allCharacterStatus.MyCharacterStatus.RPHealth.CurrentValue > 5);
+        beliefFactory.AddBelief
+            ("AttackingPlayer", () => false);
     }
 
-
+    private void SetupAction()
+    {
+        Actions = new HashSet<AgentAction>();
+     
+    }
 }
