@@ -1,24 +1,29 @@
 using System;
 using R3;
+using VContainer;
 
 public enum GameState
 {
     Ready,
     Play,
     Pause,
-    GameOver
+    GameOver,
+    Clear,
 }
 
 public class InGameModel : IInitialize, IGameStateChanger
 {
-    public InGameModel()
+    private SceneChanger _sceneChanger;
+
+    [Inject]
+    public InGameModel(SceneChanger sceneChanger)
     {
-        
+        _sceneChanger = sceneChanger;
     }
-    //メインゲームの状態保持
+    //繝｡繧､繝ｳ繧ｲ繝ｼ繝縺ｮ迥ｶ諷倶ｿ晄戟
     private ReactiveProperty<GameState> _currentGameState = new ReactiveProperty<GameState>();
 
-    //メインゲームの状態公開保持
+    //繝｡繧､繝ｳ繧ｲ繝ｼ繝縺ｮ迥ｶ諷句�ｬ髢倶ｿ晄戟
     public ReadOnlyReactiveProperty<GameState> CurrentGameState { get => _currentGameState; }
 
     public void Initialize()
@@ -29,5 +34,32 @@ public class InGameModel : IInitialize, IGameStateChanger
     public void ChangeGameState(GameState gameState)
     {
         _currentGameState.Value = gameState;
+
+        switch (gameState)
+        {
+            case GameState.Ready:
+                break;
+            case GameState.Play:
+                break;
+            case GameState.Pause:
+                break;
+            case GameState.GameOver:
+                GameOver();
+                break;
+            case GameState.Clear:
+                Clear();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void Clear()
+    {
+       _sceneChanger.ChangeScene(ScenesNames.ClearScene);
+    }
+    public void GameOver()
+    {
+        _sceneChanger.ChangeScene(ScenesNames.GameOverScene);
     }
 }

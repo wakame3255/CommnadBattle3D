@@ -28,7 +28,7 @@ public class FactionStateController : IUpdateHandler, IChangeActionRequest
     public void NoticeEnd()
     {
         _cpuCharacter.ChangeCharacterState(CharacterState.End);
-        DebugUtility.Log("CPUの思考を終了");
+       
     }
 
     public void Updateable()

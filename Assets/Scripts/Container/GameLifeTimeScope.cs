@@ -32,6 +32,8 @@ public class GameLifeTimeScope : LifetimeScope
 
         //すべてのキャラが共通で使用する機能
         builder.RegisterComponentInHierarchy<PathFind>();
+        //すべてのキャラが共通で使用する機能
+        builder.RegisterComponentInHierarchy<SceneChanger>();
 
         //スタートアップの登録
         builder.RegisterEntryPoint<PresenterStartUp>(Lifetime.Singleton);

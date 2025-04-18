@@ -16,9 +16,9 @@ public class TurnControllerView : MonoBehaviour, IInitialize
 
     public void UpdateView(List<ICharacterStateController> characterStateHandlers)
     {
-        for (int i = 0; i < characterStateHandlers.Count; i++)
-        {
-            Instantiate(_CharacterButton, this.transform);
-        }
+        //for (int i = 0; i < characterStateHandlers.Count; i++)
+        //{
+        //    Instantiate(_CharacterButton, this.transform);
+        //}
     }
 }

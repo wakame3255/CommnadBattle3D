@@ -55,7 +55,7 @@ public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDa
 
         _rPActionCost = new ReactiveProperty<int>(0);
 
-        _rPHealth = new ReactiveProperty<int>(10);
+        _rPHealth = new ReactiveProperty<int>(40);
 
         _rPCurrentState = new ReactiveProperty<CharacterState>();
 
@@ -104,6 +104,12 @@ public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDa
     public void NotifyDamage(int damage)
     {
         _rPHealth.Value -= damage;
+        if (_rPHealth.Value <= 0)
+        {
+            //死亡処理
+            _rPCurrentState.Value = CharacterState.Dead;
+            _stateHandler.ChangeCharacterState(CharacterState.Dead);
+        }
     }
 
     /// <summary>

@@ -16,13 +16,11 @@ public class MeleeAttackModel : ActionModelBase
     }
     public override void DoAction(List<Collider> targets)
     {
-        DebugUtility.Log("MeleeAttackModel DoAction");
         _attackService.ExecuteAttack(targets, 10);
     }
 
     public override List<Collider> CheckActionTarget()
     {
-        DebugUtility.Log("MeleeAttackModel CheckActionTarget");
         List<Collider> targets = _attackService.ReturnScopeTarget(_actionNotifier.CharacterPos, _attackRange, _owner.Faction);
         _actionNotifier.SetScopeTarget(targets);
 

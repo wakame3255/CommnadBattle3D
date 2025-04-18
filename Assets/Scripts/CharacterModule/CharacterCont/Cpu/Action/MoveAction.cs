@@ -21,10 +21,7 @@ public class MoveAction : FactionStateBase
         // 経過時間をリセット
         _elapsedTime = 0f;
 
-        foreach (var characterStatus in _allCharacterStatus.AllyCharacterStatus)
-        {
-            DebugUtility.Log($"目的地の座標 : {characterStatus.NowPosition}");
-        }
+      
         _targetPosition = _allCharacterStatus.EnemyCharacterStatus[0].NowPosition;
 
         _moveRequest.MovePosition(Vector3Extensions.ToSystemVector3(_targetPosition));
@@ -38,7 +35,7 @@ public class MoveAction : FactionStateBase
         // 5秒経過したら強制終了
         if (_elapsedTime >= 5f)
         {
-            DebugUtility.Log("5秒経過したためMoveActionを終了します。");
+            
             _request.ChangeActionRequest(_request.AttackActionState);
             _moveRequest.MoveStop();
             return;

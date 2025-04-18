@@ -15,6 +15,7 @@ public class MoveModel : IInitialize, IUpdateHandler, INoticePosition, IMoveRequ
     private IMoveNotice _moveNotice;
 
     private bool _isMoveEnd = false;
+    private bool _isDead = false;
 
     /// <summary>
     /// 位置情報のイベント発行
@@ -41,7 +42,7 @@ public class MoveModel : IInitialize, IUpdateHandler, INoticePosition, IMoveRequ
         // 移動先のパスを取得
         Vector3 moveDirection = _pathAgent.GetNextPath(Vector3Extensions.ToUnityVector3(_rPTransformPosition.Value));
 
-        if (moveDirection == Vector3.Zero || _isMoveEnd)
+        if (moveDirection == Vector3.Zero || _isMoveEnd || _isDead)
         {
             return;
         }
@@ -104,6 +105,11 @@ public class MoveModel : IInitialize, IUpdateHandler, INoticePosition, IMoveRequ
         else
         {
             _isMoveEnd = true;
+        }
+
+        if (state == CharacterState.Dead)
+        {
+            _isDead = true;
         }
     }
 }

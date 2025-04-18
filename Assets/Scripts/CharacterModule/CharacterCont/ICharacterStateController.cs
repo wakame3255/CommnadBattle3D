@@ -5,6 +5,7 @@ public enum CharacterState
     Stay,
     Move,
     End,
+    Dead
 }
 
 public interface ICharacterStateController

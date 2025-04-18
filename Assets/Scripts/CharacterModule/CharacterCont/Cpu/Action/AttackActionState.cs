@@ -29,7 +29,7 @@ public class AttackActionState : FactionStateBase
 
         _request.NoticeEnd();
 
-        DebugUtility.Log("失敗");
+        
     }
     public override void UpdateState()
     {

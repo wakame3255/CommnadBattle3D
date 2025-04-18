@@ -1,6 +1,6 @@
+using R3;
 using System;
 using System.Collections.Generic;
-using R3;
 
 public class TurnControllerModel : IInitialize, IDisposable
 {
@@ -40,6 +40,9 @@ public class TurnControllerModel : IInitialize, IDisposable
     /// 購読を破棄するための変数
     /// </summary>
     private IDisposable _subscriptionState;
+
+    private int _enemyCount = 0;
+    private int _playerCount = 0;
 
     /// <summary>
     /// ゲーム管理クラスへの依存注入
@@ -172,5 +175,62 @@ public class TurnControllerModel : IInitialize, IDisposable
 
         //最初のキャラクターをセット
         _currentCharacter = _characterStateHandlers.Value[0];
+
+        foreach (ICharacterStateController character in _characterStateHandlers.Value)
+        {
+            DebugUtility.Log(character.ToString());
+            switch (character)
+            {
+                case PlayerCharacterControllerModel player:
+                    character.RPCurrentState
+                .Subscribe(state =>
+                {
+                    if (state == CharacterState.Dead)
+                    {
+                        DeathPlayer();
+                    }
+                })
+                .AddTo(_disposable);
+                    _playerCount++;
+                    break;
+                case CpuCharacterControllerModel cpu:
+                    
+                    character.RPCurrentState
+                        .Subscribe(state =>
+                        {
+                            if (state == CharacterState.Dead)
+                            {
+                                DeathEnemy();
+                            }
+                        })
+                        .AddTo(_disposable);
+                    _enemyCount++;
+                    break;
+            }
+        }
+    }
+
+    private void DeathEnemy()
+    {
+        _enemyCount--;
+        CheckDeathCharacter();
+    }
+    private void DeathPlayer()
+    {
+        _playerCount--;
+        CheckDeathCharacter();
+    }
+    private void CheckDeathCharacter()
+    {
+        if (_enemyCount <= 0)
+        {
+            //プレイヤーの勝利
+            _gameStateChanger.ChangeGameState(GameState.Clear);
+        }
+        else if (_playerCount <= 0)
+        {
+            //CPUの勝利
+            _gameStateChanger.ChangeGameState(GameState.GameOver);
+        }
     }
 }
