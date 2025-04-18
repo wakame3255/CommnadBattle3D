@@ -104,7 +104,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
             //CPUのアクション情報を取得
             CpuBaseActionInformation cpuBaseAction = new (cpuCharacter.ActionModel, cpuCharacter.MoveReqest);
             //CPUのキャラクターコントローラーに情報を注入
-            cpuCharacter.ControllerModel.SetCpuInfomation(otherCharacterStatus, cpuBaseAction);
+            cpuCharacter.ControllerModel.SetCpuInformation(otherCharacterStatus, cpuBaseAction);
         }
 
         return _characterStateHandlers;

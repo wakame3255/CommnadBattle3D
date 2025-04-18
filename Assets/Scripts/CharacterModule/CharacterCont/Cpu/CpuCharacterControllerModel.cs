@@ -22,7 +22,7 @@ public class CpuCharacterControllerModel : ICharacterStateController
     /// </summary>
     /// <param name="otherCharacterStatus"></param>
     /// <param name="cpuBaseAction"></param>
-    public void SetCpuInfomation(AllCharacterStatus otherCharacterStatus, CpuBaseActionInformation cpuBaseAction)
+    public void SetCpuInformation(AllCharacterStatus otherCharacterStatus, CpuBaseActionInformation cpuBaseAction)
     {
         new FactionStateController(this, cpuBaseAction, otherCharacterStatus);
     }
@@ -39,13 +39,13 @@ public class CpuBaseActionInformation
     /// <summary>
     /// 移動のリクエストを行うためのデータ
     /// </summary>
-    private IMoveRequest _moveReqest;
-    public IMoveRequest MoveReqest => _moveReqest;
+    private IMoveRequest _moveRequest;
+    public IMoveRequest MoveReqest => _moveRequest;
 
     public CpuBaseActionInformation(CpuActionControllerModel actionControllerModel, IMoveRequest moveReqest)
     {
         _actionControllerModel = actionControllerModel;
-        _moveReqest = moveReqest;
+        _moveRequest = moveReqest;
     }
 }
 
