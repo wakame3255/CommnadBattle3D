@@ -7,11 +7,11 @@ public class FactionStateController : IUpdateHandler, IChangeActionRequest
 
     private AllCharacterStatus _allCharacterStatus;
 
-    public FactionStateController(CpuCharacterControllerModel cpuCharacterCont, CpuBaseActionInformation baseActionInformation)
+    public FactionStateController(CpuCharacterControllerModel cpuCharacterCont, CpuBaseActionInformation baseActionInformation, AllCharacterStatus allCharacterStatus)
     {
         _cpuCharacter = cpuCharacterCont;
 
-        _allCharacterStatus = baseActionInformation.AllCharacterStatus;
+        _allCharacterStatus = allCharacterStatus;
 
         SetEvent();
     }

@@ -22,9 +22,9 @@ public class CpuCharacterControllerModel : ICharacterStateController
     /// </summary>
     /// <param name="otherCharacterStatus"></param>
     /// <param name="cpuBaseAction"></param>
-    public void SetCpuInfomation(AllCharacterStatus otherCharacterStatus, CpuBaseActionInformation cpuBaseAction)
+    public void SetCpuInformation(AllCharacterStatus otherCharacterStatus, CpuBaseActionInformation cpuBaseAction)
     {
-        new FactionStateController(this, cpuBaseAction);
+        new FactionStateController(this, cpuBaseAction, otherCharacterStatus);
     }
 }
 
@@ -37,20 +37,32 @@ public class CpuBaseActionInformation
     public CpuActionControllerModel ActionControllerModel => _actionControllerModel;
 
     /// <summary>
-    /// 全てのキャラクターの状態を参照するためのデータ
-    /// </summary>
-    private AllCharacterStatus _allCharacterStatus;
-    public AllCharacterStatus AllCharacterStatus => _allCharacterStatus;
-
-    /// <summary>
     /// 移動のリクエストを行うためのデータ
     /// </summary>
-    private IMoveRequest _moveReqest;
-    public IMoveRequest MoveReqest => _moveReqest;
+    private IMoveRequest _moveRequest;
+    public IMoveRequest MoveReqest => _moveRequest;
 
-    public CpuBaseActionInformation(CpuActionControllerModel actionControllerModel, IMoveRequest moveReqest, AllCharacterStatus allCharacterStatus)
+    public CpuBaseActionInformation(CpuActionControllerModel actionControllerModel, IMoveRequest moveReqest)
     {
         _actionControllerModel = actionControllerModel;
-        _moveReqest = moveReqest;
+        _moveRequest = moveReqest;
     }
 }
+
+public class CpuActionInformation
+{
+    public CpuCharacterControllerModel ControllerModel { get; }
+    public CharacterStatusModel StatusModel { get; }
+    public CpuActionControllerModel ActionModel {  get;}
+    public IMoveRequest MoveReqest { get; }
+
+    public CpuActionInformation(CpuCharacterControllerModel controllerModel, CpuActionControllerModel actionControllerModel, IMoveRequest moveReqest, CharacterStatusModel statusModel)
+    {
+        ControllerModel = controllerModel;
+        ActionModel = actionControllerModel;
+        MoveReqest = moveReqest;
+        StatusModel = statusModel;
+    }
+}
+
+
