@@ -7,24 +7,48 @@ public class FactionStateController : IUpdateHandler, IChangeActionRequest
 
     private AllCharacterStatus _allCharacterStatus;
 
+    private FactionStateBase _currentAction;
+
+    private CharacterState _currentState;
+
+    public MoveAction MoveActionState { get; }
+    public AttackActionState AttackActionState { get; }
+
     public FactionStateController(CpuCharacterControllerModel cpuCharacterCont, CpuBaseActionInformation baseActionInformation, AllCharacterStatus allCharacterStatus)
     {
         _cpuCharacter = cpuCharacterCont;
 
         _allCharacterStatus = allCharacterStatus;
+        MoveActionState = new MoveAction(baseActionInformation.MoveReqest, allCharacterStatus, this);
+        AttackActionState = new AttackActionState(baseActionInformation.ActionControllerModel, allCharacterStatus, this);
 
         SetEvent();
     }
 
-    public void Updateable()
+    public void NoticeEnd()
     {
-        // CPUの思考を更新する処理が必要な場合はここに記述
+        _cpuCharacter.ChangeCharacterState(CharacterState.End);
+        DebugUtility.Log("CPUの思考を終了");
     }
 
-    public void ChangeActionRequest()
+    public void Updateable()
     {
-        // CPUの行動を変更するリクエストを受け取った場合の処理
-        // 例えば、CPUが移動するなどの処理をここに記述
+        if (_currentAction != null || _currentState == CharacterState.Move)
+        {
+            _currentAction.UpdateState();
+        }  
+    }
+
+    public void ChangeActionRequest(FactionStateBase factionState)
+    {
+        _currentAction.ExitState();
+        EnterAction(factionState);
+    }
+
+    private void EnterAction(FactionStateBase factionState)
+    {
+        _currentAction = factionState;
+        _currentAction.EnterState();
     }
 
     private void SetEvent()
@@ -38,27 +62,17 @@ public class FactionStateController : IUpdateHandler, IChangeActionRequest
     /// <param name="characterState">キャラクターの状態</param>
     private void SetChangeState(CharacterState characterState)
     {
+        _currentState = characterState;
+
         switch (characterState)
         {
             case CharacterState.Stay:
                 break;
             case CharacterState.Move:
-                StartThinkCPU().Forget();
+                EnterAction(MoveActionState);
                 break;
             case CharacterState.End:
                 break;
         }
-    }
-
-    /// <summary>
-    /// CPUの思考を開始する
-    /// </summary>
-    private async UniTask StartThinkCPU()
-    {
-        await UniTask.Delay(TimeSpan.FromSeconds(2));
-
-        _cpuCharacter.ChangeCharacterState(CharacterState.End);
-
-        DebugUtility.Log("CPUの思考を終了");
     }
 }

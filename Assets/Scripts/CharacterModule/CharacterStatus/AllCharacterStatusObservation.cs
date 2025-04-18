@@ -24,6 +24,7 @@ public class AllCharacterStatus
     {
         _allyCharacterStatus = allyCharacterStatus;
         _enemyCharacterStatus = enemyCharacterStatus;
+        _myCharacterStatus = myStatus;
     }
 }
 

@@ -11,7 +11,11 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     private int _characterCount = 0;
 
     [SerializeField, Required]
-    private GameObject _characterPrefab = default;
+    private GameObject _playerCharacterPrefab = default;
+    [SerializeField, Required]
+    private GameObject _enemyCharacterPrefab = default;
+
+
 
     [SerializeField, Required, Obsolete]
     private MeleeAttackFactory _actionViewBasePrefab = default;
@@ -47,7 +51,7 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         SelectTargetStatusView statusView,
         ActionHighlightsView highlightsView)
     {       
-        GameObject player = Instantiate(_characterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject player = Instantiate(_playerCharacterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         _pathFind = pathFind;
         _characterStateHandlers.Add(playerCharacterContModel);
 
@@ -104,7 +108,9 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
             //CPUのアクション情報を取得
             CpuBaseActionInformation cpuBaseAction = new (cpuCharacter.ActionModel, cpuCharacter.MoveReqest);
             //CPUのキャラクターコントローラーに情報を注入
-            cpuCharacter.ControllerModel.SetCpuInformation(otherCharacterStatus, cpuBaseAction);
+            IUpdateHandler updateHandler = cpuCharacter.ControllerModel.SetCpuInformation(otherCharacterStatus, cpuBaseAction);
+            //CPUのキャラクターコントローラーを更新するためのハンドラを追加
+            _updateHandlers.Add(updateHandler);
         }
 
         return _characterStateHandlers;
@@ -116,26 +122,38 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     /// <param name="characterState"></param>
     private CpuActionInformation SetupCpuCharacter()
     {
-        //cpuコントローラー生成
+        // cpuコントローラー生成
         CpuCharacterControllerModel cpuCharacterContModel = new CpuCharacterControllerModel();
-        //敵の生成
-        GameObject enemy = Instantiate(_characterPrefab, new Vector3(0, 0, _characterCount), Quaternion.identity);
-        //キャラクターステータスの生成
+
+        // ランダムな位置を生成 (x: 0 ~ 50, z: 0 ~ 50)
+        float randomX = UnityEngine.Random.Range(0f, 50f);
+        float randomZ = UnityEngine.Random.Range(0f, 50f);
+        Vector3 randomPosition = new Vector3(randomX, 0, randomZ);
+
+        // 敵の生成
+        GameObject enemy = Instantiate(_enemyCharacterPrefab, randomPosition, Quaternion.identity);
+
+        // キャラクターステータスの生成
         CharacterStatusModel characterStatusModel = new CharacterStatusModel(cpuCharacterContModel, Faction.Enemy);
-        //Cpuの移動機能の生成
+
+        // Cpuの移動機能の生成
         (MoveModel moveModel, MoveView moveView) = GetMoveSystem(enemy, _pathFind, characterStatusModel);
-        //プレイヤーのアクション機能の生成
+
+        // プレイヤーのアクション機能の生成
         (List<ActionModelBase> actionModels, List<ActionViewBase> actionViews) = GetActionModels();
-        CpuActionControllerModel actionContModel = new (characterStatusModel, moveModel, actionModels);
-        //コライダーの生成
+        CpuActionControllerModel actionContModel = new(characterStatusModel, moveModel, actionModels);
+
+        // コライダーの生成
         AttachCollider(enemy, characterStatusModel);
 
-        CpuActionInformation cpuBuildData = new (cpuCharacterContModel, actionContModel, moveModel, characterStatusModel);
+        // CPUキャラクター情報をまとめる
+        CpuActionInformation cpuBuildData = new(cpuCharacterContModel, actionContModel, moveModel, characterStatusModel);
 
+        // キャラクターステータスを観測リストに追加
         _allCharacterStatusObservation.AddCharacterStatus(characterStatusModel);
 
+        // キャラクターコントローラーをリストに追加
         _characterStateHandlers.Add(cpuCharacterContModel);
-        _characterCount += 2;
 
         return cpuBuildData;
     }

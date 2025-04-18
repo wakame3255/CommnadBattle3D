@@ -33,6 +33,7 @@ public class MoveModel : IInitialize, IUpdateHandler, INoticePosition, IMoveRequ
         _rPTransformPosition = new ReactiveProperty<Vector3>();
 
         _moveNotice.TravelDistance.Subscribe(UpdateTravelDistance);
+        _moveNotice.RPCurrentState.Subscribe(ChangeState);
     }
 
     public void Updateable()
@@ -46,9 +47,10 @@ public class MoveModel : IInitialize, IUpdateHandler, INoticePosition, IMoveRequ
         }
 
         //パスに向かって移動
-        _rPTransformPosition.Value += moveDirection * 0.02f;
+        _rPTransformPosition.Value += (moveDirection * 0.02f) * 2;
+        
         //移動距離の通知
-        _moveNotice.NotifyMove(0.02f);
+        _moveNotice.NotifyMove(0.02f, Vector3Extensions.ToUnityVector3(_rPTransformPosition.Value));
     }
 
     /// <summary>
@@ -90,6 +92,18 @@ public class MoveModel : IInitialize, IUpdateHandler, INoticePosition, IMoveRequ
         else
         {
             _isMoveEnd = false;
+        }
+    }
+
+    private void ChangeState(CharacterState state)
+    {
+        if (state == CharacterState.Move)
+        {
+            _isMoveEnd = false;
+        }
+        else
+        {
+            _isMoveEnd = true;
         }
     }
 }

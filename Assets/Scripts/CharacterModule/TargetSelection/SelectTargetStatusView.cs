@@ -30,9 +30,9 @@ public class SelectTargetStatusView : MonoBehaviour
 
         string targetName = statusModel.RPHealth.CurrentValue.ToString();
 
-        _targetNameText.text = "名前：" + targetName;
+        _targetNameText.text = "名前：" + gameObject.GetHashCode();
         _targetHpText.text = "HP：" + targetName;
-        _targetAttackText.text = "攻撃力：" + targetName;
+        _targetAttackText.text = "攻撃力：" + 10;
         _targetImage.sprite = null;
 
         DebugUtility.Log("テスト用メソッド");

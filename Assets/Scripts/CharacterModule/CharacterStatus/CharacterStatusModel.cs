@@ -1,5 +1,6 @@
 using System;
 using R3;
+using UnityEngine;
 
 public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDamageNotice, IFactionMember, IStatusNotice
 {
@@ -8,6 +9,8 @@ public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDa
     /// </summary>
     private ReactiveProperty<float> _travelDistance;
     public ReadOnlyReactiveProperty<float> TravelDistance { get => _travelDistance; }
+
+    public Vector3 NowPosition { get; private set; }
 
     /// <summary>
     /// 行動コスト
@@ -64,7 +67,7 @@ public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDa
     /// </summary>
     public void ResetStatus()
     {
-        _travelDistance.Value = 10;
+        _travelDistance.Value = 5;
         _rPActionCost.Value = 2;
     }
 
@@ -72,9 +75,11 @@ public class CharacterStatusModel : IInitialize, IMoveNotice, IActionNotice, IDa
     /// 移動距離の通知
     /// </summary>
     /// <param name="moveDistance"></param>
-    public void NotifyMove(float moveDistance)
+    public void NotifyMove(float moveDistance, Vector3 nowPos)
     {
         _travelDistance.Value -= moveDistance;
+
+        NowPosition = nowPos;
 
         //ゼロリセット
         if (_travelDistance.Value < 0)

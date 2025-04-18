@@ -45,7 +45,7 @@ public abstract class ActionModelBase
     /// <summary>
     /// 行動対象を検出する
     /// </summary>
-    public abstract void CheckActionTarget();
+    public abstract List<Collider> CheckActionTarget();
 
     /// <summary>
     /// 行動選択を通知する

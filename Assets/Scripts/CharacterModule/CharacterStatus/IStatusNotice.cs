@@ -1,6 +1,6 @@
 using R3;
 using System;
-using Unity.VisualScripting;
+using UnityEngine;
 
 public interface IStatusNotice
 {
@@ -13,4 +13,6 @@ public interface IStatusNotice
     /// 公開用派閥
     /// </summary>
     public Faction Faction { get; }
+
+    public Vector3 NowPosition { get; }
 }

@@ -22,9 +22,9 @@ public class CpuCharacterControllerModel : ICharacterStateController
     /// </summary>
     /// <param name="otherCharacterStatus"></param>
     /// <param name="cpuBaseAction"></param>
-    public void SetCpuInformation(AllCharacterStatus otherCharacterStatus, CpuBaseActionInformation cpuBaseAction)
+    public IUpdateHandler SetCpuInformation(AllCharacterStatus otherCharacterStatus, CpuBaseActionInformation cpuBaseAction)
     {
-        new FactionStateController(this, cpuBaseAction, otherCharacterStatus);
+       return new FactionStateController(this, cpuBaseAction, otherCharacterStatus);
     }
 }
 
