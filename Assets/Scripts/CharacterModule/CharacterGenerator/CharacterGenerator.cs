@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using VContainer;
 
@@ -29,6 +30,10 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
 
     private TargetSelectionModel _targetSelectionModel = new TargetSelectionModel();
 
+    private AllCharacterStatusObservation _allCharacterStatusObservation = new();
+
+    private PathFind _pathFind = new ();
+
     /// <summary>
     /// プレイヤーキャラクターのモデルを受け取る
     /// </summary>
@@ -41,9 +46,9 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         PathFind pathFind,
         SelectTargetStatusView statusView,
         ActionHighlightsView highlightsView)
-    {
+    {       
         GameObject player = Instantiate(_characterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-
+        _pathFind = pathFind;
         _characterStateHandlers.Add(playerCharacterContModel);
 
         //キャラクターステータスの生成
@@ -69,6 +74,8 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
         new ActionControllerPresenter(actionContModel, actionContView, highlightsView).Bind();
 
         AttachCollider(player, characterStatusModel);
+
+        _allCharacterStatusObservation.AddCharacterStatus(characterStatusModel);
     }
 
     [Obsolete("いずれは依存をなくしたい")]
@@ -83,13 +90,21 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     public List<ICharacterStateController> GenerateCharacter()
     {
 
+        List<CpuActionInformation> cpuCharacters = new(); 
+
         for (int i = 0; i < 3; i++)
         {
-            CpuCharacterControllerModel cpuCharacterContModel = new CpuCharacterControllerModel();
-
-            _characterStateHandlers.Add(cpuCharacterContModel);
-
-            SetupCpuCharacter(cpuCharacterContModel);
+            CpuActionInformation cpuBuildData = SetupCpuCharacter();
+            cpuCharacters.Add(cpuBuildData);
+        }
+        foreach (CpuActionInformation cpuCharacter in cpuCharacters)
+        {
+            //他キャラクターの情報を取得
+            AllCharacterStatus otherCharacterStatus = _allCharacterStatusObservation.ReturnOtherStatus(cpuCharacter.StatusModel);
+            //CPUのアクション情報を取得
+            CpuBaseActionInformation cpuBaseAction = new (cpuCharacter.ActionModel, cpuCharacter.MoveReqest);
+            //CPUのキャラクターコントローラーに情報を注入
+            cpuCharacter.ControllerModel.SetCpuInfomation(otherCharacterStatus, cpuBaseAction);
         }
 
         return _characterStateHandlers;
@@ -99,17 +114,30 @@ public class CharacterGenerator : MonoBehaviour, ICharacterGenerator
     /// CPUキャラクターの生成
     /// </summary>
     /// <param name="characterState"></param>
-    private void SetupCpuCharacter(ICharacterStateController characterState)
+    private CpuActionInformation SetupCpuCharacter()
     {
+        //cpuコントローラー生成
+        CpuCharacterControllerModel cpuCharacterContModel = new CpuCharacterControllerModel();
         //敵の生成
         GameObject enemy = Instantiate(_characterPrefab, new Vector3(0, 0, _characterCount), Quaternion.identity);
-
         //キャラクターステータスの生成
-        CharacterStatusModel characterStatusModel = new CharacterStatusModel(characterState, Faction.Enemy);
-
+        CharacterStatusModel characterStatusModel = new CharacterStatusModel(cpuCharacterContModel, Faction.Enemy);
+        //Cpuの移動機能の生成
+        (MoveModel moveModel, MoveView moveView) = GetMoveSystem(enemy, _pathFind, characterStatusModel);
+        //プレイヤーのアクション機能の生成
+        (List<ActionModelBase> actionModels, List<ActionViewBase> actionViews) = GetActionModels();
+        CpuActionControllerModel actionContModel = new (characterStatusModel, moveModel, actionModels);
+        //コライダーの生成
         AttachCollider(enemy, characterStatusModel);
 
+        CpuActionInformation cpuBuildData = new (cpuCharacterContModel, actionContModel, moveModel, characterStatusModel);
+
+        _allCharacterStatusObservation.AddCharacterStatus(characterStatusModel);
+
+        _characterStateHandlers.Add(cpuCharacterContModel);
         _characterCount += 2;
+
+        return cpuBuildData;
     }
 
     /// <summary>
