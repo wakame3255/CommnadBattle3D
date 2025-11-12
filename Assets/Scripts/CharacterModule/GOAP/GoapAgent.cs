@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// GOAP（Goal-Oriented Action Planning）エージェント
+/// AIキャラクターの目標指向型行動計画を管理
+/// </summary>
 public class GoapAgent
 {
     private AllCharacterStatus _allCharacterStatus;
@@ -20,12 +24,25 @@ public class GoapAgent
 
     private HashSet<AgentGoal> _goals;
 
+    /// <summary>
+    /// エージェントが実行可能なアクションのセット
+    /// </summary>
     public HashSet<AgentAction> Actions { get; private set; } = new HashSet<AgentAction>();
 
+    /// <summary>
+    /// エージェントのTransform
+    /// </summary>
     public Transform MyTransform { get; }
 
     IGoapPlanner _goapPlanner;
 
+    /// <summary>
+    /// コンストラクタ
+    /// GOAP エージェントの初期化
+    /// </summary>
+    /// <param name="allCharacterStatus">全キャラクターのステータス情報</param>
+    /// <param name="goapFactory">GOAPプランナーファクトリー</param>
+    /// <param name="myTransform">このエージェントのTransform</param>
     public GoapAgent(AllCharacterStatus allCharacterStatus, GoapFactory goapFactory, Transform myTransform)
     {
         _allCharacterStatus = allCharacterStatus;
@@ -37,6 +54,9 @@ public class GoapAgent
         SetupGoals();
     }
 
+    /// <summary>
+    /// エージェントの信念（状態認識）を設定
+    /// </summary>
     private void SetupBeliefs()
     {
         _beliefs = new Dictionary<string, AgentBelief>();
@@ -54,6 +74,9 @@ public class GoapAgent
             ("AttackingTarget", () => false);
     }
 
+    /// <summary>
+    /// エージェントが実行可能なアクションを設定
+    /// </summary>
     private void SetupAction()
     {
         Actions = new HashSet<AgentAction>();
@@ -65,6 +88,9 @@ public class GoapAgent
             .Build());
     }
 
+    /// <summary>
+    /// エージェントの目標を設定
+    /// </summary>
     private void SetupGoals()
     {
         _goals = new HashSet<AgentGoal>();
