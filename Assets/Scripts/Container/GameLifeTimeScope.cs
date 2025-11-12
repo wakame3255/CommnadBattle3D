@@ -2,8 +2,17 @@
 using VContainer;
 using VContainer.Unity;
 
+/// <summary>
+/// ゲーム全体の依存性注入コンテナを設定するクラス
+/// モデル、プレゼンター、ビュー、および各種サービスを登録
+/// </summary>
 public class GameLifeTimeScope : LifetimeScope
 {
+    /// <summary>
+    /// DIコンテナの設定
+    /// ゲームで使用するすべてのコンポーネントを登録
+    /// </summary>
+    /// <param name="builder">DIコンテナビルダー</param>
     protected override void Configure(IContainerBuilder builder)
     {
         //モデルの登録
