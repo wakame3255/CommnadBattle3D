@@ -1,6 +1,10 @@
 using System;
 using R3;
 
+/// <summary>
+/// アクション制御のプレゼンター
+/// アクションの選択、範囲表示、対象ハイライト表示を管理
+/// </summary>
 public class ActionControllerPresenter : IBinder
 {
     private ActionControllerModelBase _model;
@@ -9,6 +13,12 @@ public class ActionControllerPresenter : IBinder
 
     private ActionHighlightsView _actionHighlights;
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="model">アクション制御モデル</param>
+    /// <param name="view">アクション制御ビュー</param>
+    /// <param name="actionHighlights">アクションハイライト表示ビュー</param>
     public ActionControllerPresenter(ActionControllerModelBase model, ActionControllerView view, ActionHighlightsView actionHighlights)
     {
         _model = model;
@@ -19,6 +29,10 @@ public class ActionControllerPresenter : IBinder
         _view.Initialize();
     }
 
+    /// <summary>
+    /// モデルとビューのバインド処理
+    /// アクション範囲と対象のハイライト表示を設定
+    /// </summary>
     public void Bind()
     {
         _model.RPCurrentAction.Subscribe(_view.SetAttackRange);

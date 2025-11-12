@@ -1,6 +1,10 @@
 using System;
 using R3;
 
+/// <summary>
+/// プレイヤーキャラクター制御のプレゼンター
+/// プレイヤーの状態とUIの連携を管理
+/// </summary>
 public class PlayerCharacterContPresenter : IBinder, IDisposable
 {
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
@@ -9,6 +13,11 @@ public class PlayerCharacterContPresenter : IBinder, IDisposable
 
     private PlayerCharacterContView _view;
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="model">プレイヤー制御モデル</param>
+    /// <param name="view">プレイヤー制御ビュー</param>
     public PlayerCharacterContPresenter(IPlayerContModel model, PlayerCharacterContView view)
     {
         _model = model;
@@ -19,6 +28,10 @@ public class PlayerCharacterContPresenter : IBinder, IDisposable
         view.Initialize();
     }
 
+    /// <summary>
+    /// モデルとビューのバインド処理
+    /// 状態の変更とボタンイベントを接続
+    /// </summary>
     public void Bind()
     {
         //プレイヤー状態の通知イベントを購読
@@ -32,6 +45,9 @@ public class PlayerCharacterContPresenter : IBinder, IDisposable
             .AddTo(_disposables);
     }
 
+    /// <summary>
+    /// リソースの解放
+    /// </summary>
     public void Dispose()
     {
         _disposables.Dispose();
